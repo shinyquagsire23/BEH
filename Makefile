@@ -3,9 +3,9 @@ DCC = dmd
 DFLAGS = -w
 LIBS = -L-lgtkd-3 -L-ldl
 INCLUDE = -I/usr/include/d/gtkd-3/
-SOURCES = . GBAUtils IO
+SOURCES = . GBAUtils IO Structures
 DFILES = $(foreach dir,$(SOURCES),$(wildcard $(dir)/*.d))
-OBJ = $(DFILES:.d=.o)
+OBJ = $(addprefix build/, $(DFILES:.d=.o))
 OUT = $(shell basename `pwd`)
 
 .PHONY: all debug release profile clean
@@ -19,12 +19,12 @@ profile: DFLAGS += -g -O -profile
 debug release profile: $(OUT)
 
 $(OUT): $(OBJ)
-	$(DCC) $(DFLAGS) -of$@ $(addprefix build/, $(OBJ)) $(INCLUDE) $(LIBS)
+	$(DCC) $(DFLAGS) -of$@ $(OBJ) $(INCLUDE) $(LIBS)
 	strip $@
 
 clean:
 	@echo $(DFILES)
 	rm -f *~ $(OBJ) $(OUT) trace.{def,log}
 
-%.o: %.d
-	$(DCC) $(DFLAGS) $(INCLUDE) $(LIBS) -ofbuild/$@ -c $<
+%.o: 
+	$(DCC) $(DFLAGS) $(INCLUDE) $(LIBS) -of$@ -c $(subst .o,.d,$(subst build/,,$@))
