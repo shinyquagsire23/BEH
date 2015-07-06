@@ -51,9 +51,6 @@ public class BankLoader
 
 	public void run()
 	{
-	    writefln("%x", DataStore.NumBanks);
-		//ubyte[][] bankPointersPre = rom.loadArrayOfStructuredData(tblOffs, DataStore.NumBanks, 4);
-
         rom.Seek(tblOffs);
 		bankPointers = new uint[](DataStore.NumBanks);
 		bankTrees = new TreeIter[](DataStore.NumBanks);
@@ -62,8 +59,6 @@ public class BankLoader
 			writefln("Loading banks into tree... %u", bankNum);
 			bankPointers[bankNum] = rom.readLong() & 0x1FFFFFF;
 			bankTrees[bankNum] = tree.addChild(root, format("%u", bankNum));
-			//DefaultMutableTreeNode node = new DefaultMutableTreeNode(String.valueOf(bankNum));
-			//model.insertNodeInto(node, root, root.getChildCount());
 		}
 
 		maps = new uint[][](0xFF, 0xFF); //TODO: This is really hacky...
@@ -108,9 +103,6 @@ public class BankLoader
 						}
 					}
 					tree.addChild(bankTrees[mapNum], format("%s (%u.%u)", convMapName, mapNum, miniMapNum));
-					
-					//MapTreeNode node = new MapTreeNode(convMapName + " (" + mapNum + "." + miniMapNum + ")",mapNum,miniMapNum); //TODO: Pull PokeText from header
-					//findNode(root,String.valueOf(mapNum)).add(node);
 				}
 				catch(Exception e)
 				{
@@ -121,62 +113,7 @@ public class BankLoader
 		}
 
 		writeln("Refreshing tree...");
-		/*model.reload(root);
-		for (int i = 0; i < tree.getRowCount(); i++)
-		{
-			TreePath path = tree.getPathForRow(i);
-			if (path != null)
-			{
-				//javax.swing.tree.TreeNode node = (javax.swing.tree.TreeNode) path.getLastPathComponent();
-				//string str = node.toString();
-				//DefaultTreeModel models = (DefaultTreeModel) tree.getModel();
-				//models.valueForPathChanged(path, str);
-			}
-		}*/
 		banksLoaded = true;
 		//TODO: Load time, maybe.
 	}
-
-	/*private TreePath findPath(DefaultMutableTreeNode root, String s)
-	{
-		@SuppressWarnings("unchecked")
-		Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
-		while (e.hasMoreElements())
-		{
-			DefaultMutableTreeNode node = e.nextElement();
-			if (node.toString().equalsIgnoreCase(s))
-			{
-				return new TreePath(node.getPath());
-			}
-		}
-		return null;
-	}
-	
-	private DefaultMutableTreeNode findNode(DefaultMutableTreeNode root, String s)
-	{
-		@SuppressWarnings("unchecked")
-		Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
-		while (e.hasMoreElements())
-		{
-			DefaultMutableTreeNode node = e.nextElement();
-			if (node.toString().equalsIgnoreCase(s))
-			{
-				return node;
-			}
-		}
-		return null;
-	}
-	
-	public class MapTreeNode extends DefaultMutableTreeNode
-	{
-		public int bank;
-		public int map;
-		
-		public MapTreeNode (String name, int bank2, int map2)
-		{
-			super(name);
-			bank = bank2;
-			map = map2;
-		}
-	}*/
 }
