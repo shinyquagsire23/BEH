@@ -19,11 +19,11 @@ profile: DFLAGS += -g -O -profile
 debug release profile: $(OUT)
 
 $(OUT): $(OBJ)
-	$(DCC) $(DFLAGS) -of$@ $(OBJ) $(INCLUDE) $(LIBS)
+	$(DCC) $(DFLAGS) -of$@ $(addprefix build/, $(OBJ)) $(INCLUDE) $(LIBS)
 
 clean:
 	@echo $(DFILES)
 	rm -f *~ $(OBJ) $(OUT) trace.{def,log}
 
 %.o: %.d
-	$(DCC) $(DFLAGS) $(INCLUDE) $(LIBS) -of$@ -c $<
+	$(DCC) $(DFLAGS) $(INCLUDE) $(LIBS) -ofbuild/$@ -c $<
