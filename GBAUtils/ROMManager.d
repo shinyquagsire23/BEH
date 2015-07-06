@@ -70,7 +70,7 @@ public class ROMManager
 		{
 				//string path = LZ77Test.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 				//string decodedPath = URLDecoder.decode(path, "UTF-8");
-			if(!getActiveROM().loadHexTBL("/resources/poketable.tbl"))
+			if(!getActiveROM().loadHexTBL("./resources/poketable.tbl"))
 				return -3;
 		}
 		writeln(romID);

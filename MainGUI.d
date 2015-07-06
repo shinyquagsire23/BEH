@@ -66,4 +66,7 @@ void main(string[] args)
 void chooseRom(MenuItem item)
 {
     writeln(ROMManager.loadRom());
+    writeln(ROMManager.getActiveROM().getGameCode());
+    writeln(ROMManager.getActiveROM().getGameText());
+    writeln(ROMManager.getActiveROM().getGameCreatorID());
 }

@@ -1,11 +1,12 @@
 module GBAUtils.GBARom;
 
-import std.stdio;
+import std.stdio : writeln;
 import std.bitmanip;
 import std.uni;
 import std.string;
 import std.conv;
 import std.file;
+import std.array;
 
 import GBAUtils.ROMManager;
 
@@ -36,9 +37,9 @@ class GBARom
 
 		loadRomToBytes();
 		
-		headerCode = readText(0xAC,4);
-		headerName = stripRight(readText(0xA0, 12));
-		headerMaker = readText(0xB0, 2);
+		headerCode = readASCII(0xAC,4);
+		headerName = stripRight(readASCII(0xA0, 12));
+		headerMaker = readASCII(0xB0, 2);
 
 		updateROMHeaderNames();
 		updateFlags();
@@ -209,36 +210,8 @@ class GBARom
 	 */
 	public int commitChangesToROMFile()
 	{
-		/*FileOutputStream fos = null;
-
-		try
-		{
-			fos = new FileOutputStream(input_filepath);
-		}
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-			return 1;
-		}
-		try
-		{
-			fos.write(rom_bytes);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			return 2;
-		}
-		try
-		{
-			fos.close();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			return 3;
-		}*/ //TODO
-		return 0;
+		write(input_filepath, rom_bytes);
+		return 1;
 	}
 
 	/**
@@ -290,11 +263,10 @@ class GBARom
 	 */
 	public void loadHexTBLFromFile(string tbl_path)
 	{
-		/*File file = new File(tbl_path);
+		string text = cast(string)read(tbl_path);
+		string[] lines = text.splitLines();
 
-		BufferedReader br = new BufferedReader(new FileReader(file));
-		string line;
-		while ((line = br.readLine()) != null)
+		foreach(int i, string line; lines)
 		{
 			string[] seperated = line.split("=");
 			string key;
@@ -311,9 +283,8 @@ class GBARom
 				value = " ";
 			}
 
-			hex_tbl.put(key, value);
+			hex_tbl[key] = value;
 		}
-		br.close();*/ //TODO
 	}
 	
 	/**
@@ -323,9 +294,10 @@ class GBARom
 	 */
 	public bool loadHexTBL(string tbl_path)
 	{
-		/*BufferedReader br = new BufferedReader(new InputStreamReader(GBARom.class.getResourceAsStream(tbl_path)));
-		string line;
-		while ((line = br.readLine()) != null)
+		string text = cast(string)read(tbl_path);
+		string[] lines = text.splitLines();
+
+		foreach(int i, string line; lines)
 		{
 			string[] seperated = line.split("=");
 			string key;
@@ -342,9 +314,8 @@ class GBARom
 				value = " ";
 			}
 
-			hex_tbl.put(key, value);
+			hex_tbl[key] = value;
 		}
-		br.close();*/ //TODO
 		return true;
 	}
 
@@ -356,18 +327,17 @@ class GBARom
 	 */
 	public string convertPoketextToAscii(ubyte[] poketext)
 	{
-		/*stringBuilder converted = new stringBuilder();
+		string converted = "";
 
 		for (int i = 0; i < poketext.length; i++)
 		{
 			string temp;
-			temp = hex_tbl.get(string.format("%02X", poketext[i]));
+			temp = hex_tbl.get(format("%02X", poketext[i]), " ");
 
 			converted.append(temp);
 		}
 
-		return converted.tostring();*/ //TODO
-		return "TODO";
+		return converted;
 	}
 
 	/**
@@ -424,7 +394,7 @@ class GBARom
 	 * @param length The amount of text to read
 	 * @return Returns the text as a string object
 	 */
-	public string readText(uint offset, int length)
+	public string readASCII(uint offset, int length)
 	{
 		return cast(string)(rom_bytes[offset..offset+length]);
 	}
