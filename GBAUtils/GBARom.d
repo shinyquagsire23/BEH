@@ -1,6 +1,7 @@
 module GBAUtils.GBARom;
 
 import std.stdio : writeln;
+import std.stdio : writefln;
 import std.bitmanip;
 import std.uni;
 import std.string;
@@ -104,7 +105,7 @@ class GBARom
 	 * @param offset Offset to read from
 	 * @return
 	 */
-	public byte readByte(uint offset)
+	public ubyte readByte(uint offset)
 	{
 		return readBytes(offset,1)[0];
 	}
@@ -117,7 +118,6 @@ class GBARom
 	public uint readLong()
 	{
 		ubyte[4] t=readBytes(4);
-		internalOffset+=4;
 		return littleEndianToNative!uint(t);
 		
 	}
@@ -333,8 +333,9 @@ class GBARom
 		{
 			string temp;
 			temp = hex_tbl.get(format("%02X", poketext[i]), " ");
-
-			converted.append(temp);
+    
+            if(poketext[i] != 0xFF)
+			    converted = converted ~ temp;
 		}
 
 		return converted;
@@ -369,20 +370,16 @@ class GBARom
 	public ubyte[][] loadArrayOfStructuredData(uint offset,
 			int amount, int max_struct_size)
 	{
-		ubyte[][] data;
+		ubyte[][] data = new ubyte[][](max_struct_size, amount+1);
 		int offs = offset & 0x1FFFFFF;
       
 		for (int count = 0; count < amount; count++)
 		{
-			ubyte[] temp_byte = new ubyte[max_struct_size];
-
-			for (int c2 = 0; c2 < temp_byte.length; c2++)
+			for (int c2 = 0; c2 < max_struct_size; c2++)
 			{
-				temp_byte[c2] = rom_bytes[offs];
+				data[c2][count] = rom_bytes[offs];
 				offs++;
 			}
-
-			data[count] = temp_byte;
 		}
 
 		return data;
@@ -409,9 +406,9 @@ class GBARom
 		if(length > -1)
 			return convertPoketextToAscii(getData()[offset..offset+length]);
 		
-		byte b = 0x0;
+		ubyte b = 0x0;
 		int i = 0;
-		while(b != -1)
+		while(b != 0xFF)
 		{
 			b = getData()[offset+i];
 			i++;
@@ -422,9 +419,9 @@ class GBARom
 	
 	public string readPokeText()
 	{
-		byte b = 0x0;
+		ubyte b = 0x0;
 		int i = 0;
-		while(b != -1)
+		while(b != 0xFF)
 		{
 			b = getData()[internalOffset+i];
 			i++;
@@ -462,17 +459,6 @@ class GBARom
 	public uint getPointer(uint offset)
 	{
 		return getPointer(offset,false)& 0x1FFFFFF;
-	}
-	
-	/**
-	 * Gets a pointer in the ROM as an integer. 
-	 * Does not support 32 bit pointers due to Java's integer size not being uint enough.
-	 * @param offset Offset to get the pointer from
-	 * @return Pointer as an Integer
-	 */
-	public int getPointerAsInt(uint offset)
-	{
-		return cast(int)getPointer(offset,false);
 	}
 	
 	public uint getSignedLong(bool fullPointer)

@@ -21,8 +21,11 @@ import MapTreeView;
 
 import GBAUtils.ROMManager;
 import GBAUtils.GBARom;
+import GBAUtils.DataStore;
+import IO.BankLoader;
 
 static MainWindow win;
+static MapStore store;
 
 void main(string[] args)
 {
@@ -44,11 +47,7 @@ void main(string[] args)
     bar.append(fileMenuItem);
     barPanel.add(bar);
     
-    auto store = new MapStore();
-    
-    auto rootMap = store.addCategory("Maps by Bank");
-    auto bank0 = store.addChild(rootMap, "0");
-    store.addChild(bank0, "Some Map (0.0)");
+    store = new MapStore();
     
     auto locationTreeView = new LocationTreeView(store);
     mapSelector.packStart(locationTreeView, true, true, 0);
@@ -65,8 +64,13 @@ void main(string[] args)
 
 void chooseRom(MenuItem item)
 {
-    writeln(ROMManager.loadRom());
-    writeln(ROMManager.getActiveROM().getGameCode());
-    writeln(ROMManager.getActiveROM().getGameText());
-    writeln(ROMManager.getActiveROM().getGameCreatorID());
+    if(ROMManager.loadRom() >= 0)
+    {
+        writeln(ROMManager.getActiveROM().getGameCode());
+        writeln(ROMManager.getActiveROM().getGameText());
+        writeln(ROMManager.getActiveROM().getGameCreatorID());
+        DataStore dataStore = new DataStore("BEH.ini", ROMManager.currentROM.getGameCode());
+        BankLoader b = new BankLoader(DataStore.MapHeaders, ROMManager.getActiveROM(), store, store.addCategory("Maps by Bank"));
+        b.run();
+    }
 }
