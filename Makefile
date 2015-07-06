@@ -20,6 +20,7 @@ debug release profile: $(OUT)
 
 $(OUT): $(OBJ)
 	$(DCC) $(DFLAGS) -of$@ $(addprefix build/, $(OBJ)) $(INCLUDE) $(LIBS)
+	strip $@
 
 clean:
 	@echo $(DFILES)
