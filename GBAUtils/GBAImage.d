@@ -165,7 +165,7 @@ public class GBAImage
 			int pal = data[i];
 			try
 			{
-				setPixel(im, x + (blockx * 8), y + (blocky * 8), pl.getRedValue(pal),pl.getGreenValue(pal), pl.getBlueValue(pal), (transparency && pal == 0 ? 0 : 255));
+				setPixel(im, x + (blockx * 8), y + (blocky * 8), p.getRedValue(pal),p.getGreenValue(pal), p.getBlueValue(pal), (transparency && pal == 0 ? 0 : 255));
 			}
 			catch(Exception e){}
 		}
