@@ -40,7 +40,7 @@ public class Palette
 			reds[i / 2] = r;
 			greens[i / 2] = g;
 			blues[i / 2] = b;
-			colors[i / 2] = new RGBA(255/r,255/g,255/b);
+			colors[i / 2] = new RGBA(255/to!double(r),255/to!double(g),255/to!double(b));
 			i++;
 		}
 	}
@@ -131,7 +131,7 @@ public class Palette
 	public void refreshColors()
 	{
 		for(int i = 0; i < 16; i++)
-			colors[i] = new RGBA(255 / (reds[i] & 0xFF), 255 / (greens[i] & 0xFF), 255 / (blues[i] & 0xFF));
+			colors[i] = new RGBA(255 / to!double(reds[i] & 0xFF), 255 / to!double(greens[i] & 0xFF), 255 / to!double(blues[i] & 0xFF));
 	}
 	
 	public uint getSize()
@@ -182,7 +182,7 @@ public class Palette
 			ubyte g =  to!ubyte((c0.green() * 255) * (1.0f - n) + (c1.green() * 255) * n);
 			ubyte b =  to!ubyte((c0.blue() * 255) * (1.0f - n) + (c1.blue() * 255) * n);
 			int a =  to!ubyte((c0.alpha() * 255) * (1.0f - n) + (c1.alpha() * 255) * n);
-			colors[i] = new RGBA(255/r,255/g,255/b);
+			colors[i] = new RGBA(255/to!double(r),255/to!double(g),255/to!double(b));
 		}
 		return colors;
 	}

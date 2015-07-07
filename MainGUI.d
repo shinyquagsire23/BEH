@@ -14,7 +14,9 @@ import gtk.MenuBar;
 import gtk.MenuItem;
 import gtk.Menu;
 import gtk.Widget;
+import gtk.Image;
 import gdk.Event;
+import gdkpixbuf.Pixbuf;
 import gtk.FileChooserDialog;
 
 import MapStore;
@@ -23,7 +25,6 @@ import MapTreeView;
 import GBAUtils.ROMManager;
 import GBAUtils.GBARom;
 import GBAUtils.DataStore;
-import GBAUtils.Lz77;
 import IO.BankLoader;
 
 static MainWindow win;
@@ -31,7 +32,6 @@ static MapStore store;
 
 void main(string[] args)
 {
-    CheckCompression(); 
     Main.init(args);
     win = new MainWindow("Hello World");
     win.setDefaultSize(516, 338);
@@ -39,6 +39,7 @@ void main(string[] args)
     Box barPanel = new Box(Orientation.VERTICAL, 0);
     Paned mainSplit = new Paned(Orientation.HORIZONTAL);
     Box mapSelector = new Box(Orientation.VERTICAL, 1);
+    Box mapEditor = new Box(Orientation.VERTICAL, 1);
     
     MenuBar bar = new MenuBar();
     auto fileMenuItem = new MenuItem("File");
@@ -55,9 +56,17 @@ void main(string[] args)
     auto locationTreeView = new LocationTreeView(store);
     mapSelector.packStart(locationTreeView, true, true, 0);
     
+    Image image = new Image();
+    Pixbuf buf = new Pixbuf("resources/mime.jpg");
+
+    image.setFromPixbuf(buf);
+    mapEditor.add(image);
+    mapEditor.add(new Label("<Insert Map Editor Here>"));
+    
     mainSplit.setPosition(220);
     mainSplit.add1(mapSelector);
-    mainSplit.add2(new Label("<Insert Map Editor Here>"));
+    mainSplit.add2(mapEditor);
+    
     
     barPanel.add(mainSplit);
     win.add(barPanel);

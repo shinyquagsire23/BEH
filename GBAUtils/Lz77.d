@@ -29,7 +29,6 @@ public class Lz77
 	{
 		uint outputlen = 0;
 	    ubyte[] decompressed = new ubyte[](NewLz77.getLz77DataLength(ROM, offset));
-	    writefln("%x", NewLz77.getLz77DataLength(ROM, offset));
 		NewLz77.decompressLZ77content(ROM[offset..offset+min(ROM.length, NewLz77.getLz77DataLength(ROM, offset))], NewLz77.getLz77DataLength(ROM, offset), decompressed, outputlen);
 		return decompressed;
 	}
