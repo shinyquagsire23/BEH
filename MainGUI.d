@@ -1,6 +1,7 @@
 module MainGUI;
 
 import std.functional;
+import std.algorithm;
 import std.stdio;
 import gtk.Window;
 import gtk.MainWindow;
@@ -22,6 +23,7 @@ import MapTreeView;
 import GBAUtils.ROMManager;
 import GBAUtils.GBARom;
 import GBAUtils.DataStore;
+import GBAUtils.Lz77;
 import IO.BankLoader;
 
 static MainWindow win;
@@ -29,6 +31,7 @@ static MapStore store;
 
 void main(string[] args)
 {
+    CheckCompression(); 
     Main.init(args);
     win = new MainWindow("Hello World");
     win.setDefaultSize(516, 338);
@@ -52,7 +55,7 @@ void main(string[] args)
     auto locationTreeView = new LocationTreeView(store);
     mapSelector.packStart(locationTreeView, true, true, 0);
     
-    mainSplit.setPosition(150);
+    mainSplit.setPosition(220);
     mainSplit.add1(mapSelector);
     mainSplit.add2(new Label("<Insert Map Editor Here>"));
     

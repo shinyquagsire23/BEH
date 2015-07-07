@@ -92,7 +92,7 @@ class GBARom
 	 */
 	public ubyte[] readBytes(uint offset, int size)
 	{
-		return rom_bytes[offset..offset+size];
+		return rom_bytes[(offset & 0x1FFFFFF)..(offset & 0x1FFFFFF)+size];
 	}
 	public ubyte[] readBytes(int size)
 	{
@@ -170,11 +170,11 @@ class GBARom
 		for (int count = 0; count < bytes_to_write.length; count++)
 		{
 			try {
-				rom_bytes[offset] = bytes_to_write[count];
+				rom_bytes[offset & 0x1FFFFFF] = bytes_to_write[count];
 				offset++;
 			}
 			catch (Exception e) {
-				writeln("Tried to write outside of bounds! (%x)", offset);
+				writeln("Tried to write outside of bounds! (%x)", offset & 0x1FFFFFF);
 			}
 		}
 	}
