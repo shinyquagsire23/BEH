@@ -21,12 +21,11 @@ public class SpritesSignManager : ISaveable
 		this.loadedMap = m;
 		
 		rom.Seek(offset);
-		mapSigns.length = 0;
+		mapSigns.length = 1;
 		int i = 0;
 		for (i = 0; i < count; i++)
 		{
-			mapSigns[i] = new SpriteSign(rom);
-			mapSigns.length++;
+			mapSigns ~= new SpriteSign(rom);
 		}
 		originalSize = getSize();
 	}

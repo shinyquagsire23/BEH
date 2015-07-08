@@ -17,12 +17,11 @@ public class SpritesExitManager : ISaveable
 	public this(GBARom rom, Map m, uint offset, uint count)
 	{
 		rom.Seek(offset);
-		mapExits.length = 0;
+		mapExits.length = 1;
 		int i = 0;
 		for (i = 0; i < count; i++)
 		{
-			mapExits[i] = new SpriteExit(rom);
-			mapExits.length++;
+			mapExits ~= new SpriteExit(rom);
 		}
 		originalSize = getSize();
 		internalOffset = offset;

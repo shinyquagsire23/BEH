@@ -22,11 +22,10 @@ public class SpritesNPCManager : ISaveable
 		
 		rom.Seek(offset);
 		int i = 0;
-		mapNPCs.length = 0;
+		mapNPCs.length = 1;
 		for (i = 0; i < count; i++)
 		{
-			mapNPCs[i] = new SpriteNPC(rom);
-			mapNPCs.length++;
+			mapNPCs ~= new SpriteNPC(rom);
 		}
 		originalSize = getSize();
 	}
