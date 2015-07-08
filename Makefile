@@ -3,7 +3,7 @@ DCC = dmd
 DFLAGS = -w
 LIBS = -L-lgtkd-3 -L-ldl
 INCLUDE = -I/usr/include/d/gtkd-3/
-SOURCES = . GBAUtils IO Structures
+SOURCES = . GBAUtils IO IO/Render Structures MapElements
 DFILES = $(foreach dir,$(SOURCES),$(wildcard $(dir)/*.d))
 OBJ = $(DFILES:.d=.o)
 OUT = $(shell basename `pwd`)

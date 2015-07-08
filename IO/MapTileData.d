@@ -79,7 +79,7 @@ public class MapTileData : ISaveable
 			{
 				
 				int index =  ((y*mData.mapWidth) + x);
-				rom.writeWord(mData.mapTilesPtr + index*2, mapTiles[x][y].getID() + ((mapTiles[x][y].getMeta() & 0x3F) << 10));
+				rom.writeWord(mData.mapTilesPtr + index*2, cast(ushort)(mapTiles[x][y].getID() + ((mapTiles[x][y].getMeta() & 0x3F) << 10)));
 			}
 		}
 	}
