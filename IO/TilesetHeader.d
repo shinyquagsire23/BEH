@@ -1,4 +1,4 @@
-module us.plxhack.MEH.IO;
+module IO.TilesetHeader;
 
 import GBAUtils.DataStore;
 import GBAUtils.GBARom;
