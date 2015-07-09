@@ -2,3 +2,6 @@
 *.bin*
 BEH
 *.java*
+.dub
+dub.selections.json
+

@@ -1,0 +1,9 @@
+{
+	"name": "beh",
+	"description": "Because Eventual Happiness - A Rewrite of MEH in D",
+	"authors": ["shinyquagsire23"],
+	"targetType": "executable",
+	"dependencies": {
+		"gtk-d": ">=3.0.0"
+	}
+}
