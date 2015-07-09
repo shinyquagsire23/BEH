@@ -1,4 +1,4 @@
-module LocationTreeView;
+module MapTreeView;
 
 private import gtk.TreeView;
 private import gtk.TreeViewColumn;
@@ -6,7 +6,7 @@ private import gtk.TreeStore;
 private import gtk.CellRendererText;
 private import gtk.ListStore;
 
-class LocationTreeView : TreeView
+class MapTreeView : TreeView
 {
     private TreeViewColumn countryColumn;
     private TreeViewColumn capitalColumn;

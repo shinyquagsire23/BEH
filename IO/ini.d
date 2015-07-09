@@ -60,7 +60,7 @@ Differences with Windows' profile (INI) functions:
 
 
 /// Portable module for reading and writing _INI files. _ini.d version 0.6
-module ini;
+module IO.ini;
 
 private import std.file, std.string, std.stream, std.range;;
 
