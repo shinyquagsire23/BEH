@@ -53,8 +53,8 @@ void main(string[] args)
     
     store = new MapStore();
     
-    auto locationTreeView = new LocationTreeView(store);
-    mapSelector.packStart(locationTreeView, true, true, 0);
+    auto mapTreeView = new MapTreeView(store);
+    mapSelector.packStart(mapTreeView, true, true, 0);
     
     Image image = new Image();
     Pixbuf buf = new Pixbuf("resources/mime.jpg");
