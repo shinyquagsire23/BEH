@@ -25,10 +25,14 @@ import MapTreeView;
 import GBAUtils.ROMManager;
 import GBAUtils.GBARom;
 import GBAUtils.DataStore;
+import GBAUtils.PixbufExtend;
 import IO.BankLoader;
+import IO.Map;
+import IO.MapIO;
 
 static MainWindow win;
 static MapStore store;
+static Image image;
 
 void main(string[] args)
 {
@@ -53,11 +57,15 @@ void main(string[] args)
     
     store = new MapStore();
     
-    auto locationTreeView = new LocationTreeView(store);
-    mapSelector.packStart(locationTreeView, true, true, 0);
+    auto mapTreeView = new MapTreeView(store);
+    mapSelector.packStart(mapTreeView, true, true, 0);
     
-    Image image = new Image();
+    image = new Image();
     Pixbuf buf = new Pixbuf("resources/mime.jpg");
+    Pixbuf buf2 = new Pixbuf("resources/smeargle.png").addAlpha(false, 0, 0, 0);
+    
+    buf.drawImage(buf2, 5, 5);
+    buf.fillRect(40,50,8,8,0,0,0);
 
     image.setFromPixbuf(buf);
     mapEditor.add(image);
@@ -84,5 +92,8 @@ void chooseRom(MenuItem item)
         DataStore dataStore = new DataStore("BEH.ini", ROMManager.currentROM.getGameCode());
         BankLoader b = new BankLoader(DataStore.MapHeaders, ROMManager.getActiveROM(), store, store.addCategory("Maps by Bank"));
         b.run();
+        MapIO.loadMap(3,4);
+        writefln("%u, %u", MapIO.loadedMap.getMapData().mapWidth, MapIO.loadedMap.getMapData().mapHeight);
+        image.setFromPixbuf(Map.renderMap(MapIO.loadedMap, true));
     }
 }

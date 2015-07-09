@@ -2,6 +2,7 @@ module IO.Block;
 
 import GBAUtils.DataStore;
 import GBAUtils.GBARom;
+import IO.MapIO;
 import IO.Tile;
 
 
@@ -16,7 +17,7 @@ public class Block
 	
 	public this(int blockID, GBARom rom)
 	{
-		this(blockID,0,rom);//TODO//MapIO.blockRenderer.getBehaviorByte(blockID),rom);
+		this(blockID, MapIO.blockRenderer.getBehaviorByte(blockID), rom);
 	}
 	
 	public this(uint blockID, uint bgBytes, GBARom rom)
@@ -69,15 +70,15 @@ public class Block
 	
 	public void save()
 	{
-		int pBlocks = 0;//TODO//MapIO.blockRenderer.getGlobalTileset().tilesetHeader.pBlocks;
-		int pBehavior = 0;//TODO//MapIO.blockRenderer.getGlobalTileset().tilesetHeader.pBehavior;
+		int pBlocks = MapIO.blockRenderer.getGlobalTileset().tilesetHeader.pBlocks;
+		int pBehavior = MapIO.blockRenderer.getGlobalTileset().tilesetHeader.pBehavior;
 		int blockNum = blockID;
 		
 		if (blockNum >= DataStore.MainTSBlocks)
 		{
 			blockNum -= DataStore.MainTSBlocks;
-			pBlocks = 0;//TODO//MapIO.blockRenderer.getLocalTileset().tilesetHeader.pBlocks;
-			pBehavior = 0;//TODO//MapIO.blockRenderer.getLocalTileset().tilesetHeader.pBehavior;
+			pBlocks = MapIO.blockRenderer.getLocalTileset().tilesetHeader.pBlocks;
+			pBehavior = MapIO.blockRenderer.getLocalTileset().tilesetHeader.pBehavior;
 		}
 		
 		pBlocks += (blockNum * 16);

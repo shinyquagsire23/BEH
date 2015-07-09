@@ -1,5 +1,7 @@
 module IO.MapIO;
 
+import std.stdio;
+
 import GBAUtils.DataStore;
 import GBAUtils.ROMManager;
 
@@ -7,6 +9,8 @@ import IO.Render.BlockRenderer;
 import IO.Map;
 import IO.BorderMap;
 import IO.BankLoader;
+import IO.TilesetCache;
+import IO.Render.TilesetRenderer;
 import MapElements.WildData;
 import MapElements.WildDataCache;
 //import Plugins.PluginManager;
@@ -25,7 +29,7 @@ public class MapIO //This whole file is just one big TODO
 	public static bool doneLoading = false;
 	public static WildData wildData;
 	public static bool DEBUG = false;
-	public static BlockRenderer blockRenderer; //TODO = new
+	public static BlockRenderer blockRenderer;
 
 	public static void loadMap(int bank, int map)
 	{
@@ -36,49 +40,54 @@ public class MapIO //This whole file is just one big TODO
 
 	public static void loadMap()
 	{
+	    if(blockRenderer is null)
+	        blockRenderer = new BlockRenderer();
+	        
 		uint offset = BankLoader.maps[selectedBank][selectedMap];
 		loadMapFromPointer(offset, false);
         //MainGUI.updateTree();
 	}
 
-	public static void loadMapFromPointer(uint offs, bool justPointer)
+	public static void loadMapFromPointer(uint offset, bool justPointer)
 	{
-		/*MainGUI.setStatus("Loading Map...");
-		final uint offset = offs;
+	    if(blockRenderer is null)
+	        blockRenderer = new BlockRenderer();
+	        
+		//MainGUI.setStatus("Loading Map..."); //TODO
 
 		if (!justPointer) {
 			currentBank = -1;
 			currentMap = -1;
 		}
 
-		new Thread()
+		/*new Thread()
 		{
 
 			public void run()
-			{
-				Date d = new Date();
+			{*/ //TODO, actually thread this
+				//Date d = new Date();
 				doneLoading = false;
-				if (loadedMap != null)
+				if (loadedMap !is null)
 					TilesetCache.get(loadedMap.getMapData().globalTileSetPtr).resetCustomTiles();
 
-				loadedMap = new Map(ROMManager.getActiveROM(), (int) (offset));
+				loadedMap = new Map(ROMManager.getActiveROM(), offset);
 				currentBank = selectedBank;
 				currentMap = selectedMap;
 				TilesetCache.switchTileset(loadedMap);
 
 				borderMap = new BorderMap(ROMManager.getActiveROM(), loadedMap);
-				MainGUI.reloadMimeLabels();
+				/*MainGUI.reloadMimeLabels(); //TODO UI stuff
 				MainGUI.mapEditorPanel.setGlobalTileset(TilesetCache.get(loadedMap.getMapData().globalTileSetPtr));
 				MainGUI.mapEditorPanel.setLocalTileset(TilesetCache.get(loadedMap.getMapData().localTileSetPtr));
 				MainGUI.eventEditorPanel.setGlobalTileset(TilesetCache.get(loadedMap.getMapData().globalTileSetPtr));
-				MainGUI.eventEditorPanel.setLocalTileset(TilesetCache.get(loadedMap.getMapData().localTileSetPtr));
+				MainGUI.eventEditorPanel.setLocalTileset(TilesetCache.get(loadedMap.getMapData().localTileSetPtr));*/
 
-				MainGUI.tileEditorPanel.setGlobalTileset(TilesetCache.get(loadedMap.getMapData().globalTileSetPtr));
-				MainGUI.tileEditorPanel.setLocalTileset(TilesetCache.get(loadedMap.getMapData().localTileSetPtr));
-				MainGUI.tileEditorPanel.DrawTileset();
-				MainGUI.tileEditorPanel.repaint();
+				TilesetRenderer.setGlobalTileset(TilesetCache.get(loadedMap.getMapData().globalTileSetPtr));
+				TilesetRenderer.setLocalTileset(TilesetCache.get(loadedMap.getMapData().localTileSetPtr));
+				TilesetRenderer.DrawTileset();
+				/*MainGUI.tileEditorPanel.repaint();
 
-				MainGUI.mapEditorPanel.setMap(loadedMap);
+				MainGUI.mapEditorPanel.setMap(loadedMap);//TODO UI stuff
 				MainGUI.mapEditorPanel.DrawMap();
 				MainGUI.mapEditorPanel.DrawMovementPerms();
 				MainGUI.mapEditorPanel.repaint();
@@ -102,31 +111,31 @@ public class MapIO //This whole file is just one big TODO
 
 				MainGUI.loadWildPokemon();
 
-				MainGUI.mapEditorPanel.repaint();
-				Date eD = new Date();
-				uint time = eD.getTime() - d.getTime();
-				//MainGUI.setStatus("Done! Finished in " + (double) (time / 1000) + " seconds!");
+				MainGUI.mapEditorPanel.repaint();*/
+				//Date eD = new Date();
+				//uint time = eD.getTime() - d.getTime();
+				//MainGUI.setStatus("Done! Finished in " + (double) (time / 1000) + " seconds!"); //TODO, time loaded?
 				doneLoading = true;
 
-				PluginManager.fireMapLoad(selectedBank, selectedMap);
+				//PluginManager.fireMapLoad(selectedBank, selectedMap);
 
-			}
-		}.start();
-        MainGUI.setStatus(MainGUI.mapBanks.getLastSelectedPathComponent().toString() + " loaded.");*/
+			/*}
+		}.start();*/
+        //MainGUI.setStatus(MainGUI.mapBanks.getLastSelectedPathComponent().toString() + " loaded.");
 	}
 
 	public static string[] pokemonNames;
 
 	public static void loadPokemonNames()
 	{
-		/*pokemonNames = new String[DataStore.NumPokemon];
-		ROMManager.currentROM.Seek(ROMManager.currentROM.getPointerAsInt(DataStore.SpeciesNames));
+		pokemonNames = new string[DataStore.NumPokemon];
+		ROMManager.currentROM.Seek(ROMManager.currentROM.getPointer(DataStore.SpeciesNames));
 		for (int i = 0; i < DataStore.NumPokemon; i++)
 		{
 			pokemonNames[i] = ROMManager.currentROM.readPokeText();
-			System.out.println(pokemonNames[i]);
+			writefln(pokemonNames[i]);
 		}
-		addStringArray(MainGUI.pkName1, pokemonNames);
+		/*addStringArray(MainGUI.pkName1, pokemonNames); //TODO UI stuff
 		addStringArray(MainGUI.pkName2, pokemonNames);
 		addStringArray(MainGUI.pkName3, pokemonNames);
 		addStringArray(MainGUI.pkName4, pokemonNames);

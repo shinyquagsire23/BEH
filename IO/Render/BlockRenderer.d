@@ -2,6 +2,7 @@ module IO.Render.BlockRenderer;
 
 import GBAUtils.DataStore;
 import GBAUtils.GBARom;
+import GBAUtils.PixbufExtend;
 
 import gdkpixbuf.Pixbuf;
 import IO.Block;
@@ -70,9 +71,7 @@ public class BlockRenderer
 		}
 
 		uint blockPointer = ((isSecondaryBlock ? local.getTilesetHeader().pBlocks : global.getTilesetHeader().pBlocks) + (blockNum * 16));
-		//Pixbuf block = new Pixbuf(16, 16, Pixbuf.TYPE_INT_ARGB); //TODO
-		/*Graphics2D g = (Graphics2D) block.getGraphics();
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);*/
+		Pixbuf block = new Pixbuf(GdkColorspace.RGB, true, 8, 16, 16);
 		int x = 0;
 		int y = 0;
 		int layerNumber = 0;
@@ -114,24 +113,16 @@ public class BlockRenderer
 			bool yFlip = (orig & 0x800) > 0;
 			if (transparency && layerNumber == 0)
 			{
-				/*try
-				{
-					g.setColor(global.getPalette(currentTime)[palette].getIndex(0));
-				}
-				catch (Exception e)
-				{
-
-				}
-				g.fillRect(x * 8, y * 8, 8, 8);*///TODO
+				block.fillRect(x * 8, y * 8, 8, 8, global.getPalette(currentTime)[palette].getRedValue(0), global.getPalette(currentTime)[palette].getGreenValue(0), global.getPalette(currentTime)[palette].getBlueValue(0));
 			}
 
 			if (tileNum < DataStore.MainTSSize)
 			{
-				//g.drawImage(global.getTile(tileNum, palette, xFlip, yFlip, currentTime), x * 8, y * 8, null); //TODO
+				block.drawImage(global.getTile(tileNum, palette, xFlip, yFlip, currentTime), x * 8, y * 8);
 			}
 			else
 			{
-				//g.drawImage(local.getTile(tileNum - DataStore.MainTSSize, palette, xFlip, yFlip, currentTime), x * 8, y * 8, null); //TODO
+				block.drawImage(local.getTile(tileNum - DataStore.MainTSSize, palette, xFlip, yFlip, currentTime), x * 8, y * 8);
 			}
 			x++;
 			if (x > 1)
@@ -147,7 +138,7 @@ public class BlockRenderer
 			}
 			i++;
 		}
-		return null; //TODO createImage(block.getSource());
+		return block;
 	}
 
 	public Block getBlock(int blockNum)

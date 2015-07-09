@@ -5,6 +5,7 @@ import GBAUtils.GBAImage;
 import GBAUtils.Palette;
 import GBAUtils.DataStore;
 import GBAUtils.GBAImageType;
+import GBAUtils.PixbufExtend;
 import gdkpixbuf.Pixbuf;
 
 
@@ -36,7 +37,6 @@ public class OverworldSprites
 	public  uint LoadCode; //Another unknown pointer.
 	//Class vars
 	public  uint trueGraphicsPointer;
-	//public  Graphics gcBuff;
 	public  Pixbuf imgBuffer;
 	public  GBAImage rawImage;
 	public static Palette[] myPal;
@@ -80,55 +80,58 @@ public class OverworldSprites
 	}
     void DrawSmall()
     {
-    	/*gcBuff.drawImage(getTile(0,iPal&0xf),0,0,null);
-		gcBuff.drawImage(getTile(1,iPal&0xf),8,0,null);
-		gcBuff.drawImage(getTile(2,iPal&0xf),0,8,null);
-		gcBuff.drawImage(getTile(3,iPal&0xf),8,8,null);*/ //TODO
+    	imgBuffer.drawImage(getTile(0,iPal&0xf),0,0);
+		imgBuffer.drawImage(getTile(1,iPal&0xf),8,0);
+		imgBuffer.drawImage(getTile(2,iPal&0xf),0,8);
+		imgBuffer.drawImage(getTile(3,iPal&0xf),8,8);
     }
     
     void DrawMedium()
     {
-    	/*gcBuff.drawImage(getTile(0,iPal&0xf),0,0,null);
-		gcBuff.drawImage(getTile(1,iPal&0xf),8,0,null);
-		gcBuff.drawImage(getTile(2,iPal&0xf),0,8,null);
-		gcBuff.drawImage(getTile(3,iPal&0xf),8,8,null);
-		gcBuff.drawImage(getTile(4,iPal&0xf),0,16,null);
-		gcBuff.drawImage(getTile(5,iPal&0xf),8,16,null);
-		gcBuff.drawImage(getTile(6,iPal&0xf),0,24,null);
-		gcBuff.drawImage(getTile(7,iPal&0xf),8,24,null);*/ //TODO
+    	imgBuffer.drawImage(getTile(0,iPal&0xf),0,0);
+		imgBuffer.drawImage(getTile(1,iPal&0xf),8,0);
+		imgBuffer.drawImage(getTile(2,iPal&0xf),0,8);
+		imgBuffer.drawImage(getTile(3,iPal&0xf),8,8);
+		imgBuffer.drawImage(getTile(4,iPal&0xf),0,16);
+		imgBuffer.drawImage(getTile(5,iPal&0xf),8,16);
+		imgBuffer.drawImage(getTile(6,iPal&0xf),0,24);
+		imgBuffer.drawImage(getTile(7,iPal&0xf),8,24);
     }
     //AutoX and AutoY are only for drawlarge 
    
     void DrawLarge()
     {
-     /*try{
-     gcBuff.drawImage(getTile(0,iPal&0xf), 0, 0,null);
-	 gcBuff.drawImage(getTile(1,iPal&0xf), 8, 0,null);
-	 gcBuff.drawImage(getTile(2,iPal&0xf), 16, 0,null);
-	 gcBuff.drawImage(getTile(3,iPal&0xf), 24, 0,null);
-	 gcBuff.drawImage(getTile(4,iPal&0xf), 0, 8,null);
-	 gcBuff.drawImage(getTile(5,iPal&0xf), 8, 8,null);
-	 gcBuff.drawImage(getTile(6,iPal&0xf), 16, 8,null);
-	 gcBuff.drawImage(getTile(7,iPal&0xf), 24, 8,null);
-	 gcBuff.drawImage(getTile(8,iPal&0xf), 0, 16,null);
-	 gcBuff.drawImage(getTile(9,iPal&0xf), 8, 16,null);
-	 gcBuff.drawImage(getTile(10,iPal&0xf), 16, 16,null);
-	 gcBuff.drawImage(getTile(11,iPal&0xf), 24, 16,null);
-	 gcBuff.drawImage(getTile(12,iPal&0xf), 0, 24,null);
-	 gcBuff.drawImage(getTile(13,iPal&0xf), 8, 24,null);
-	 gcBuff.drawImage(getTile(14,iPal&0xf), 16, 24,null);
-	 gcBuff.drawImage(getTile(15,iPal&0xf), 24, 24,null);
-     }catch(Exception e){
-    	 e.printStackTrace();
-	 gcBuff.drawRect(0, 0, 24, 24);   
-     }*/ //TODO
+     try
+     {
+         imgBuffer.drawImage(getTile(0,iPal&0xf), 0, 0);
+	     imgBuffer.drawImage(getTile(1,iPal&0xf), 8, 0);
+	     imgBuffer.drawImage(getTile(2,iPal&0xf), 16, 0);
+	     imgBuffer.drawImage(getTile(3,iPal&0xf), 24, 0);
+	     imgBuffer.drawImage(getTile(4,iPal&0xf), 0, 8);
+	     imgBuffer.drawImage(getTile(5,iPal&0xf), 8, 8);
+	     imgBuffer.drawImage(getTile(6,iPal&0xf), 16, 8);
+	     imgBuffer.drawImage(getTile(7,iPal&0xf), 24, 8);
+	     imgBuffer.drawImage(getTile(8,iPal&0xf), 0, 16);
+	     imgBuffer.drawImage(getTile(9,iPal&0xf), 8, 16);
+	     imgBuffer.drawImage(getTile(10,iPal&0xf), 16, 16);
+	     imgBuffer.drawImage(getTile(11,iPal&0xf), 24, 16);
+	     imgBuffer.drawImage(getTile(12,iPal&0xf), 0, 24);
+	     imgBuffer.drawImage(getTile(13,iPal&0xf), 8, 24);
+	     imgBuffer.drawImage(getTile(14,iPal&0xf), 16, 24);
+	     imgBuffer.drawImage(getTile(15,iPal&0xf), 24, 24);
+     }
+     catch(Exception e)
+     {
+         writefln("Error occured while rendering large sprite!");
+         //e.printStackTrace();
+	     imgBuffer.fillRect(0, 0, 24, 24, 0, 0, 0);   
+     }
    
     }
 	void PaintMeLikeYourWomenInMagazines()
 	{
-			//imgBuffer = new Pixbuf(128,128,Pixbuf.TYPE_INT_ARGB); //TODO
+			imgBuffer = new Pixbuf(GdkColorspace.RGB, true, 8, 128, 128);
 			
-			//gcBuff=imgBuffer.getGraphics(); //TODO
 			switch(mSpriteSize)
 			{
 			case 0:

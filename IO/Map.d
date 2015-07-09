@@ -5,6 +5,8 @@ import gdkpixbuf.Pixbuf;
 import GBAUtils.GBARom;
 import GBAUtils.ISaveable;
 import GBAUtils.ROMManager;
+import GBAUtils.PixbufExtend;
+import GBAUtils.PictureFrame;
 import IO.MapData;
 import IO.MapTileData;
 import IO.MapHeader;
@@ -17,6 +19,8 @@ import MapElements.SpritesNPCManager;
 import MapElements.SpritesSignManager;
 import MapElements.SpritesExitManager;
 import MapElements.TriggerManager;
+import IO.Render.BlockRenderer;
+import IO.Render.TilesetRenderer;
 import IO.Render.OverworldSprites;
 import IO.Render.OverworldSpritesManager;
 
@@ -95,42 +99,43 @@ public class Map : ISaveable
 	public static Pixbuf renderMap(Map map, bool full)
 	{
 		TilesetCache.switchTileset(map);
+		
+		if(MapIO.blockRenderer is null)
+		    MapIO.blockRenderer = new BlockRenderer();
+		
 		MapIO.blockRenderer.setGlobalTileset(TilesetCache.get(map.getMapData().globalTileSetPtr));
 		MapIO.blockRenderer.setLocalTileset(TilesetCache.get(map.getMapData().localTileSetPtr));
 		
 		
-		Pixbuf imgBuffer;/* = new Pixbuf(8,8, Pixbuf.TYPE_INT_ARGB); //TODO
-		Image tiles;
+		Pixbuf imgBuffer = new Pixbuf(GdkColorspace.RGB, true, 8, 8, 8);
+		Pixbuf tiles;
 		if(!full)
-			tiles = MainGUI.tileEditorPanel.RerenderSecondary(TileEditorPanel.imgBuffer);
+			tiles = TilesetRenderer.RerenderSecondary(TilesetRenderer.imgBuffer);
 		else
-			tiles = MainGUI.tileEditorPanel.RerenderTiles(TileEditorPanel.imgBuffer, 0);
+			tiles = TilesetRenderer.RerenderTiles(TilesetRenderer.imgBuffer, 0);
+		new PictureFrame(tiles);
+
 		try
 		{		
-			imgBuffer = new Pixbuf( map.getMapData().mapWidth * 16,
-					 map.getMapData().mapHeight * 16, Pixbuf.TYPE_INT_ARGB);
-			Graphics gcBuff = imgBuffer.getGraphics();
+			imgBuffer = new Pixbuf(GdkColorspace.RGB, true, 8, map.getMapData().mapWidth * 16, map.getMapData().mapHeight * 16);
 
 			for (int y = 0; y < map.getMapData().mapHeight; y++)
 			{
 				for (int x = 0; x < map.getMapData().mapWidth; x++)
 				{
-					//gcBuff = imgBuffer.getGraphics();
 					int TileID=(map.getMapTileData().getTile(x, y).getID());
-					int srcX=(TileID % TileEditorPanel.editorWidth) * 16;
-					int srcY = (TileID / TileEditorPanel.editorWidth) * 16;
-					//gcBuff.drawImage(((Pixbuf)(tiles)).getSubimage(srcX, srcY, 16, 16), x * 16, y * 16, null); //TODO Adjust rendering for Pixbufs
-					//new org.zzl.minegaming.GBAUtils.PictureFrame(((Pixbuf)(tiles)).getSubimage(srcX, srcY, 16, 16)).show();
+					int srcX=(TileID % TilesetRenderer.renderWidth) * 16;
+					int srcY = (TileID / TilesetRenderer.renderWidth) * 16;
+					imgBuffer.drawImage(tiles.newSubpixbuf(srcX, srcY, 16, 16), x * 16, y * 16); 
 				}
 			}
 		}
 		catch (Exception e)
 		{
 			writefln("Error rendering map.");
-			e.printStackTrace();
-			imgBuffer.getGraphics().setColor(Color.RED);
-			imgBuffer.getGraphics().fillRect(0, 0, 8, 8);
-		}*/
+			//e.printStackTrace();
+			imgBuffer.fillRect(0, 0, 8, 8, 255, 0, 0);
+		}
 
 		return imgBuffer;
 	}

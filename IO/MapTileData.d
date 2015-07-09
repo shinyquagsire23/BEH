@@ -25,7 +25,7 @@ public class MapTileData : ISaveable
 				
 				uint index = ((y*mData.mapWidth) + x);
 				uint raw = rom.readWord(mData.mapTilesPtr + index*2);
-				MapTile m = new MapTile(cast(ubyte)(raw & 0x3FF),cast(ubyte)((raw&0xFC00) >> 10));
+				MapTile m = new MapTile(cast(ushort)(raw & 0x3FF),cast(ushort)((raw&0xFC00) >> 10));
 				mapTiles[x][y] = m;
 				
 			}

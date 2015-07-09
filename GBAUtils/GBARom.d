@@ -8,6 +8,7 @@ import std.string;
 import std.conv;
 import std.file;
 import std.array;
+import std.algorithm;
 
 import GBAUtils.ROMManager;
 
@@ -92,11 +93,11 @@ class GBARom
 	 */
 	public ubyte[] readBytes(uint offset, int size)
 	{
-		return rom_bytes[(offset & 0x1FFFFFF)..(offset & 0x1FFFFFF)+size];
+		return rom_bytes[(offset & 0x1FFFFFF)..min(rom_bytes.length, (offset & 0x1FFFFFF)+size)];
 	}
 	public ubyte[] readBytes(int size)
 	{
-		ubyte[] t = rom_bytes[internalOffset..internalOffset+size];
+		ubyte[] t = rom_bytes[internalOffset..min(rom_bytes.length, internalOffset+size)];
 		internalOffset += size;	
 		return t;
 	}

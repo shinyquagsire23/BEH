@@ -5,7 +5,9 @@ import gtkc.gdkpixbuftypes;
 import gdkpixbuf.Pixbuf;
 import gdk.RGBA;
 import GBAUtils.Palette;
+import GBAUtils.PixbufExtend;
 import std.stdio;
+import std.algorithm;
 
 public class GBAImage
 {
@@ -97,6 +99,7 @@ public class GBAImage
 	private Pixbuf get16Image(Palette pl, bool transparency)
 	{
 		Pixbuf im = new Pixbuf(GdkColorspace.RGB, true, 8, size_x, size_y);
+		im.fill(0);
 		int x = -1;
 		int y = 0;
 		int blockx = 0;
@@ -128,7 +131,7 @@ public class GBAImage
 
 			try
 			{
-				setPixel(im, x + (blockx * 8), y + (blocky * 8), pl.getRedValue(pal),pl.getGreenValue(pal), pl.getBlueValue(pal), (transparency && pal == 0 ? 0 : 255));
+				im.setPixel(x + (blockx * 8), y + (blocky * 8), pl.getRedValue(pal),pl.getGreenValue(pal), pl.getBlueValue(pal), (transparency && pal == 0 ? 0 : 255));
 			}
 			catch(Exception e){}
 		}
@@ -138,7 +141,7 @@ public class GBAImage
 	private Pixbuf get256Image(bool transparency)
 	{
 		Pixbuf im = new Pixbuf(GdkColorspace.RGB, true, 8, size_x, size_y);
-		//Graphics g = im.getGraphics();
+		im.fill(0);
 		int x = -1;
 		int y = 0;
 		int blockx = 0;
@@ -165,20 +168,11 @@ public class GBAImage
 			int pal = data[i];
 			try
 			{
-				setPixel(im, x + (blockx * 8), y + (blocky * 8), p.getRedValue(pal),p.getGreenValue(pal), p.getBlueValue(pal), (transparency && pal == 0 ? 0 : 255));
+				im.setPixel(x + (blockx * 8), y + (blocky * 8), p.getRedValue(pal),p.getGreenValue(pal), p.getBlueValue(pal), (transparency && pal == 0 ? 0 : 255));
 			}
 			catch(Exception e){}
 		}
 		return im;
-	}
-	
-	private void setPixel(Pixbuf buf, uint x, uint y, ubyte r, ubyte g, ubyte b, ubyte a)
-	{
-	    uint pixelPos = ((y * buf.getWidth) + x) * 4;
-	    buf.getPixelsWithLength()[pixelPos+0] = r;
-	    buf.getPixelsWithLength()[pixelPos+1] = g;
-	    buf.getPixelsWithLength()[pixelPos+2] = b;
-	    buf.getPixelsWithLength()[pixelPos+3] = a;
 	}
 	
 	/*public Pixbuf getIndexedImage()

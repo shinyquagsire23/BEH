@@ -10,6 +10,7 @@ import GBAUtils.GBAImageType;
 import IO.TilesetHeader;
 import std.concurrency;
 import core.thread;
+import core.exception;
 import std.array;
 
 public class Tileset
@@ -35,7 +36,7 @@ public class Tileset
 	{
 		this.rom = rom;
 		loadData(offset);
-		numBlocks = 1024; //(tilesetHeader.isPrimary ? DataStore.MainTSBlocks : DataStore.LocalTSBlocks); //INI RSE=0x207 : 0x88, FR=0x280 : 0x56
+		numBlocks = (tilesetHeader.isPrimary ? DataStore.MainTSBlocks : DataStore.LocalTSBlocks); //INI RSE=0x207 : 0x88, FR=0x280 : 0x56
 		renderTiles(offset);	
 	}
 	
@@ -162,15 +163,11 @@ public class Tileset
 		
 		int x = ((tileNum) % (128 / 8)) * 8;
 		int y = ((tileNum) / (128 / 8)) * 8;
-		Pixbuf toSend = new Pixbuf(GdkColorspace.RGB, true, 8, 8, 8);
-		try
+		Pixbuf toSend = bi[time][palette].newSubpixbuf(x, y, 8, 8);
+		if(toSend is null)
 		{
-			toSend =  bi[time][palette].newSubpixbuf(x, y, 8, 8);
-		}
-		catch(Exception e)
-		{
-			//e.printStackTrace();
-		//	System.out.println("Attempted to read 8x8 at " + x + ", " + y);
+		    toSend = new Pixbuf(GdkColorspace.RGB, true, 8, 8, 8);
+			writefln("Attempted to read 8x8 at %u, %u, tileset is %u by %u, tileNum %x, " ~ (tilesetHeader.isPrimary ? "primary" : "secondary"), x, y, bi[time][palette].getWidth(), bi[time][palette].getHeight(), tileNum);
 		}
 		if(palette < DataStore.MainTSPalCount || renderedTiles.length > DataStore.MainTSPalCount)
 			renderedTiles[palette+(time * 16)][tileNum] = toSend;
@@ -272,7 +269,7 @@ public class Tileset
 	{
 		int k = (tilesetHeader.isPrimary ? DataStore.MainTSSize : DataStore.LocalTSSize);
 
-			for (int i = 0; i < 1023; i++)
+			for (int i = 0; i < numBlocks; i++)
 			{
 				try
 				{

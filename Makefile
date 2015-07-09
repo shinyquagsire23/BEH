@@ -24,7 +24,7 @@ $(OUT): $(addprefix build/, $(OBJ))
 
 clean:
 	@echo $(DFILES)
-	rm -f *~ $(OBJ) $(OUT) trace.{def,log}
+	rm -f *~ $(addprefix build/, $(OBJ)) $(OUT) trace.{def,log}
 
 build/%.o: %.d
 	$(DCC) $(DFLAGS) $(INCLUDE) $(LIBS) -of$@ -c $<
