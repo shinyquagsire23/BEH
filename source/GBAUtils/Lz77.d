@@ -12,30 +12,30 @@ import std.algorithm;
  */
 public class Lz77
 {
-	public static int getUncompressedSize(GBARom ROM, int offset)
-	{
-		return NewLz77.getLz77DataLength(ROM, offset);
-	}
-	
-	public static ubyte[] decompressLZ77(GBARom ROM, int offset)
-	{
-	    uint outputlen = 0;
-	    ubyte[] decompressed = new ubyte[](NewLz77.getLz77DataLength(ROM, offset));
-		NewLz77.decompressLZ77content(ROM.readBytes(offset, NewLz77.getLz77DataLength(ROM, offset)), NewLz77.getLz77DataLength(ROM, offset), decompressed, outputlen);
-		return decompressed;
-	}
-	
-	public static ubyte[] decompressLZ77(ubyte[] ROM, int offset)
-	{
-		uint outputlen = 0;
-	    ubyte[] decompressed = new ubyte[](NewLz77.getLz77DataLength(ROM, offset));
-		NewLz77.decompressLZ77content(ROM[offset..offset+min(ROM.length, NewLz77.getLz77DataLength(ROM, offset))], NewLz77.getLz77DataLength(ROM, offset), decompressed, outputlen);
-		return decompressed;
-	}
-	
-	public static ubyte[] compressLZ77(ubyte[] data)
-	{
-		byte[] bytes = null;
-		return NewLz77.compressLZ10(data);
-	}
+    public static int getUncompressedSize(GBARom ROM, int offset)
+    {
+        return NewLz77.getLz77DataLength(ROM, offset);
+    }
+    
+    public static ubyte[] decompressLZ77(GBARom ROM, int offset)
+    {
+        uint outputlen = 0;
+        ubyte[] decompressed = new ubyte[](NewLz77.getLz77DataLength(ROM, offset));
+        NewLz77.decompressLZ77content(ROM.readBytes(offset, NewLz77.getLz77DataLength(ROM, offset)), NewLz77.getLz77DataLength(ROM, offset), decompressed, outputlen);
+        return decompressed;
+    }
+    
+    public static ubyte[] decompressLZ77(ubyte[] ROM, int offset)
+    {
+        uint outputlen = 0;
+        ubyte[] decompressed = new ubyte[](NewLz77.getLz77DataLength(ROM, offset));
+        NewLz77.decompressLZ77content(ROM[offset..offset+min(ROM.length, NewLz77.getLz77DataLength(ROM, offset))], NewLz77.getLz77DataLength(ROM, offset), decompressed, outputlen);
+        return decompressed;
+    }
+    
+    public static ubyte[] compressLZ77(ubyte[] data)
+    {
+        byte[] bytes = null;
+        return NewLz77.compressLZ10(data);
+    }
 }

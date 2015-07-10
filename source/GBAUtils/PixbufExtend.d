@@ -13,7 +13,7 @@ Pixbuf drawImageFast(Pixbuf mn, Pixbuf sb, uint xPos, uint yPos)
         main = mn.addAlpha(false, 0, 0, 0);
     if(!sb.getHasAlpha())
         sub = sb.addAlpha(false, 0, 0, 0);
-        
+    
     for(int y = 0; y < sub.getHeight(); y++)
     {
         uint subPos = (y * sub.getWidth()) * 4;
@@ -78,24 +78,24 @@ Pixbuf fillRect(Pixbuf main, uint xPos, uint yPos, uint width, uint height, ubyt
 
 Pixbuf setPixel(Pixbuf main, uint x, uint y, ubyte r, ubyte g, ubyte b, ubyte a = 0xFF)
 {
-	if(x >= main.getWidth() || y >= main.getHeight())
-	    return main;
-	        
+    if(x >= main.getWidth() || y >= main.getHeight())
+        return main;
+    
     main.getPixelsWithLength[(y * main.getRowstride() + x * main.getNChannels()) + 0] = r;
     main.getPixelsWithLength[(y * main.getRowstride() + x * main.getNChannels()) + 1] = g;
     main.getPixelsWithLength[(y * main.getRowstride() + x * main.getNChannels()) + 2] = b;
     
     if(main.getHasAlpha())
         main.getPixelsWithLength[(y * main.getRowstride() + x * main.getNChannels()) + 3] = a;
-        
+    
     return main;
 }
 
 void getPixel(Pixbuf main, uint x, uint y, out ubyte r, out ubyte g, out ubyte b, out ubyte a)
 {
-	if(x >= main.getWidth() || y >= main.getHeight())
-	    return;
-	    
+    if(x >= main.getWidth() || y >= main.getHeight())
+        return;
+    
     r = main.getPixelsWithLength[(y * main.getRowstride() + x * main.getNChannels()) + 0];
     g = main.getPixelsWithLength[(y * main.getRowstride() + x * main.getNChannels()) + 1];
     b = main.getPixelsWithLength[(y * main.getRowstride() + x * main.getNChannels()) + 2];

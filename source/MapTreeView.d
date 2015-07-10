@@ -13,9 +13,7 @@ class MapTreeView : TreeView
     
     this(TreeStore store)
     {        
-        // Add Country Column
-        countryColumn = new TreeViewColumn(
-            "Map", new CellRendererText(), "text", 0);
+        countryColumn = new TreeViewColumn("Map", new CellRendererText(), "text", 0);
         appendColumn(countryColumn);
         
         setModel(store);

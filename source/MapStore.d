@@ -10,8 +10,7 @@ class MapStore : TreeStore
     {
         super([GType.STRING]);
     }
-    
-    // Adds a location and returns the TreeIter of the item added.
+
     public TreeIter addCategory(in string name)
     {
         
@@ -19,10 +18,9 @@ class MapStore : TreeStore
         setValue(iter, 0, name);
         return iter;
     }
-    
-    // Adds a child location to the specified parent TreeIter.
+
     public TreeIter addChild(TreeIter parent,
-            in string name)
+        in string name)
     {
         TreeIter child = TreeStore.createIter(parent);
         setValue(child, 0, name);

@@ -2,8 +2,8 @@ module MapElements.WildDataType;
 
 public enum WildDataType
 {
-	GRASS,
-	WATER,
-	TREE,
-	FISHING
+    GRASS,
+    WATER,
+    TREE,
+    FISHING
 }

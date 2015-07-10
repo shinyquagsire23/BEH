@@ -446,6 +446,13 @@ class GBARom
 	 */
 	public uint getPointer(uint offset, bool fullPointer)
 	{
+	    writefln("%X", offset);
+	    if(offset+4 > getData().length)
+	    {
+	        writefln("Error! Tried to access pointer at %x", offset);
+	        return 0;
+	    }
+	    
 		ubyte[4] data = getData()[offset..offset+4];
 		if(!fullPointer)
 			data[3]=0;

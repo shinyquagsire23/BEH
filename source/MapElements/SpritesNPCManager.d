@@ -8,88 +8,88 @@ import IO.Map;
 
 public class SpritesNPCManager : ISaveable
 {
-	public SpriteNPC[] mapNPCs;
-	private int internalOffset;
-	private GBARom rom;
-	private int originalSize;
-	private Map loadedMap;
-	
-	public this(GBARom rom, Map m, int offset, int count)
-	{
-		this.rom = rom;
-		internalOffset = offset;
-		loadedMap = m;
-		
-		rom.Seek(offset);
-		int i = 0;
-		mapNPCs.length = 1;
-		for (i = 0; i < count; i++)
-		{
-			mapNPCs ~= new SpriteNPC(rom);
-		}
-		originalSize = getSize();
-	}
+    public SpriteNPC[] mapNPCs;
+    private int internalOffset;
+    private GBARom rom;
+    private int originalSize;
+    private Map loadedMap;
+    
+    public this(GBARom rom, Map m, int offset, int count)
+    {
+        this.rom = rom;
+        internalOffset = offset;
+        loadedMap = m;
+        
+        rom.Seek(offset);
+        int i = 0;
+        mapNPCs.length = 1;
+        for (i = 0; i < count; i++)
+        {
+            mapNPCs ~= new SpriteNPC(rom);
+        }
+        originalSize = getSize();
+    }
 
-	public int[] GetSpriteIndices()
-	{
-		int i = 0;
-		int[] indices = new int[](mapNPCs.length);
-		for (i = 0; i < mapNPCs.length; i++)
-		{
-			indices[i] = mapNPCs[i].bSpriteSet;
-		}
-		return indices;
-	}
+    public int[] GetSpriteIndices()
+    {
+        int i = 0;
+        int[] indices = new int[](mapNPCs.length);
+        for (i = 0; i < mapNPCs.length; i++)
+        {
+            indices[i] = mapNPCs[i].bSpriteSet;
+        }
+        return indices;
+    }
 
-	public int getSpriteIndexAt(int x, int y)
-	{
-		int i = 0;
-		for (i = 0; i < mapNPCs.length; i++)
-		{
-			if (mapNPCs[i].bX == x && mapNPCs[i].bY == y)
-			{
-				return i;
-			}
-		}
+    public int getSpriteIndexAt(int x, int y)
+    {
+        int i = 0;
+        for (i = 0; i < mapNPCs.length; i++)
+        {
+            if (mapNPCs[i].bX == x && mapNPCs[i].bY == y)
+            {
+                return i;
+            }
+        }
 
-		return -1;
+        return -1;
 
-	}
+    }
 
-	public int getSize()
-	{
-		return cast(uint)mapNPCs.length * SpriteNPC.getSize();
-	}
-	
-	public void add(ubyte x, ubyte y)
-	{
-		mapNPCs ~= new SpriteNPC(rom, x, y);
-	}
+    public int getSize()
+    {
+        return cast(uint)mapNPCs.length * SpriteNPC.getSize();
+    }
+    
+    public void add(ubyte x, ubyte y)
+    {
+        mapNPCs ~= new SpriteNPC(rom, x, y);
+    }
 
-	public void remove(int x, int y)
-	{
-		std.algorithm.remove(mapNPCs, getSpriteIndexAt(x,y));
-	}
+    public void remove(int x, int y)
+    {
+        std.algorithm.remove(mapNPCs, getSpriteIndexAt(x,y));
+    }
 
-	public void save()
-	{
-		rom.floodBytes(internalOffset, rom.freeSpaceByte, originalSize);
+    public void save()
+    {
+        rom.floodBytes(internalOffset, rom.freeSpaceByte, originalSize);
 
-		// TODO make this a setting, ie always repoint vs keep pointers
-		int i = getSize();
-		if (originalSize < getSize())
-		{
-			internalOffset = rom.findFreespace(DataStore.FreespaceStart, getSize());
+        // TODO make this a setting, ie always repoint vs keep pointers
+        int i = getSize();
+        if (originalSize < getSize())
+        {
+            internalOffset = rom.findFreespace(DataStore.FreespaceStart, getSize());
 
-			if (internalOffset < 0x08000000)
-				internalOffset += 0x08000000;
-		}
+            if (internalOffset < 0x08000000)
+                internalOffset += 0x08000000;
+        }
 
-		loadedMap.mapSprites.pNPC = internalOffset;
-		loadedMap.mapSprites.bNumNPC = cast(ubyte)mapNPCs.length;
+        loadedMap.mapSprites.pNPC = internalOffset;
+        loadedMap.mapSprites.bNumNPC = cast(ubyte)mapNPCs.length;
 
-		rom.Seek(internalOffset);
-		foreach(SpriteNPC n; mapNPCs)
-			n.save();
-	}
+        rom.Seek(internalOffset);
+        foreach(SpriteNPC n; mapNPCs)
+            n.save();
+    }
 }

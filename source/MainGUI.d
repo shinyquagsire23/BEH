@@ -39,7 +39,7 @@ void main(string[] args)
     Main.init(args);
     win = new MainWindow("Hello World");
     win.setDefaultSize(516, 338);
-    
+
     Box barPanel = new Box(Orientation.VERTICAL, 0);
     Paned mainSplit = new Paned(Orientation.HORIZONTAL);
     Box mapSelector = new Box(Orientation.VERTICAL, 1);
