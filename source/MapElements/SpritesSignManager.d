@@ -9,9 +9,9 @@ import IO.Map;
 public class SpritesSignManager : ISaveable
 {
     public SpriteSign[] mapSigns;
+    private Map loadedMap;
     private uint internalOffset;
     private uint originalSize;
-    private Map loadedMap;
     private GBARom rom;
 
     public this(GBARom rom, Map m, uint offset, uint count)

@@ -6,7 +6,7 @@ import GBAUtils.ISaveable;
 public class SpriteNPC : ISaveable
 {
     public ubyte b1;
-    public ushort bSpriteSet;
+    public ushort hSpriteSet;
     public ubyte b4;
     public ubyte bX;
     public ubyte b6;
@@ -21,7 +21,7 @@ public class SpriteNPC : ISaveable
     public ubyte bTrainerLOS;
     public ubyte b16;
     public uint pScript;
-    public ushort iFlag;
+    public ushort hFlag;
     public ubyte b23;
     public ubyte b24;
 
@@ -38,7 +38,7 @@ public class SpriteNPC : ISaveable
         this.rom = rom;
         rom.Seek(offset);
         b1 = rom.readByte();
-        bSpriteSet = rom.readWord();
+        hSpriteSet = rom.readWord();
         b4 = rom.readByte();
         bX = rom.readByte();
         b6 = rom.readByte();
@@ -53,7 +53,7 @@ public class SpriteNPC : ISaveable
         bTrainerLOS = rom.readByte();
         b16 = rom.readByte();
         pScript = rom.getPointer();
-        iFlag = rom.readWord();
+        hFlag = rom.readWord();
         b23 = rom.readByte();
         b24 = rom.readByte();
     }
@@ -62,7 +62,7 @@ public class SpriteNPC : ISaveable
     {
         this.rom = rom;
         b1 = 0;
-        bSpriteSet = 0;
+        hSpriteSet = 0;
         b4 = 0;
         bX = x;
         b6 = 0;
@@ -77,7 +77,7 @@ public class SpriteNPC : ISaveable
         bTrainerLOS = 0;
         b16 = 0;
         pScript = 0;
-        iFlag = 0;
+        hFlag = 0;
         b23 = 0;
         b24 = 0;
     }
@@ -90,7 +90,7 @@ public class SpriteNPC : ISaveable
     public void save()
     {
         rom.writeByte(b1);
-        rom.writeWord(bSpriteSet);
+        rom.writeWord(hSpriteSet);
         rom.writeByte(b4);
         rom.writeByte(bX);
         rom.writeByte(b6);
@@ -105,7 +105,7 @@ public class SpriteNPC : ISaveable
         rom.writeByte(bTrainerLOS);
         rom.writeByte(b16);
         rom.writePointer(pScript + (pScript == 0 ? 0 : 0x08000000));
-        rom.writeWord(iFlag);
+        rom.writeWord(hFlag);
         rom.writeByte(b23);
         rom.writeByte(b24);
     }

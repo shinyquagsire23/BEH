@@ -9,10 +9,10 @@ import IO.Map;
 public class SpritesNPCManager : ISaveable
 {
     public SpriteNPC[] mapNPCs;
-    private int internalOffset;
-    private GBARom rom;
-    private int originalSize;
     private Map loadedMap;
+    private uint internalOffset;
+    private uint originalSize;
+    private GBARom rom;
     
     public this(GBARom rom, Map m, int offset, int count)
     {

@@ -9,8 +9,8 @@ import MapElements.WildDataHeader;
 public class WildDataCache //TODO: Actually thread this
 {
     private static WildData[uint] dataCache;
+    private static uint initialNum;
     private static GBARom rom;
-    private static int initialNum;
     
     public this(GBARom rom)
     {

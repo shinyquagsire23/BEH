@@ -2,20 +2,20 @@ module Structures.MapID;
 
 public class MapID
 {
-    private int bank, map;
+    private ubyte bank, map;
     
-    public this(int bank, int map)
+    public this(ubyte bank, ubyte map)
     {
         this.bank = bank;
         this.map = map;
     }
     
-    public int getBank()
+    public ubyte getBank()
     {
         return bank;
     }
     
-    public int getMap()
+    public ubyte getMap()
     {
         return map;
     }

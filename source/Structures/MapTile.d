@@ -2,33 +2,33 @@ module Structures.MapTile;
 
 public class MapTile
 {
-    private ushort ID; 
-    private ushort Meta;
+    private ushort id; 
+    private ushort metaData;
     
     public void SetID(ushort i)
     {
-        ID=i;
+        id = i;
     }
     
     public this(ushort id, ushort meta)
     {
-        ID = id;
-        Meta = meta;
+        this.id = id;
+        metaData = meta;
     }
     
     public void SetMeta(ushort meta)
     {
-        Meta=meta;
+        metaData = meta;
     }
-    
+
     public ushort getID()
     {
-        return ID;
+        return id;
     }
     
     public ushort getMeta()
     {
-        return Meta;
+        return metaData;
     }
 
     public MapTile clone()

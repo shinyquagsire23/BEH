@@ -10,11 +10,10 @@ public class TriggerManager : ISaveable
 {
     public Trigger[] mapTriggers;
     private Map loadedMap;
-    private int internalOffset = 0;
-    private int originalSize;
+    private uint internalOffset;
+    private uint originalSize;
     private GBARom rom;
 
-    
     public this(GBARom rom, Map m, int count)
     {
         LoadTriggers(rom, m, count);
