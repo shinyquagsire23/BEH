@@ -191,19 +191,25 @@ public class NewLz77
         return 0;
     }
 
-    static void decompressLZ77content(ubyte[] buffer, uint lenght, out ubyte[] output, out uint outputLen)
+    static bool decompressLZ77content(ubyte[] buffer, uint lenght, out ubyte[] output, out uint outputLen)
     {
+		bool ret = false;
         switch (buffer[0])
         {
             case 0x10:
                 writefln("\t[*] LZ77 variant 0x10 compressed content...unpacking may take a while...");
-                decompressLZ7710(buffer, lenght, output, outputLen); break;
+                decompressLZ7710(buffer, lenght, output, outputLen); 
+				ret = true;
+				break;
             case 0x11:
                 writefln("\t[*] LZ77 variant 0x11 compressed content...unpacking may take a while...");
-                decompressLZ7711(buffer, lenght, output, outputLen); break;
-                //default:
-                //__errorCheck(-1337, 1);
+                decompressLZ7711(buffer, lenght, output, outputLen); 
+				ret = true;
+				break;
+            default:
+                break;
         }
+		return ret;
     }
 
     public enum CheckLz77Type
