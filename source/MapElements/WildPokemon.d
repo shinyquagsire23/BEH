@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * WildPokemon.d                                                              *
- * "brief description of file"                                                *
+ * "Data structure describing a wild Pokémon entry in an environment."        *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

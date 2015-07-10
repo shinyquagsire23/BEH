@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * SpriteSign.d                                                               *
- * "brief description of file"                                                *
+ * "Stores data for sign objects for reading and writing to ROMs."            *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

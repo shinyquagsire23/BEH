@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * GBAImageType.d                                                             *
- * "brief description of file"                                                *
+ * "Different types of GBA Images"                                            *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

@@ -4,7 +4,8 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * SpritesSignManager.d                                                       *
- * "brief description of file"                                                *
+ * "Manages multiple sign objects within a map for reading and writing to     *
+ *  ROMs"                                                                     *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

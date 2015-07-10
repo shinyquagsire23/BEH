@@ -4,7 +4,8 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * GBARom.d                                                                   *
- * "brief description of file"                                                *
+ * "Holds and manages GBA ROMs, allowing values to be read and written to     *
+ *  them."                                                                    *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

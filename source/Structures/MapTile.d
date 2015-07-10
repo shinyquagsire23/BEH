@@ -4,7 +4,8 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * MapTile.d                                                                  *
- * "brief description of file"                                                *
+ * "Structure for 16x16 block tiles in a map, with 16 bits for the tile and   *
+ *  16 bits for the tile movement metadata."                                  *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

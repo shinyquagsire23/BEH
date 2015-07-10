@@ -4,7 +4,8 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * SpritesExitManager.d                                                       *
- * "brief description of file"                                                *
+ * "Manages multiple exit objects within a map for reading and writing to     *
+ *  ROMs"                                                                     *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

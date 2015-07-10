@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * EditMode.d                                                                 *
- * "brief description of file"                                                *
+ * "Different types of edit modes for map editing."                           *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

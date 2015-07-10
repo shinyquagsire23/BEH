@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * Map.d                                                                      *
- * "brief description of file"                                                *
+ * "Stores all data associated with a particular map for reading and writing" *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

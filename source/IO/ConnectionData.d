@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * ConnectionData.d                                                           *
- * "brief description of file"                                                *
+ * "Stores multiple Connections for reading and writing to ROM."              *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

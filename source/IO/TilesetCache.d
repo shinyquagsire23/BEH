@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * TilesetCache.d                                                             *
- * "brief description of file"                                                *
+ * "Caches tilesets to allow quicker map loading."                            *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

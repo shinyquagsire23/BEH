@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * TilesetHeader.d                                                            *
- * "brief description of file"                                                *
+ * "Stores tileset header data for reading and writing to ROM."               *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

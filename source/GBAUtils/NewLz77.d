@@ -4,7 +4,9 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * NewLz77.d                                                                  *
- * "brief description of file"                                                *
+ * "Provides GBA-compatible LZ77 compression and decompression methods"       *
+ *                                                                            *
+ *     Portions of File Copyright 2009 The Lemon Man <giuseppe@FullMetal>     *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

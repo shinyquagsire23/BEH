@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * Tileset.d                                                                  *
- * "brief description of file"                                                *
+ * "Stores data and Pixbufs for a particular tileset within a map."           *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

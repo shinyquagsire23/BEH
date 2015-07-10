@@ -4,7 +4,8 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * SpritesNPCManager.d                                                        *
- * "brief description of file"                                                *
+ * "Manages multiple NPC objects within a map for reading and writing to      *
+ *  ROMs"                                                                     *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

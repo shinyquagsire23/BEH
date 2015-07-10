@@ -4,7 +4,8 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * MapIO.d                                                                    *
- * "brief description of file"                                                *
+ * "Contains various methods and data structures for loading and              *
+ *  managing maps."                                                           *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * Block.d                                                                    *
- * "brief description of file"                                                *
+ * "Stores image and metadata for a block within a blockset."                 *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

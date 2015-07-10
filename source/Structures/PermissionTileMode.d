@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * PermissionTileMode.d                                                       *
- * "brief description of file"                                                *
+ * "Different styles for editing movement metadata."                          *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * WildDataHeader.d                                                           *
- * "brief description of file"                                                *
+ * "Stores headers for wild Pokémon data for reading and writing to ROM."     *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

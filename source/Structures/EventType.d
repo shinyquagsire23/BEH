@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * EventType.d                                                                *
- * "brief description of file"                                                *
+ * "Different types of objects within a map."                                 *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

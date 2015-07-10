@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * Lz77.d                                                                     *
- * "brief description of file"                                                *
+ * "A wrapper for various LZ77 functions for the GBARom class"                *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

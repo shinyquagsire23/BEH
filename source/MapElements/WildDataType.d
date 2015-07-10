@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * WildDataType.d                                                             *
- * "brief description of file"                                                *
+ * "Different locations for wild Pokémon."                                    *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

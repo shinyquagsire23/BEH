@@ -4,7 +4,8 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * PixbufExtend.d                                                             *
- * "brief description of file"                                                *
+ * "A set of functions to extend and further improve the Pixbuf class.        *
+ *  Primarily allows writing and drawing to Pixbuf images."                   *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

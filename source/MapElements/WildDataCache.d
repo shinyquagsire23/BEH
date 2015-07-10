@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * WildDataCache.d                                                            *
- * "brief description of file"                                                *
+ * "Caches various maps WildDatas for quicker loading."                       *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

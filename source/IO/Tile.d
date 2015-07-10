@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * Tile.d                                                                     *
- * "brief description of file"                                                *
+ * "Stores information on a particular tile within a block."                  *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * GBAImage.d                                                                 *
- * "brief description of file"                                                *
+ * "Reads and writes Pixbufs from 4bpp or 8bpp GBA images"                    *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * LZ77Test.d                                                                 *
- * "brief description of file"                                                *
+ * "A small test for LZ77 functionality. Frankly needs to be purged from BEH" *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

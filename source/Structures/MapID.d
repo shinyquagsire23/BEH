@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * MapID.d                                                                    *
- * "brief description of file"                                                *
+ * "An identifier struct for a map, specifying it's bank and map number."     *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * Trigger.d                                                                  *
- * "brief description of file"                                                *
+ * "Stores data for script trigger objects for reading and writing to ROMs."  *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

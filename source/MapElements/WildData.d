@@ -4,7 +4,8 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * WildData.d                                                                 *
- * "brief description of file"                                                *
+ * "Stores information about multiple wild Pokémon within a map for reading   *
+ *  and writing to ROM."                                                      *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

@@ -4,7 +4,8 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * ROMManager.d                                                               *
- * "brief description of file"                                                *
+ * "Manages and holds multiple GBARoms for programs which may have multiple   *
+ *  ROMs open."                                                               *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

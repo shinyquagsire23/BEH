@@ -4,7 +4,8 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * DataStore.d                                                                *
- * "brief description of file"                                                *
+ * "Stores values read from an INI, which are then used to read out various   *
+ *  other forms of data."                                                     *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

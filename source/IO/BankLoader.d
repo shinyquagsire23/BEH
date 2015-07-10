@@ -4,7 +4,9 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * BankLoader.d                                                               *
- * "brief description of file"                                                *
+ * "Loads a list of all maps and banks to a TreeView from the ROM.            *
+ *  This list is also used elsewhere to get map data pointers from a bank     *
+ *  and map number."                                                          *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

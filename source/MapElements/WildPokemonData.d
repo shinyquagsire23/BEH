@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * WildPokemonData.d                                                          *
- * "brief description of file"                                                *
+ * "Stores data for all wild Pokémon in all areas of a map."                  *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

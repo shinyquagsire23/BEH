@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * ConnectionType.d                                                           *
- * "brief description of file"                                                *
+ * "Different types of connections between maps."                             *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

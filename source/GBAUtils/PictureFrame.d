@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * PictureFrame.d                                                             *
- * "brief description of file"                                                *
+ * "A small class which can be fed a Pixbuf to display. Useful for testing."  *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

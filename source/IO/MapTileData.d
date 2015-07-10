@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * MapTileData.d                                                              *
- * "brief description of file"                                                *
+ * "Stores map tile data for reading and writing to ROM."                     *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

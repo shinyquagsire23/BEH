@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * BorderMap.d                                                                *
- * "brief description of file"                                                *
+ * "Stores map tile data for map borders."                                    *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

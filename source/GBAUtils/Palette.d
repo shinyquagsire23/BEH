@@ -4,7 +4,8 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * Palette.d                                                                  *
- * "brief description of file"                                                *
+ * "Stores and writes GBA Palettes, usable with GBAImage to generate sprites  *
+ *  which may have multiple palettes or for holding colors in general."       *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * ISaveable.d                                                                *
- * "brief description of file"                                                *
+ * "An interface for savable data structures"                                 *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

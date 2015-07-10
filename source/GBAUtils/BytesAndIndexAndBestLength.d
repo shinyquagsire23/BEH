@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * BytesAndIndexAndBestLength.d                                               *
- * "brief description of file"                                                *
+ * "A data structure containing bytes, an index, and a best length"           *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * MapData.d                                                                  *
- * "brief description of file"                                                *
+ * "Stores map tile data for maps."                                           *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *

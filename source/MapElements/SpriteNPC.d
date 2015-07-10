@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * SpriteNPC.d                                                                *
- * "brief description of file"                                                *
+ * "Stores data for NPC objects for reading and writing to ROMs."             *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *
