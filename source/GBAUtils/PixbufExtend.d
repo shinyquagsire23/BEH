@@ -104,13 +104,16 @@ Pixbuf setPixel(Pixbuf main, uint x, uint y, ubyte r, ubyte g, ubyte b, ubyte a 
 {
     if(x >= main.getWidth() || y >= main.getHeight())
         return main;
+
+    uint rowStride = main.getRowstride();
+    uint numChannels = main.getNChannels();
     
-    main.getPixelsWithLength[(y * main.getRowstride() + x * main.getNChannels()) + 0] = r;
-    main.getPixelsWithLength[(y * main.getRowstride() + x * main.getNChannels()) + 1] = g;
-    main.getPixelsWithLength[(y * main.getRowstride() + x * main.getNChannels()) + 2] = b;
+    main.getPixelsWithLength[(y * rowStride + x * numChannels) + 0] = r;
+    main.getPixelsWithLength[(y * rowStride + x * numChannels) + 1] = g;
+    main.getPixelsWithLength[(y * rowStride + x * numChannels) + 2] = b;
     
     if(main.getHasAlpha())
-        main.getPixelsWithLength[(y * main.getRowstride() + x * main.getNChannels()) + 3] = a;
+        main.getPixelsWithLength[(y * rowStride + x * numChannels) + 3] = a;
     
     return main;
 }
@@ -119,13 +122,16 @@ void getPixel(Pixbuf main, uint x, uint y, out ubyte r, out ubyte g, out ubyte b
 {
     if(x >= main.getWidth() || y >= main.getHeight())
         return;
+
+    uint rowStride = main.getRowstride();
+    uint numChannels = main.getNChannels();
     
-    r = main.getPixelsWithLength[(y * main.getRowstride() + x * main.getNChannels()) + 0];
-    g = main.getPixelsWithLength[(y * main.getRowstride() + x * main.getNChannels()) + 1];
-    b = main.getPixelsWithLength[(y * main.getRowstride() + x * main.getNChannels()) + 2];
+    r = main.getPixelsWithLength[(y * rowStride + x * numChannels) + 0];
+    g = main.getPixelsWithLength[(y * rowStride + x * numChannels) + 1];
+    b = main.getPixelsWithLength[(y * rowStride + x * numChannels) + 2];
     
     if(main.getHasAlpha())
-        a = main.getPixelsWithLength[(y * main.getRowstride() + x * main.getNChannels()) + 3];
+        a = main.getPixelsWithLength[(y * rowStride + x * numChannels) + 3];
     else
         a = 0xFF;
 }

@@ -31,8 +31,6 @@ import GBAUtils.Lz77;
 import GBAUtils.DataStore;
 import GBAUtils.GBAImageType;
 import IO.TilesetHeader;
-import std.concurrency;
-import core.thread;
 import core.exception;
 import std.array;
 
@@ -45,6 +43,7 @@ public class Tileset
     private Palette[][] palettesFromROM;
     private static Tileset lastPrimary;
     public TilesetHeader tilesetHeader;
+    public static uint maxTime = 1; //Number of actual time palettes
 
     public int numBlocks;
     private Pixbuf[uint][] renderedTiles;
@@ -99,10 +98,10 @@ public class Tileset
     
     public void renderPalettes()
     {
-        palettes = uninitializedArray!(Palette[][])(4,16);
-        bi = uninitializedArray!(Pixbuf[][])(4,16);
-        
-        for(int i = 0; i < 4; i++)
+        palettes = uninitializedArray!(Palette[][])(maxTime,16);
+        bi = uninitializedArray!(Pixbuf[][])(maxTime,16);
+
+        for(int i = 0; i < maxTime; i++)
         {
             for(int j = 0; j < 16; j++)
             {
@@ -118,10 +117,10 @@ public class Tileset
         renderGraphics();
     }
     
-    public void startTileThreads()
+    void startTileThreads()
     {
-        for(int i = 0; i < (tilesetHeader.isPrimary ? DataStore.MainTSPalCount : 13); i++)
-            tileLoader(renderedTiles, i); //TODO: Actually thread, if needed
+        //for(int i = 0; i < (tilesetHeader.isPrimary ? DataStore.MainTSPalCount : 13); i++)
+            //tileLoader(renderedTiles, i); //TODO: Actually thread, if needed
     }
     
     public Pixbuf getTileWithCustomPal(int tileNum, Palette palette, bool xFlip, bool yFlip, int time)
@@ -144,7 +143,7 @@ public class Tileset
     {
         if(palette < DataStore.MainTSPalCount)
         {
-            if(tileNum in renderedTiles[palette+(time * 16)]) //Check to see if we've cached that tile
+            /*if(tileNum in renderedTiles[palette+(time * 16)]) //Check to see if we've cached that tile
             {
                 if(xFlip && yFlip)
                     return verticalFlip(horizontalFlip(renderedTiles[palette+(time * 16)][tileNum]));
@@ -158,11 +157,11 @@ public class Tileset
                 }
                 
                 return renderedTiles[palette+(time * 16)][tileNum];
-            }
+            }*/
         }
         else if(palette < 13)
         {
-            if(tileNum in customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)]) //Check to see if we've cached that tile
+            /*if(tileNum in customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)]) //Check to see if we've cached that tile
             {
                 if(xFlip && yFlip)
                     return verticalFlip(horizontalFlip(customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)][tileNum]));
@@ -176,7 +175,7 @@ public class Tileset
                 }
                 
                 return customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)][tileNum];
-            }
+            }*/
         }
         else
         {
@@ -192,10 +191,10 @@ public class Tileset
             toSend = new Pixbuf(GdkColorspace.RGB, true, 8, 8, 8);
             writefln("Attempted to read 8x8 at %u, %u, tileset is %u by %u, tileNum %x, " ~ (tilesetHeader.isPrimary ? "primary" : "secondary"), x, y, bi[time][palette].getWidth(), bi[time][palette].getHeight(), tileNum);
         }
-        if(palette < DataStore.MainTSPalCount || renderedTiles.length > DataStore.MainTSPalCount)
+        /*if(palette < DataStore.MainTSPalCount || renderedTiles.length > DataStore.MainTSPalCount)
             renderedTiles[palette+(time * 16)][tileNum] = toSend;
         else
-            customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)][tileNum] = toSend;
+            customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)][tileNum] = toSend;*/
 
         if(!xFlip && !yFlip)
             return toSend;
@@ -239,17 +238,15 @@ public class Tileset
     
     public void renderPalettedTiles()
     {		
-        for(int j = 0; j < 4; j++)
+        for(int j = 0; j < maxTime; j++)
         {
             for (int i = 0; i < 16; i++)
             {
-                bi[j][i] = image.getPixbufFromPal(palettes[j][i]);
+                writefln("Rendering tileset palette %u for time %u", i, j);
+                rerenderTileSet(i,j);
 
             }
         }
-        for(int j = 0; j < 4; j++)
-            for(int i = 0; i < 16; i++)
-                rerenderTileSet(i,j);
     }
     public void resetCustomTiles()
     {

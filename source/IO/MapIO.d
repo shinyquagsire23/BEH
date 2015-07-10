@@ -76,6 +76,8 @@ public class MapIO //This whole file is just one big TODO
     {
         if(blockRenderer is null)
             blockRenderer = new BlockRenderer();
+
+        writefln("Loading map...");
         
         //MainGUI.setStatus("Loading Map..."); //TODO
         
@@ -93,13 +95,18 @@ public class MapIO //This whole file is just one big TODO
         doneLoading = false;
         if (loadedMap !is null)
             TilesetCache.get(loadedMap.getMapData().globalTileSetPtr).resetCustomTiles();
+
+        writefln("Tileset loaded");
         
         loadedMap = new Map(ROMManager.getActiveROM(), offset);
         currentBank = selectedBank;
         currentMap = selectedMap;
+        writefln("Map data loaded, switching tileset...");
         TilesetCache.switchTileset(loadedMap);
+        writefln("Tileset cache swapped over, loading border map...");
         
         borderMap = new BorderMap(ROMManager.getActiveROM(), loadedMap);
+        writefln("Border map loaded, loading global tileset...");
         /*MainGUI.reloadMimeLabels(); //TODO UI stuff
          MainGUI.mapEditorPanel.setGlobalTileset(TilesetCache.get(loadedMap.getMapData().globalTileSetPtr));
          MainGUI.mapEditorPanel.setLocalTileset(TilesetCache.get(loadedMap.getMapData().localTileSetPtr));
@@ -107,8 +114,11 @@ public class MapIO //This whole file is just one big TODO
          MainGUI.eventEditorPanel.setLocalTileset(TilesetCache.get(loadedMap.getMapData().localTileSetPtr));*/
         
         TilesetRenderer.setGlobalTileset(TilesetCache.get(loadedMap.getMapData().globalTileSetPtr));
+        writefln("Global tileset loaded to tileset renderer");
         TilesetRenderer.setLocalTileset(TilesetCache.get(loadedMap.getMapData().localTileSetPtr));
+        writefln("Local tileset loaded to tileset renderer");
         TilesetRenderer.DrawTileset();
+        writefln("Tilesets rendered");
         /*MainGUI.tileEditorPanel.repaint();
          
          MainGUI.mapEditorPanel.setMap(loadedMap);//TODO UI stuff

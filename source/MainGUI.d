@@ -121,7 +121,9 @@ void openMap(TreePath path, TreeViewColumn column, TreeView view)
     if(bank != -1 && map != -1)
     {
         MapIO.loadMap(bank,map);
-        image.setFromPixbuf(Map.renderMap(MapIO.loadedMap, true));
+        writefln("Map loaded, rendering...");
+        image.setFromPixbuf(Map.renderMap(MapIO.loadedMap, false));
+        writefln("Map rendered.");
     }
 }
 

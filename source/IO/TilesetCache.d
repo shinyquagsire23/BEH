@@ -28,11 +28,15 @@ import GBAUtils.GBARom;
 import GBAUtils.ROMManager;
 import IO.Map;
 import IO.Tileset;
+import std.stdio;
 
 public class TilesetCache
 {
     private static Tileset[uint] cache;
     private GBARom rom;
+    private static Map lastMap;
+    private static uint lastGlobalPtr;
+    private static uint lastLocalPtr;
     
     private this(){}
     
@@ -81,16 +85,28 @@ public class TilesetCache
     
     public static void switchTileset(Map loadedMap)
     {
+        if(loadedMap == lastMap)
+            return;
+
         get(loadedMap.getMapData().globalTileSetPtr).resetPalettes();
         get(loadedMap.getMapData().localTileSetPtr).resetPalettes();
-        for(int j = 1; j < 5; j++)
+        for(int j = 0; j < Tileset.maxTime; j++)
+        {
             for(int i = DataStore.MainTSPalCount-1; i < 13; i++)
-                get(loadedMap.getMapData().globalTileSetPtr).getPalette(j-1)[i] = get(loadedMap.getMapData().localTileSetPtr).getROMPalette()[j-1][i];
-        for(int j = 0; j < 4; j++)
+            {
+                get(loadedMap.getMapData().globalTileSetPtr).getPalette(j)[i] = get(loadedMap.getMapData().localTileSetPtr).getROMPalette()[j][i];
+            }
+        }
+        for(int j = 0; j < Tileset.maxTime; j++)
+        {
             get(loadedMap.getMapData().localTileSetPtr).setPalette(get(loadedMap.getMapData().globalTileSetPtr).getPalette(j),j);
+        }
         get(loadedMap.getMapData().localTileSetPtr).renderPalettedTiles();
+        writefln("Rendered local tileset...");
         get(loadedMap.getMapData().globalTileSetPtr).renderPalettedTiles();
+        writefln("Rendered global tileset...");
         get(loadedMap.getMapData().localTileSetPtr).startTileThreads();
         get(loadedMap.getMapData().globalTileSetPtr).startTileThreads();
+        lastMap = loadedMap;
     }
 }
