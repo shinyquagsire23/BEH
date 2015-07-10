@@ -36,7 +36,7 @@ public class SpritesNPCManager : ISaveable
         int[] indices = new int[](mapNPCs.length);
         for (i = 0; i < mapNPCs.length; i++)
         {
-            indices[i] = mapNPCs[i].bSpriteSet;
+            indices[i] = mapNPCs[i].hSpriteSet;
         }
         return indices;
     }

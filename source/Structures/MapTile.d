@@ -33,6 +33,6 @@ public class MapTile
 
     public MapTile clone()
     {
-        return new MapTile(ID,Meta);
+        return new MapTile(id,metaData);
     }
 }
