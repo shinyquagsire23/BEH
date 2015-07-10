@@ -48,6 +48,13 @@ public class ConnectionData
     
     public void load()
     {
+        //Maps without connection data will have this by default
+        if(mapHeader.pConnect == 0xf8000000)
+        {
+            originalSize = 0;
+            return;
+        }
+
         rom.Seek(mapHeader.pConnect);
         pNumConnections = rom.getPointer(true);
         pData = rom.getPointer(true);
@@ -64,6 +71,12 @@ public class ConnectionData
     
     public void save()
     {
+        //Maps without connection data will have this by default
+        if(mapHeader.pConnect == 0xf8000000)
+        {
+            return;
+        }
+
         if(pData < 0x08000000)
             pData += 0x08000000;
         
@@ -90,6 +103,12 @@ public class ConnectionData
     
     public void addConnection(ConnectionType c, byte bank, byte map)
     {
+        //Maps without connection data will have this by default
+        if(mapHeader.pConnect == 0xf8000000)
+        {
+            mapHeader.pConnect = rom.findFreespace(8);
+        }
+
         pNumConnections++;
         aConnections.length++;
         aConnections[pNumConnections] = new Connection(rom, c,bank,map); //Check

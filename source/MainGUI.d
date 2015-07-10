@@ -31,8 +31,13 @@ import gtk.MainWindow;
 import gtk.Label;
 import gtk.Main;
 import gtk.Box;
+import gtk.VBox;
+import gtk.ScrolledWindow;
 import gtk.Paned;
 import gtk.TreeStore;
+import gtk.TreePath;
+import gtk.TreeViewColumn;
+import gtk.TreeView;
 import gtk.MenuBar;
 import gtk.MenuItem;
 import gtk.Menu;
@@ -65,8 +70,10 @@ void main(string[] args)
 
     Box barPanel = new Box(Orientation.VERTICAL, 0);
     Paned mainSplit = new Paned(Orientation.HORIZONTAL);
-    Box mapSelector = new Box(Orientation.VERTICAL, 1);
-    Box mapEditor = new Box(Orientation.VERTICAL, 1);
+    ScrolledWindow mapSelectWindow = new ScrolledWindow();
+
+    Box mapEditor = new Box(Orientation.VERTICAL, 0);
+    ScrolledWindow mapEditorWindow = new ScrolledWindow();
     
     MenuBar bar = new MenuBar();
     auto fileMenuItem = new MenuItem("File");
@@ -81,7 +88,9 @@ void main(string[] args)
     store = new MapStore();
     
     auto mapTreeView = new MapTreeView(store);
-    mapSelector.packStart(mapTreeView, true, true, 0);
+    mapTreeView.setHeadersVisible(false);
+    mapTreeView.addOnRowActivated(toDelegate(&openMap));
+    mapSelectWindow.add(mapTreeView);
     
     image = new Image();
     Pixbuf buf = new Pixbuf("resources/mime.jpg");
@@ -91,18 +100,29 @@ void main(string[] args)
     buf.fillRect(40,50,8,8,0,0,0);
 
     image.setFromPixbuf(buf);
-    mapEditor.add(image);
-    mapEditor.add(new Label("<Insert Map Editor Here>"));
+    mapEditorWindow.add(image);
+    mapEditor.packStart(mapEditorWindow, true, true, 0);
     
     mainSplit.setPosition(220);
-    mainSplit.add1(mapSelector);
+    mainSplit.pack1(mapSelectWindow, true, true);
     mainSplit.add2(mapEditor);
     
     
-    barPanel.add(mainSplit);
+    barPanel.packStart(mainSplit, true, true, 0);
     win.add(barPanel);
     win.showAll();
     Main.run();
+}
+
+void openMap(TreePath path, TreeViewColumn column, TreeView view)
+{
+    int bank = view.getSelectedIter().getValueInt(1);
+    int map = view.getSelectedIter().getValueInt(2);
+    if(bank != -1 && map != -1)
+    {
+        MapIO.loadMap(bank,map);
+        image.setFromPixbuf(Map.renderMap(MapIO.loadedMap, true));
+    }
 }
 
 void chooseRom(MenuItem item)
@@ -115,8 +135,5 @@ void chooseRom(MenuItem item)
         DataStore dataStore = new DataStore("BEH.ini", ROMManager.currentROM.getGameCode());
         BankLoader b = new BankLoader(DataStore.MapHeaders, ROMManager.getActiveROM(), store, store.addCategory("Maps by Bank"));
         b.run();
-        MapIO.loadMap(3,4);
-        writefln("%u, %u", MapIO.loadedMap.getMapData().mapWidth, MapIO.loadedMap.getMapData().mapHeight);
-        image.setFromPixbuf(Map.renderMap(MapIO.loadedMap, true));
     }
 }

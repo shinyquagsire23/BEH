@@ -83,7 +83,7 @@ public class BankLoader
         {
             writefln("Loading banks into tree... %u", bankNum);
             bankPointers[bankNum] = rom.readLong() & 0x1FFFFFF;
-            bankTrees[bankNum] = tree.addChild(root, format("%u", bankNum));
+            bankTrees[bankNum] = tree.addChild(root, format("%u", bankNum), bankNum, -1);
         }
 
         maps = new uint[][](0xFF, 0xFF); //TODO: This is really hacky...
@@ -127,7 +127,7 @@ public class BankLoader
                             convMapName = mapNames[mapName];
                         }
                     }
-                    tree.addChild(bankTrees[mapNum], format("%s (%u.%u)", convMapName, mapNum, miniMapNum));
+                    tree.addChild(bankTrees[mapNum], format("%s (%u.%u)", convMapName, mapNum, miniMapNum), mapNum, miniMapNum);
                 }
                 catch(Exception e)
                 {

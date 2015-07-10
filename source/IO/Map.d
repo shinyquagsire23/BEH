@@ -136,7 +136,7 @@ public class Map : ISaveable
             tiles = TilesetRenderer.RerenderSecondary(TilesetRenderer.imgBuffer);
         else
             tiles = TilesetRenderer.RerenderTiles(TilesetRenderer.imgBuffer, 0);
-        new PictureFrame(tiles);
+        //new PictureFrame(tiles);
 
         try
         {		

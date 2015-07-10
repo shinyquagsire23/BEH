@@ -31,13 +31,22 @@ private import gtk.ListStore;
 
 class MapTreeView : TreeView
 {
-    private TreeViewColumn countryColumn;
-    private TreeViewColumn capitalColumn;
+    private TreeViewColumn mapColumn;
+    private TreeViewColumn bankNumColumn;
+    private TreeViewColumn mapNumColumn;
     
     this(TreeStore store)
     {        
-        countryColumn = new TreeViewColumn("Map", new CellRendererText(), "text", 0);
-        appendColumn(countryColumn);
+        mapColumn = new TreeViewColumn("Map", new CellRendererText(), "text", 0);
+        bankNumColumn = new TreeViewColumn("", new CellRendererText(), "text", 1);
+        mapNumColumn = new TreeViewColumn("", new CellRendererText(), "text", 2);
+
+        bankNumColumn.setVisible(false);
+        mapNumColumn.setVisible(false);
+
+        appendColumn(mapColumn);
+        appendColumn(bankNumColumn);
+        appendColumn(mapNumColumn);
         
         setModel(store);
     }

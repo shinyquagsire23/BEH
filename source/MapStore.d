@@ -31,7 +31,7 @@ class MapStore : TreeStore
 {
     this()
     {
-        super([GType.STRING]);
+        super([GType.STRING, GType.INT, GType.INT]);
     }
 
     public TreeIter addCategory(in string name)
@@ -39,14 +39,18 @@ class MapStore : TreeStore
         
         TreeIter iter = createIter();
         setValue(iter, 0, name);
+        setValue(iter, 1, -1);
+        setValue(iter, 2, -1);
         return iter;
     }
 
     public TreeIter addChild(TreeIter parent,
-        in string name)
+        in string name, in uint bank, in uint map)
     {
         TreeIter child = TreeStore.createIter(parent);
         setValue(child, 0, name);
+        setValue(child, 1, bank);
+        setValue(child, 2, map);
         return child;
     }
 }
