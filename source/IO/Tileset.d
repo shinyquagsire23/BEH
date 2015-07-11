@@ -39,9 +39,9 @@ import std.concurrency;
 public class Tileset
 {
     private GBARom rom;
-	private GBAImage image;
-	private Pixbuf[][] bi;
-	private Palette[][] palettes; 
+    private GBAImage image;
+    private Pixbuf[][] bi;
+    private Palette[][] palettes; 
     private Palette[][] palettesFromROM;
     private static Tileset lastPrimary;
     public TilesetHeader tilesetHeader;
@@ -122,7 +122,7 @@ public class Tileset
     void startTileThreads()
     {
         //for(int i = 0; i < (tilesetHeader.isPrimary ? DataStore.MainTSPalCount : 13); i++)
-            //tileLoader(renderedTiles, i); //TODO: Actually thread, if needed
+        //tileLoader(renderedTiles, i); //TODO: Actually thread, if needed
     }
     
     public Pixbuf getTileWithCustomPal(int tileNum, Palette palette, bool xFlip, bool yFlip, int time)
@@ -146,38 +146,38 @@ public class Tileset
         if(palette < DataStore.MainTSPalCount)
         {
             /*if(tileNum in renderedTiles[palette+(time * 16)]) //Check to see if we've cached that tile
-            {
-                if(xFlip && yFlip)
-                    return verticalFlip(horizontalFlip(renderedTiles[palette+(time * 16)][tileNum]));
-                else if(xFlip)
-                {
-                    return horizontalFlip(renderedTiles[palette+(time * 16)][tileNum]);
-                }
-                else if(yFlip)
-                {
-                    return verticalFlip(renderedTiles[palette+(time * 16)][tileNum]);
-                }
-                
-                return renderedTiles[palette+(time * 16)][tileNum];
-            }*/
+             {
+             if(xFlip && yFlip)
+             return verticalFlip(horizontalFlip(renderedTiles[palette+(time * 16)][tileNum]));
+             else if(xFlip)
+             {
+             return horizontalFlip(renderedTiles[palette+(time * 16)][tileNum]);
+             }
+             else if(yFlip)
+             {
+             return verticalFlip(renderedTiles[palette+(time * 16)][tileNum]);
+             }
+             
+             return renderedTiles[palette+(time * 16)][tileNum];
+             }*/
         }
         else if(palette < 13)
         {
             /*if(tileNum in customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)]) //Check to see if we've cached that tile
-            {
-                if(xFlip && yFlip)
-                    return verticalFlip(horizontalFlip(customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)][tileNum]));
-                else if(xFlip)
-                {
-                    return horizontalFlip(customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)][tileNum]);
-                }
-                else if(yFlip)
-                {
-                    return verticalFlip(customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)][tileNum]);
-                }
-                
-                return customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)][tileNum];
-            }*/
+             {
+             if(xFlip && yFlip)
+             return verticalFlip(horizontalFlip(customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)][tileNum]));
+             else if(xFlip)
+             {
+             return horizontalFlip(customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)][tileNum]);
+             }
+             else if(yFlip)
+             {
+             return verticalFlip(customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)][tileNum]);
+             }
+             
+             return customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)][tileNum];
+             }*/
         }
         else
         {
@@ -194,9 +194,9 @@ public class Tileset
             writefln("Attempted to read 8x8 at %u, %u, tileset is %u by %u, tileNum %x, " ~ (tilesetHeader.isPrimary ? "primary" : "secondary"), x, y, bi[time][palette].getWidth(), bi[time][palette].getHeight(), tileNum);
         }
         /*if(palette < DataStore.MainTSPalCount || renderedTiles.length > DataStore.MainTSPalCount)
-            renderedTiles[palette+(time * 16)][tileNum] = toSend;
-        else
-            customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)][tileNum] = toSend;*/
+         renderedTiles[palette+(time * 16)][tileNum] = toSend;
+         else
+         customRenderedTiles[(palette-DataStore.MainTSPalCount)+(time * 16)][tileNum] = toSend;*/
 
         if(!xFlip && !yFlip)
             return toSend;
@@ -240,23 +240,23 @@ public class Tileset
     
     public void renderPalettedTiles()
     {		
-		RenderThread[] threads;
+        RenderThread[] threads;
         for(int j = 0; j < maxTime; j++)
         {
             for (int i = 0; i < 16; i++)
             {
                 writefln("Rendering tileset palette %u for time %u", i, j);
-				RenderThread r = new RenderThread(&bi, &image, &palettes, i, j);
-				threads ~= r;
-				r.start();
-				//rerenderTileSet(i, j);
+                RenderThread r = new RenderThread(&bi, &image, &palettes, i, j);
+                threads ~= r;
+                r.start();
+                //rerenderTileSet(i, j);
                 //spawn(&renderTilesetThread, image, palettes[i][j], i, j);
 
             }
         }
 
-		foreach(RenderThread r; threads)
-			r.join();
+        foreach(RenderThread r; threads)
+            r.join();
     }
     public void resetCustomTiles()
     {
@@ -329,24 +329,24 @@ public class Tileset
 
 class RenderThread : Thread
 {
-	Pixbuf[][] bi;
-	GBAImage image;
-	Palette[][] palettes;
-	int palette;
-	int time;
+    Pixbuf[][] bi;
+    GBAImage image;
+    Palette[][] palettes;
+    int palette;
+    int time;
 
-	this(Pixbuf[][] *bi, GBAImage *image, Palette[][] *palettes, int palette, int time)
-	{
-		this.bi = *bi;
-		this.image = *image;
-		this.palettes = *palettes;
-		this.palette = palette;
-		this.time = time;
-		super(&run);
-	}
+    this(Pixbuf[][] *bi, GBAImage *image, Palette[][] *palettes, int palette, int time)
+    {
+        this.bi = *bi;
+        this.image = *image;
+        this.palettes = *palettes;
+        this.palette = palette;
+        this.time = time;
+        super(&run);
+    }
 
-	void run()
-	{
-		bi[time][palette] = image.getPixbufFromPal(palettes[time][palette]);
-	}
+    void run()
+    {
+        bi[time][palette] = image.getPixbufFromPal(palettes[time][palette]);
+    }
 }
