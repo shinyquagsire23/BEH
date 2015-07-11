@@ -4,6 +4,6 @@
 	"authors": ["shinyquagsire23"],
 	"targetType": "executable",
 	"dependencies": {
-		"gtk-d": ">=3.0.0"
+		"gtk-d:gtkd": "~>3.1.4"
 	}
 }
