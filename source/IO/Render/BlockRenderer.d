@@ -225,13 +225,13 @@ public class BlockRenderer
     
     public uint getBehaviorByte(int blockID)
     {
-        uint pBehavior = MapIO.blockRenderer.getGlobalTileset().tilesetHeader.pBehavior;
+        uint pBehavior = getGlobalTileset().tilesetHeader.pBehavior;
         uint blockNum = blockID;
         
         if (blockNum >= DataStore.MainTSBlocks)
         {
             blockNum -= DataStore.MainTSBlocks;
-            pBehavior = MapIO.blockRenderer.getLocalTileset().tilesetHeader.pBehavior;
+            pBehavior = getLocalTileset().tilesetHeader.pBehavior;
         }
         global.getROM().Seek(pBehavior + (blockNum * (DataStore.EngineVersion == 1 ? 4 : 2)));
         uint bytes = DataStore.EngineVersion == 1 ? global.getROM().getPointer(true) : global.getROM().getPointer(true) & 0xFFFF;

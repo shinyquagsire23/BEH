@@ -32,14 +32,16 @@ import GBAUtils.DataStore;
 import GBAUtils.GBAImageType;
 import IO.TilesetHeader;
 import core.exception;
+import core.thread;
 import std.array;
+import std.concurrency;
 
 public class Tileset
 {
     private GBARom rom;
-    private GBAImage image;
-    private Pixbuf[][] bi;
-    private Palette[][] palettes; 
+	private GBAImage image;
+	private Pixbuf[][] bi;
+	private Palette[][] palettes; 
     private Palette[][] palettesFromROM;
     private static Tileset lastPrimary;
     public TilesetHeader tilesetHeader;
@@ -238,15 +240,23 @@ public class Tileset
     
     public void renderPalettedTiles()
     {		
+		RenderThread[] threads;
         for(int j = 0; j < maxTime; j++)
         {
             for (int i = 0; i < 16; i++)
             {
                 writefln("Rendering tileset palette %u for time %u", i, j);
-                rerenderTileSet(i,j);
+				RenderThread r = new RenderThread(&bi, &image, &palettes, i, j);
+				threads ~= r;
+				r.start();
+				//rerenderTileSet(i, j);
+                //spawn(&renderTilesetThread, image, palettes[i][j], i, j);
 
             }
         }
+
+		foreach(RenderThread r; threads)
+			r.join();
     }
     public void resetCustomTiles()
     {
@@ -315,4 +325,28 @@ public class Tileset
         }
         tilesetHeader.save();
     }
+}
+
+class RenderThread : Thread
+{
+	Pixbuf[][] bi;
+	GBAImage image;
+	Palette[][] palettes;
+	int palette;
+	int time;
+
+	this(Pixbuf[][] *bi, GBAImage *image, Palette[][] *palettes, int palette, int time)
+	{
+		this.bi = *bi;
+		this.image = *image;
+		this.palettes = *palettes;
+		this.palette = palette;
+		this.time = time;
+		super(&run);
+	}
+
+	void run()
+	{
+		bi[time][palette] = image.getPixbufFromPal(palettes[time][palette]);
+	}
 }

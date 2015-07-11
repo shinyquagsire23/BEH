@@ -48,6 +48,7 @@ Pixbuf drawImageFast(Pixbuf mn, Pixbuf sb, uint xPos, uint yPos)
     return main;
 }
 
+//TODO: This function is extremely slow.
 Pixbuf drawImage(Pixbuf main, Pixbuf sub, uint xPos, uint yPos)
 {       
     void blend(out ubyte r, out ubyte g, out ubyte b, out ubyte a, ubyte r1, ubyte g1, ubyte b1, ubyte a1, ubyte r2, ubyte g2, ubyte b2, ubyte a2)
