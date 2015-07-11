@@ -133,6 +133,8 @@ public class WildData
             case WildDataType.FISHING:
                 aWildPokemon[3] = d;
                 break;
+            default:
+                break;
         }
     }
     
