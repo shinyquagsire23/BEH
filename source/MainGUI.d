@@ -101,6 +101,8 @@ void main(string[] args)
     buf.fillRect(40,50,8,8,0,0,0);
 
     mapEditorBox.setFromPixbuf(buf);
+	mapEditorBox.setHalign(GtkAlign.START);
+	mapEditorBox.setValign(GtkAlign.START);
     mapEditorWindow.add(mapEditorBox);
 	mapEditorWindow.addEvents(GdkEventMask.POINTER_MOTION_MASK | GdkEventMask.POINTER_MOTION_HINT_MASK | GdkEventMask.BUTTON_PRESS_MASK);
 	mapEditorWindow.addOnMotionNotify(toDelegate(&mouseDragged));
