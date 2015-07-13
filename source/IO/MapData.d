@@ -24,20 +24,20 @@
 module IO.MapData;
 
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.ISaveable;
 import IO.MapHeader;
 
 public class MapData : ISaveable
 {
-    private GBARom rom;
+    private ROM rom;
     private MapHeader mapHeader;
     public uint mapWidth, mapHeight;
     public uint borderTilePtr, mapTilesPtr, globalTileSetPtr, localTileSetPtr;
     public ushort borderWidth, borderHeight;
     public uint secondarySize;
     
-    public this(GBARom rom, MapHeader mHeader)
+    public this(ROM rom, MapHeader mHeader)
     {
         this.rom = rom;
         mapHeader = mHeader;
@@ -46,14 +46,15 @@ public class MapData : ISaveable
     
     public void load()
     {
-        mapWidth = rom.getPointer(mapHeader.pMap,true);
-        mapHeight = rom.getPointer(mapHeader.pMap+0x4,true);
-        borderTilePtr = rom.getPointer(mapHeader.pMap+0x8);
-        mapTilesPtr = rom.getPointer(mapHeader.pMap+0xC);
-        globalTileSetPtr = rom.getPointer(mapHeader.pMap+0x10);
-        localTileSetPtr = rom.getPointer(mapHeader.pMap+0x14);
-        borderWidth = rom.readWord(mapHeader.pMap+0x18);
-        borderHeight = rom.readWord(mapHeader.pMap+0x1A);
+        rom.Seek(mapHeader.pMap);
+        mapWidth = rom.getPointer(true);
+        mapHeight = rom.getPointer(true);
+        borderTilePtr = rom.getPointer();
+        mapTilesPtr = rom.getPointer();
+        globalTileSetPtr = rom.getPointer();
+        localTileSetPtr = rom.getPointer();
+        borderWidth = rom.readHalfword();
+        borderHeight = rom.readHalfword();
         secondarySize = borderWidth + 0xA0;
         //System.out.println(borderWidth + " " + borderHeight);
         if(DataStore.EngineVersion==0) //If this is a RSE game...
@@ -78,6 +79,7 @@ public class MapData : ISaveable
         rom.writePointer(mapTilesPtr);
         rom.writePointer(globalTileSetPtr);
         rom.writePointer(localTileSetPtr);
-        //rom.writeBytes(mapHeader.pMap, new byte[]{(byte)(borderWidth), (byte)(borderHeight)}); //Isn't quite working yet :/
+        rom.writeHalfword(borderWidth);
+        rom.writeHalfword(borderHeight);
     }
 }

@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * Lz77.d                                                                     *
- * "A wrapper for various LZ77 functions for the GBARom class"                *
+ * "A wrapper for various LZ77 functions for the ROM class"                *
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *
@@ -23,7 +23,7 @@
  *****************************************************************************/
 module GBAUtils.Lz77;
 
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.NewLz77;
 import std.stdio;
 import std.algorithm;
@@ -35,12 +35,12 @@ import std.algorithm;
  */
 public class Lz77
 {
-    public static int getUncompressedSize(GBARom ROM, int offset)
+    public static int getUncompressedSize(ROM ROM, int offset)
     {
         return NewLz77.getLz77DataLength(ROM, offset);
     }
     
-    public static ubyte[] decompressLZ77(GBARom ROM, int offset)
+    public static ubyte[] decompressLZ77(ROM ROM, int offset)
     {
         uint outputlen = 0;
         ubyte[] decompressed = new ubyte[](NewLz77.getLz77DataLength(ROM, offset));

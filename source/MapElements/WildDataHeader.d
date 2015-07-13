@@ -23,25 +23,25 @@
  *****************************************************************************/
 module MapElements.WildDataHeader;
 
-import GBAUtils.GBARom;
+import pokegba.rom;
 
 public class WildDataHeader
 {
     public ubyte bBank, bMap;
     public uint pGrass, pWater, pTrees, pFishing;
-    private GBARom rom;
+    private ROM rom;
     
-    public this(GBARom rom)
+    public this(ROM rom)
     {
         this(rom,rom.internalOffset);
     }
     
-    public this(GBARom rom, uint offset)
+    public this(ROM rom, uint offset)
     {
         loadWildData(rom, offset);
     }
     
-    public this(GBARom rom, ubyte bank, ubyte map)
+    public this(ROM rom, ubyte bank, ubyte map)
     {
         this.rom = rom;
         
@@ -58,7 +58,7 @@ public class WildDataHeader
         return 20;
     }
     
-    private void loadWildData(GBARom rom, uint offset)
+    private void loadWildData(ROM rom, uint offset)
     {
         this.rom = rom;
         

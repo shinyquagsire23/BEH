@@ -27,7 +27,8 @@ module GBAUtils.NewLz77;
 
 import std.bitmanip;
 import std.algorithm;
-import GBAUtils.GBARom;
+import pokegba.rom;
+import std.stdio;
 
 public class NewLz77
 {
@@ -224,7 +225,7 @@ public class NewLz77
         New // Perfect!
     }
 
-    public static uint getLz77DataLength(GBARom rom, int offset)
+    public static uint getLz77DataLength(ROM rom, int offset)
     {
         ubyte[] data = rom.readBytes(offset, 0x10);
         return littleEndianToNative!uint(data[1..5]) << 8;

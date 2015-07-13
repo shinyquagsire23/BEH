@@ -24,7 +24,7 @@
 module MapElements.WildDataCache;
 
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
+import pokegba.rom;
 
 import MapElements.WildData;
 import MapElements.WildDataHeader;
@@ -33,9 +33,9 @@ public class WildDataCache //TODO: Actually thread this
 {
     private static WildData[uint] dataCache;
     private static uint initialNum;
-    private static GBARom rom;
+    private static ROM rom;
     
-    public this(GBARom rom)
+    public this(ROM rom)
     {
         WildDataCache.rom = rom;
     }

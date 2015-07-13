@@ -24,7 +24,7 @@
 module IO.BorderTileData;
 
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
+import pokegba.rom;
 
 import IO.MapData;
 import Structures.MapTile;
@@ -35,10 +35,10 @@ public class BorderTileData
     private uint originalSize;
     private uint dataLoc;
     private MapData mData;
-    private GBARom rom;
+    private ROM rom;
     private MapTile[][] mapTiles;
     
-    public this(GBARom rom, uint offset, MapData mData)
+    public this(ROM rom, uint offset, MapData mData)
     {
         dataLoc = offset;
         this.mData = mData;
@@ -97,7 +97,7 @@ public class BorderTileData
             {
                 
                 //uint index = ((y*mData.borderWidth) + x);
-                rom.writeWord(cast(ushort)(mapTiles[y][x].getID() + ((mapTiles[y][x].getMeta() & 0x3F) << 10)));
+                rom.writeHalfword(cast(ushort)(mapTiles[y][x].getID() + ((mapTiles[y][x].getMeta() & 0x3F) << 10)));
             }
         }
     }

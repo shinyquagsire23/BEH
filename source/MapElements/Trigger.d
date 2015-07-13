@@ -23,7 +23,7 @@
  *****************************************************************************/
 module MapElements.Trigger;
 
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.ISaveable;
 
 public class Trigger : ISaveable
@@ -38,9 +38,9 @@ public class Trigger : ISaveable
     public ushort h6;
     public uint pScript;
 
-    private GBARom rom;
+    private ROM rom;
 
-    void LoadTriggers(GBARom rom)
+    void LoadTriggers(ROM rom)
     {
         this.rom = rom;
 
@@ -48,25 +48,25 @@ public class Trigger : ISaveable
         b2 = rom.readByte();
         bY = rom.readByte();
         b4 = rom.readByte();
-        h3 = rom.readWord();
-        hFlagCheck = rom.readWord();
-        hFlagValue = rom.readWord();
-        h6 = rom.readWord();
+        h3 = rom.readHalfword();
+        hFlagCheck = rom.readHalfword();
+        hFlagValue = rom.readHalfword();
+        h6 = rom.readHalfword();
         pScript = rom.getPointer();
     }
 
-    public this(GBARom rom, uint offset)
+    public this(ROM rom, uint offset)
     {
         rom.Seek(offset);
         LoadTriggers(rom);
     }
 
-    public this(GBARom rom)
+    public this(ROM rom)
     {
         LoadTriggers(rom);
     }
 
-    public this(GBARom rom, ubyte x, ubyte y)
+    public this(ROM rom, ubyte x, ubyte y)
     {
         this.rom = rom;
 
@@ -92,10 +92,10 @@ public class Trigger : ISaveable
         rom.writeByte(b2);
         rom.writeByte(bY);
         rom.writeByte(b4);
-        rom.writeWord(h3);
-        rom.writeWord(hFlagCheck);
-        rom.writeWord(hFlagValue);
-        rom.writeWord(h6);
+        rom.writeHalfword(h3);
+        rom.writeHalfword(hFlagCheck);
+        rom.writeHalfword(hFlagValue);
+        rom.writeHalfword(h6);
         rom.writePointer(pScript + (pScript == 0 ? 0 : 0x08000000));
     }
 }

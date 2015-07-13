@@ -25,7 +25,7 @@
 module MapElements.SpritesExitManager;
 
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.ISaveable;
 import MapElements.SpriteExit;
 import IO.Map;
@@ -36,9 +36,9 @@ public class SpritesExitManager : ISaveable
     private Map loadedMap;
     private uint internalOffset = 0;
     private uint originalSize;
-    private GBARom rom;
+    private ROM rom;
 
-    public this(GBARom rom, Map m, uint offset, uint count)
+    public this(ROM rom, Map m, uint offset, uint count)
     {
         rom.Seek(offset);
         mapExits.length = 1;
@@ -86,7 +86,7 @@ public class SpritesExitManager : ISaveable
     
     public void save()
     {
-        rom.floodBytes(internalOffset, rom.freeSpaceByte, originalSize);
+        rom.floodBytes(internalOffset, rom.freespaceByte, originalSize);
         
         //TODO make this a setting, ie always repoint vs keep pointers
         int i = getSize();

@@ -24,7 +24,7 @@
 module IO.ConnectionData;
 
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
+import pokegba.rom;
 import IO.MapHeader;
 import IO.Connection;
 import Structures.ConnectionType;
@@ -33,13 +33,13 @@ import MainGUI;
 public class ConnectionData
 {
     private uint originalSize;
-    private GBARom rom;
+    private ROM rom;
     private MapHeader mapHeader;
     public uint pNumConnections;
     public uint pData;
     public Connection[] aConnections;
     
-    public this(GBARom rom, MapHeader mHeader)
+    public this(ROM rom, MapHeader mHeader)
     {
         this.rom = rom;
         mapHeader = mHeader;
@@ -112,7 +112,7 @@ public class ConnectionData
         pNumConnections++;
         aConnections.length++;
         aConnections[pNumConnections] = new Connection(rom, c,bank,map); //Check
-        rom.floodBytes(pData, rom.freeSpaceByte, originalSize);
+        rom.floodBytes(pData, rom.freespaceByte, originalSize);
         
         //TODO make this a setting, ie always repoint vs keep pointers
         if(originalSize < getConnectionDataSize())

@@ -23,7 +23,7 @@
  *****************************************************************************/
 module MapElements.SpriteSign;
 
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.ISaveable;
 
 public class SpriteSign : ISaveable
@@ -38,14 +38,14 @@ public class SpriteSign : ISaveable
     public ubyte b7;
     public ubyte b8;
     public uint pScript;
-    private GBARom rom;
+    private ROM rom;
 
-    public this(GBARom rom)
+    public this(ROM rom)
     {
         this(rom, rom.internalOffset);
     }
 
-    public this(GBARom rom, int offset)
+    public this(ROM rom, int offset)
     {
         this.rom = rom;
         
@@ -61,7 +61,7 @@ public class SpriteSign : ISaveable
         pScript = rom.getPointer();
     }
 
-    public this(GBARom rom, byte x, byte y)
+    public this(ROM rom, byte x, byte y)
     {
         this.rom = rom;
         

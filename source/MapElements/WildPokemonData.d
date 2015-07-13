@@ -24,7 +24,7 @@
 module MapElements.WildPokemonData;
 
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.ISaveable;
 
 import MapElements.WildDataType;
@@ -33,7 +33,7 @@ import MapElements.WildPokemon;
 public class WildPokemonData : ISaveable
 {
     private WildDataType type;
-    private GBARom rom;
+    private ROM rom;
     private uint pData;
     public byte bRatio;
     public byte bDNEnabled;
@@ -42,7 +42,7 @@ public class WildPokemonData : ISaveable
     public uint[] aDNPokemon;
     private static int[] numPokemon = [12, 5, 5, 10];
 
-    public this(GBARom rom, WildDataType t)
+    public this(ROM rom, WildDataType t)
     {
         this.rom = rom;
         type = t;
@@ -88,7 +88,7 @@ public class WildPokemonData : ISaveable
         }
     }
 
-    public this(GBARom rom, WildDataType t, byte ratio)
+    public this(ROM rom, WildDataType t, byte ratio)
     {
         this.rom = rom;
         type = t;
@@ -104,7 +104,7 @@ public class WildPokemonData : ISaveable
         }
     }
     
-    public this(GBARom rom, WildDataType t, bool enableDN)
+    public this(ROM rom, WildDataType t, bool enableDN)
     {
         this.rom = rom;
         type = t;

@@ -31,14 +31,13 @@ import std.array;
 import std.format;
 import std.exception;
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
-import GBAUtils.ROMManager;
+import pokegba.rom;
 import gtk.TreeIter;
 import MapStore;
 
 public class BankLoader
 {
-    private static GBARom rom;
+    private static ROM rom;
     int tblOffs;
     MapStore tree;
     TreeIter root;
@@ -64,7 +63,7 @@ public class BankLoader
         }
     }
 
-    this(int tableOffset, GBARom rom, MapStore tree, TreeIter root)
+    this(int tableOffset, ROM rom, MapStore tree, TreeIter root)
     {
         BankLoader.rom = rom;
         tblOffs = ROMManager.currentROM.getPointer(tableOffset);
@@ -82,7 +81,7 @@ public class BankLoader
         for(int bankNum = 0; bankNum < DataStore.NumBanks; bankNum++)
         {
             writefln("Loading banks into tree... %u", bankNum);
-            bankPointers[bankNum] = rom.readLong() & 0x1FFFFFF;
+            bankPointers[bankNum] = rom.readWord() & 0x1FFFFFF;
             bankTrees[bankNum] = tree.addChild(root, format("%u", bankNum), bankNum, -1);
         }
 
@@ -95,7 +94,7 @@ public class BankLoader
                 writefln("Loading maps into tree...\tBank %u, map %u", mapNum, miniMapNum);
                 try
                 {
-                    uint dataPtr = rom.readLong(l + (miniMapNum * 4)) & 0x1FFFFFF;
+                    uint dataPtr = rom.readWord(l + (miniMapNum * 4)) & 0x1FFFFFF;
                     mapList[miniMapNum] = dataPtr;
                     uint mapName = cast(uint)rom.readByte(dataPtr + 0x14);
                     //mapName -= 0x58; //TODO: Add Jambo51's map header hack
@@ -106,7 +105,7 @@ public class BankLoader
                         if(mapName !in mapNames)
                         {
                             mapNamePokePtr = rom.getPointer(DataStore.MapLabels + ((mapName - 0x58) * 4)); //TODO use the actual structure
-                            convMapName = rom.readPokeText(mapNamePokePtr);
+                            convMapName = rom.readPoketext(mapNamePokePtr);
                             mapNames[mapName] = convMapName;
                         }
                         else
@@ -119,7 +118,7 @@ public class BankLoader
                         if(mapName in mapNames)
                         {
                             mapNamePokePtr = rom.getPointer(DataStore.MapLabels + ((mapName * 8) + 4));
-                            convMapName = rom.readPokeText(mapNamePokePtr);
+                            convMapName = rom.readPoketext(mapNamePokePtr);
                             mapNames[mapName] = convMapName;
                         }
                         else

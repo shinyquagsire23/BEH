@@ -23,7 +23,7 @@
  *****************************************************************************/
 module MapElements.SpriteExit;
 
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.ISaveable;
 
 public class SpriteExit : ISaveable 
@@ -36,14 +36,14 @@ public class SpriteExit : ISaveable
     public ubyte b6;
     public ubyte bMap;
     public ubyte bBank;
-    private GBARom rom;
+    private ROM rom;
     
-    public this(GBARom rom)
+    public this(ROM rom)
     {
         this(rom,rom.internalOffset);
     }
     
-    public this(GBARom rom, int offset)
+    public this(ROM rom, int offset)
     {
         this.rom = rom; 
         rom.Seek(offset);
@@ -58,7 +58,7 @@ public class SpriteExit : ISaveable
         bBank=rom.readByte();
     }
     
-    public this(GBARom rom, ubyte x, ubyte y)
+    public this(ROM rom, ubyte x, ubyte y)
     {
         this.rom = rom; 
         

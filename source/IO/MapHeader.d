@@ -23,29 +23,29 @@
  *****************************************************************************/
 module IO.MapHeader;
 
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.ISaveable;
 
 public class MapHeader : ISaveable {
-    public   uint pMap;
-    public   uint pSprites;
-    public   uint pScript;
-    public   uint pConnect;
-    public  ushort hSong;
-    public  ushort hMap;
-    public  ubyte bLabelID;
-    public  ubyte bFlash;
-    public  ubyte bWeather;
-    public  ubyte bType;
-    public  ubyte bUnused1;
-    public  ubyte bUnused2;
-    public  ubyte bLabelToggle;
-    public  ubyte bUnused3;
+    public uint pMap;
+    public uint pSprites;
+    public uint pScript;
+    public uint pConnect;
+    public ushort hSong;
+    public ushort hMap;
+    public ubyte bLabelID;
+    public ubyte bFlash;
+    public ubyte bWeather;
+    public ubyte bType;
+    public ubyte bUnused1;
+    public ubyte bUnused2;
+    public ubyte bLabelToggle;
+    public ubyte bUnused3;
     private uint bOffset;
-    private GBARom rom;
+    private ROM rom;
     uint hdrSize;//This is internal and does not go into the ROM
     
-    public this(GBARom rom, int offset)
+    public this(ROM rom, int offset)
     {
         bOffset=offset & 0x1FFFFFF;
         this.rom = rom;
@@ -55,8 +55,8 @@ public class MapHeader : ISaveable {
         pSprites =rom.getPointer();
         pScript = rom.getPointer();
         pConnect = rom.getPointer();
-        hSong = rom.readWord();
-        hMap = rom.readWord();
+        hSong = rom.readHalfword();
+        hMap = rom.readHalfword();
 
         bLabelID= rom.readByte();
         bFlash= rom.readByte();
@@ -77,8 +77,8 @@ public class MapHeader : ISaveable {
         rom.writePointer(pSprites);
         rom.writePointer(pScript);
         rom.writePointer(pConnect);
-        rom.writeWord(hSong);
-        rom.writeWord(hMap);
+        rom.writeHalfword(hSong);
+        rom.writeHalfword(hMap);
 
         rom.writeByte(bLabelID);
         rom.writeByte(bFlash);

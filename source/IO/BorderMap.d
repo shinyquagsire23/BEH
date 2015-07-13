@@ -23,7 +23,7 @@
  *****************************************************************************/
 module IO.BorderMap;
 
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.ISaveable;
 
 import IO.BorderTileData;
@@ -37,7 +37,7 @@ public class BorderMap : ISaveable
     private BorderTileData mapTileData;
     public bool isEdited = false;
     
-    public this(GBARom rom, Map m)
+    public this(ROM rom, Map m)
     {
         map = m;
         mapData = map.getMapData();

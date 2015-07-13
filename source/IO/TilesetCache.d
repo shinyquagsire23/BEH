@@ -24,8 +24,7 @@
 module IO.TilesetCache;
 
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
-import GBAUtils.ROMManager;
+import pokegba.rom;
 import IO.Map;
 import IO.Tileset;
 import std.stdio;
@@ -33,7 +32,7 @@ import std.stdio;
 public class TilesetCache
 {
     private static Tileset[uint] cache;
-    private GBARom rom;
+    private ROM rom;
     private static Map lastMap;
     private static uint lastGlobalPtr;
     private static uint lastLocalPtr;

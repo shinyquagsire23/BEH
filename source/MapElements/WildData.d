@@ -25,7 +25,7 @@
 module MapElements.WildData;
 
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
+import pokegba.rom;
 
 import MapElements.WildPokemonData;
 import MapElements.WildDataHeader;
@@ -35,9 +35,9 @@ public class WildData
 {
     public WildPokemonData[] aWildPokemon = new WildPokemonData[4];
     public WildDataHeader wildDataHeader;
-    private GBARom rom;
+    private ROM rom;
     
-    public this(GBARom rom, WildDataHeader h)
+    public this(ROM rom, WildDataHeader h)
     {
         this.rom = rom;
         wildDataHeader = h;
@@ -59,7 +59,7 @@ public class WildData
             aWildPokemon[3] = new WildPokemonData(rom, WildDataType.FISHING);
     }
     
-    public this(GBARom rom, ubyte bank, ubyte map)
+    public this(ROM rom, ubyte bank, ubyte map)
     {
         this.rom = rom;
         wildDataHeader = new WildDataHeader(rom, bank, map);

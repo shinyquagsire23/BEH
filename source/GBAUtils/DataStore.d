@@ -29,8 +29,7 @@ import std.string;
 import std.conv;
 import std.algorithm;
 import std.file;
-import GBAUtils.ROMManager;
-import GBAUtils.GBARom;
+import pokegba.rom;
 
 public class DataStore
 {
@@ -168,7 +167,7 @@ public class DataStore
         SpriteSmallSet = ReadNumberEntry(ROMHeader, "SpriteSmallSet");
         SpriteLargeSet = ReadNumberEntry(ROMHeader, "SpriteLargeSet");
         NumSprites = ReadNumberEntry(ROMHeader, "NumSprites");
-        WildPokemon = ROMManager.currentROM.getPointer(ReadNumberEntry(ROMHeader, "WildPokemon"));
+        WildPokemon = ROMManager.getActiveROM().getPointer(ReadNumberEntry(ROMHeader, "WildPokemon"));
         FontGFX = ReadNumberEntry(ROMHeader, "FontGFX");
         FontWidths = ReadNumberEntry(ROMHeader, "FontWidths");
         AttackNameList = ReadNumberEntry(ROMHeader, "AttackNameList");

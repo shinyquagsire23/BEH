@@ -24,16 +24,16 @@
 module IO.Render.OverworldSpritesManager;
 
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
+import pokegba.rom;
 import IO.Render.OverworldSprites;
 import gdkpixbuf.Pixbuf;
 
 public class OverworldSpritesManager //TODO Thread this
 {
     public static OverworldSprites[] Sprites = new OverworldSprites[256];
-    private static GBARom rom;
+    private static ROM rom;
     
-    public this(GBARom rom)
+    public this(ROM rom)
     {
         OverworldSpritesManager.rom = rom;
     }

@@ -4,7 +4,7 @@
  *                                                                            *
  * D 2.067.0-0                                                                *
  * OverworldSprites.d                                                         *
- * "Renders overworld sprites, given a GBARom and an offset to the overworld  *
+ * "Renders overworld sprites, given a ROM and an offset to the overworld  *
  *  sprite data."                                                             *
  *                                                                            *
  *                         This file is part of BEH.                          *
@@ -24,14 +24,14 @@
  *****************************************************************************/
 module IO.Render.OverworldSprites;
 
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.GBAImage;
 import GBAUtils.Palette;
 import GBAUtils.DataStore;
 import GBAUtils.GBAImageType;
 import GBAUtils.PixbufExtend;
 import gdkpixbuf.Pixbuf;
-
+import std.stdio;
 
 public class OverworldSprites 
 {
@@ -77,18 +77,18 @@ public class OverworldSprites
      }
      */
     
-    public this(GBARom rom)
+    public this(ROM rom)
     {
         Load(rom);	
     }
     
-    public this(GBARom rom, int offset)
+    public this(ROM rom, int offset)
     {
         rom.Seek(offset);
         Load(rom);
     }
     
-    void GrabPal(GBARom rom)
+    void GrabPal(ROM rom)
     {
         OverworldSprites.myPal = new Palette[16];
         
@@ -172,7 +172,7 @@ public class OverworldSprites
         }				
     }
     
-    void MakeMeReal(GBARom rom)
+    void MakeMeReal(ROM rom)
     {
         int sz=0;
         if(ptrSize==DataStore.SpriteSmallSet)
@@ -212,7 +212,7 @@ public class OverworldSprites
         PaintMeLikeYourWomenInMagazines();//Honestly not sure what I'm totally doing here. 
     }
     
-    void Load(GBARom rom)
+    void Load(ROM rom)
     {
         StarterWord = rom.readWord();
         iPal=rom.readByte();

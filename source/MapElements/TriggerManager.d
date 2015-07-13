@@ -25,7 +25,7 @@
 module MapElements.TriggerManager;
 
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.ISaveable;
 import MapElements.Trigger;
 import IO.Map;
@@ -36,21 +36,21 @@ public class TriggerManager : ISaveable
     private Map loadedMap;
     private uint internalOffset;
     private uint originalSize;
-    private GBARom rom;
+    private ROM rom;
 
-    public this(GBARom rom, Map m, int count)
+    public this(ROM rom, Map m, int count)
     {
         LoadTriggers(rom, m, count);
 
     }
 
-    public this(GBARom rom, Map m, int offset, int count)
+    public this(ROM rom, Map m, int offset, int count)
     {
         rom.Seek(offset);
         LoadTriggers(rom, m, count);
     }
 
-    public void LoadTriggers(GBARom rom, Map m, int count)
+    public void LoadTriggers(ROM rom, Map m, int count)
     {
         internalOffset = rom.internalOffset;
         mapTriggers.length = 1;
@@ -96,7 +96,7 @@ public class TriggerManager : ISaveable
 
     public void save()
     {
-        rom.floodBytes(internalOffset, rom.freeSpaceByte, originalSize);
+        rom.floodBytes(internalOffset, rom.freespaceByte, originalSize);
 
         // TODO make this a setting, ie always repoint vs keep pointers
         int i = getSize();

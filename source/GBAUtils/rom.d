@@ -116,6 +116,30 @@ class ROM
     }
     
     
+    /// Read Game Code
+    ///
+	/// Gets the game code from the ROM, ie BPRE for US Pkmn Fire Red
+	public string getGameCode()
+	{
+		return headerCode;
+	}
+	
+	/// Read Game Text
+	///
+	/// Gets the game text from the ROM, ie POKEMON FIRE for US Pkmn Fire Red
+	public string getGameText()
+	{
+		return headerName;
+	}
+	
+	/// Read Creator ID
+	///
+	/// Gets the game creator ID as a string, ie '01' is GameFreak's Company ID
+	public string getGameCreatorID()
+	{
+		return headerMaker;
+	}
+    
     
     /// Load ROM Data
     ///
@@ -646,17 +670,25 @@ class ROM
     
     
     
-    /// Write Pointer to ROM
+    /// Write Word to ROM
     ///
-    /// Takes a uint and writes it as a little endian pointer into the ROM
+    /// Takes a uint and writes it as a little endian word into the ROM
     /// buffer.
     /// @param pointer Pointer to write
     /// @param offset Offset to write it at\
     
-    public void writePointer(uint pointer, uint offset)
+    public void writeWord(uint pointer, uint offset)
     {
         ubyte[] bytes = bit.nativeToLittleEndian(pointer);
         writeBytes(offset,bytes);
+    }
+    
+    public void writeWord(uint pointer)
+    {
+        ubyte[] bytes = bit.nativeToLittleEndian(pointer);
+        
+        writeBytes(internalOffset,bytes);
+        internalOffset += 4;
     }
     
     
@@ -664,7 +696,7 @@ class ROM
     /// Write Pointer to ROM
     ///
     /// Reverses and writes a pointer to the ROM. Assumes pointer is ROM memory
-    /// and appends 08 to it.
+    /// and ORs 08 to it.
     ///
     /// Params:
     ///     pointer = Pointer to write (appends 08 automatically)
@@ -871,6 +903,8 @@ class ROM
 
 static class ROMManager
 {
+    static:
+    
     ROM[ulong] screenStore;
     ROM currentROM = null;
     
@@ -896,7 +930,7 @@ static class ROMManager
     
     /// Load ROM into ROM Manager
     ///
-    /// Loads a ROM using stdin. Sets the loaded ROM as default.
+    /// Loads a ROM using stdin if no location is provided. Sets the loaded ROM as default.
     ///
     /// Returns: The ROMManager ROM ID.
     
@@ -907,6 +941,11 @@ static class ROMManager
         io.writef("Please select a ROM: ");
         location = io.readln();
         
+        return loadROM(location);
+    }
+    
+    ulong loadROM(string location)
+    {        
         if(location.length == 0)
         {
             return -1;

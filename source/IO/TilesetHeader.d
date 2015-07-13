@@ -24,7 +24,7 @@
 module IO.TilesetHeader;
 
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.ISaveable;
 
 public class TilesetHeader : ISaveable 
@@ -40,9 +40,9 @@ public class TilesetHeader : ISaveable
     public uint pAnimation;
     public uint hdrSize;//This is internal and does not go into the ROM
     private int bOffset;
-    private GBARom rom;
+    private ROM rom;
     
-    public this(GBARom rom, int offset)
+    public this(ROM rom, int offset)
     {
         this.rom = rom;
         bOffset=offset;

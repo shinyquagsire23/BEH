@@ -24,7 +24,7 @@
 module IO.Tileset;
 
 import gdkpixbuf.Pixbuf;
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.Palette;
 import GBAUtils.GBAImage;
 import GBAUtils.Lz77;
@@ -35,10 +35,11 @@ import core.exception;
 import core.thread;
 import std.array;
 import std.concurrency;
+import std.stdio;
 
 public class Tileset
 {
-    private GBARom rom;
+    private ROM rom;
     private GBAImage image;
     private Pixbuf[][] bi;
     private Palette[][] palettes; 
@@ -56,7 +57,7 @@ public class Tileset
     public bool modified = false;
 
     
-    public this(GBARom rom, int offset)
+    public this(ROM rom, int offset)
     {
         this.rom = rom;
         loadData(offset);
@@ -290,7 +291,7 @@ public class Tileset
         return tilesetHeader;
     }
 
-    public GBARom getROM()
+    public ROM getROM()
     {
         return rom;
     }

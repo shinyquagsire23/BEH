@@ -25,7 +25,7 @@
 module MapElements.SpritesSignManager;
 
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.ISaveable;
 import MapElements.SpriteSign;
 import IO.Map;
@@ -36,9 +36,9 @@ public class SpritesSignManager : ISaveable
     private Map loadedMap;
     private uint internalOffset;
     private uint originalSize;
-    private GBARom rom;
+    private ROM rom;
 
-    public this(GBARom rom, Map m, uint offset, uint count)
+    public this(ROM rom, Map m, uint offset, uint count)
     {
         internalOffset = offset;
         this.rom = rom;
@@ -87,7 +87,7 @@ public class SpritesSignManager : ISaveable
 
     public void save()
     {
-        rom.floodBytes(internalOffset, rom.freeSpaceByte, originalSize);
+        rom.floodBytes(internalOffset, rom.freespaceByte, originalSize);
         
         //TODO make this a setting, ie always repoint vs keep pointers
         if(originalSize < getSize())

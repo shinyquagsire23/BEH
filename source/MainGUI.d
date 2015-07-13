@@ -44,23 +44,24 @@ import gtk.Menu;
 import gtk.Widget;
 import gtk.Image;
 import gdk.Event;
+import gtkc.gdktypes;
 import gdkpixbuf.Pixbuf;
 import gtk.FileChooserDialog;
 
 import MapStore;
 import MapTreeView;
 
-import GBAUtils.ROMManager;
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.DataStore;
 import GBAUtils.PixbufExtend;
 import IO.BankLoader;
 import IO.Map;
 import IO.MapIO;
+import UI.MapEditorBox;
 
 static MainWindow win;
 static MapStore store;
-static Image image;
+static MapEditorBox mapEditorBox;
 
 void main(string[] args)
 {
@@ -92,15 +93,17 @@ void main(string[] args)
     mapTreeView.addOnRowActivated(toDelegate(&openMap));
     mapSelectWindow.add(mapTreeView);
     
-    image = new Image();
+    mapEditorBox = MapEditorBox.getInstance();
     Pixbuf buf = new Pixbuf("resources/mime.jpg");
     Pixbuf buf2 = new Pixbuf("resources/smeargle.png").addAlpha(false, 0, 0, 0);
     
     buf.drawImage(buf2, 5, 5);
     buf.fillRect(40,50,8,8,0,0,0);
 
-    image.setFromPixbuf(buf);
-    mapEditorWindow.add(image);
+    mapEditorBox.setFromPixbuf(buf);
+    mapEditorWindow.add(mapEditorBox);
+	mapEditorWindow.addEvents(GdkEventMask.POINTER_MOTION_MASK | GdkEventMask.POINTER_MOTION_HINT_MASK | GdkEventMask.BUTTON_PRESS_MASK);
+	mapEditorWindow.addOnMotionNotify(toDelegate(&mouseDragged));
     mapEditor.packStart(mapEditorWindow, true, true, 0);
     
     mainSplit.setPosition(220);
@@ -121,21 +124,36 @@ void openMap(TreePath path, TreeViewColumn column, TreeView view)
     if(bank != -1 && map != -1)
     {
         MapIO.loadMap(bank,map);
-        writefln("Map loaded, rendering...");
-        image.setFromPixbuf(Map.renderMap(MapIO.loadedMap, false));
-        writefln("Map rendered.");
+        writefln("Map loaded");
     }
 }
 
 void chooseRom(MenuItem item)
 {
-    if(ROMManager.loadRom() >= 0)
+    string location = "";
+    auto dlg = new FileChooserDialog("Open File", null, FileChooserAction.OPEN, ["Open", "Cancel"], [ResponseType.ACCEPT, ResponseType.CANCEL]);
+    if(GtkResponseType.ACCEPT == dlg.run() )
     {
-        writeln(ROMManager.getActiveROM().getGameCode());
-        writeln(ROMManager.getActiveROM().getGameText());
-        writeln(ROMManager.getActiveROM().getGameCreatorID());
-        DataStore dataStore = new DataStore("BEH.ini", ROMManager.currentROM.getGameCode());
-        BankLoader b = new BankLoader(DataStore.MapHeaders, ROMManager.getActiveROM(), store, store.addCategory("Maps by Bank"));
-        b.run();
+        location = dlg.getFilename();
+        if(ROMManager.loadROM(location) >= 0)
+        {
+            writeln(ROMManager.getActiveROM().getGameCode());
+            writeln(ROMManager.getActiveROM().getGameText());
+            writeln(ROMManager.getActiveROM().getGameCreatorID());
+            DataStore dataStore = new DataStore("BEH.ini", ROMManager.currentROM.getGameCode());
+            BankLoader b = new BankLoader(DataStore.MapHeaders, ROMManager.getActiveROM(), store, store.addCategory("Maps by Bank"));
+            b.run();
+        }
     }
+    dlg.destroy();
+}
+
+public bool mouseDragged(GdkEventMotion* eventMotion, Widget w) 
+{
+	int mx = cast(int)eventMotion.x;
+	int my = cast(int)eventMotion.y;
+	mx += (cast(ScrolledWindow)w).getHadjustment.getValue();
+	my += (cast(ScrolledWindow)w).getVadjustment.getValue();
+
+	return mapEditorBox.mouseDragged(mx,my, eventMotion.state);
 }

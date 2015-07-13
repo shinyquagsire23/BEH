@@ -24,7 +24,7 @@
 module IO.Render.BlockRenderer;
 
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.PixbufExtend;
 
 import gdkpixbuf.Pixbuf;
@@ -32,6 +32,7 @@ import IO.Block;
 import IO.MapIO;
 import IO.Tile;
 import IO.Tileset;
+import std.stdio;
 
 public class BlockRenderer
 {

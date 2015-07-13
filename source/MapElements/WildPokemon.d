@@ -23,24 +23,24 @@
  *****************************************************************************/
 module MapElements.WildPokemon;
 
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.ISaveable;
 
 public class WildPokemon : ISaveable
 {
-    private GBARom rom;
+    private ROM rom;
     public ubyte bMinLV, bMaxLV;
     public ushort wNum;
     
-    public this(GBARom rom)
+    public this(ROM rom)
     {
         this.rom = rom;
         bMinLV = rom.readByte();
         bMaxLV = rom.readByte();
-        wNum = rom.readWord();
+        wNum = rom.readHalfword();
     }
     
-    public this(GBARom rom, ubyte minLV, ubyte maxLV, ushort pokemon)
+    public this(ROM rom, ubyte minLV, ubyte maxLV, ushort pokemon)
     {
         this.rom = rom;
         bMinLV = minLV;
@@ -57,6 +57,6 @@ public class WildPokemon : ISaveable
     {
         rom.writeByte(bMinLV);
         rom.writeByte(bMaxLV);
-        rom.writeWord(wNum);
+        rom.writeHalfword(wNum);
     }
 }

@@ -23,7 +23,7 @@
  *****************************************************************************/
 module MapElements.SpriteNPC;
 
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.ISaveable;
 
 public class SpriteNPC : ISaveable
@@ -49,19 +49,19 @@ public class SpriteNPC : ISaveable
     public ubyte b24;
 
     // Non struct vars
-    private GBARom rom;
+    private ROM rom;
 
-    public this(GBARom rom)
+    public this(ROM rom)
     {
         this(rom, rom.internalOffset);
     }
 
-    public this(GBARom rom, uint offset)
+    public this(ROM rom, uint offset)
     {
         this.rom = rom;
         rom.Seek(offset);
         b1 = rom.readByte();
-        hSpriteSet = rom.readWord();
+        hSpriteSet = rom.readHalfword();
         b4 = rom.readByte();
         bX = rom.readByte();
         b6 = rom.readByte();
@@ -76,12 +76,12 @@ public class SpriteNPC : ISaveable
         bTrainerLOS = rom.readByte();
         b16 = rom.readByte();
         pScript = rom.getPointer();
-        hFlag = rom.readWord();
+        hFlag = rom.readHalfword();
         b23 = rom.readByte();
         b24 = rom.readByte();
     }
     
-    public this(GBARom rom, ubyte x, ubyte y)
+    public this(ROM rom, ubyte x, ubyte y)
     {
         this.rom = rom;
         b1 = 0;
@@ -113,7 +113,7 @@ public class SpriteNPC : ISaveable
     public void save()
     {
         rom.writeByte(b1);
-        rom.writeWord(hSpriteSet);
+        rom.writeHalfword(hSpriteSet);
         rom.writeByte(b4);
         rom.writeByte(bX);
         rom.writeByte(b6);
@@ -128,7 +128,7 @@ public class SpriteNPC : ISaveable
         rom.writeByte(bTrainerLOS);
         rom.writeByte(b16);
         rom.writePointer(pScript + (pScript == 0 ? 0 : 0x08000000));
-        rom.writeWord(hFlag);
+        rom.writeHalfword(hFlag);
         rom.writeByte(b23);
         rom.writeByte(b24);
     }

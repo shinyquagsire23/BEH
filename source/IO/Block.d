@@ -24,7 +24,7 @@
 module IO.Block;
 
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
+import pokegba.rom;
 import IO.MapIO;
 import IO.Tile;
 
@@ -36,14 +36,14 @@ public class Block
     public Tile[2][2] tilesBackground;
     public uint blockID;
     public uint backgroundMetaData;
-    private GBARom rom;
+    private ROM rom;
     
-    public this(int blockID, GBARom rom)
+    public this(int blockID, ROM rom)
     {
         this(blockID, MapIO.blockRenderer.getBehaviorByte(blockID), rom);
     }
     
-    public this(uint blockID, uint bgBytes, GBARom rom)
+    public this(uint blockID, uint bgBytes, ROM rom)
     {
         this.blockID = blockID;
         this.backgroundMetaData = bgBytes;
@@ -119,7 +119,7 @@ public class Block
                         toWrite |= (tilesBackground[x1][y1].getPaletteNum() & 0xF) << 12;
                         toWrite |= (tilesBackground[x1][y1].xFlip ? 0x1 : 0x0) << 10;
                         toWrite |= (tilesBackground[x1][y1].yFlip ? 0x1 : 0x0) << 11;
-                        rom.writeWord(toWrite);
+                        rom.writeHalfword(toWrite);
                     }
                     else
                     {
@@ -127,7 +127,7 @@ public class Block
                         toWrite |= (tilesForeground[x1][y1].getPaletteNum() & 0xF) << 12;
                         toWrite |= (tilesForeground[x1][y1].xFlip ? 0x1 : 0x0) << 10;
                         toWrite |= (tilesForeground[x1][y1].yFlip ? 0x1 : 0x0) << 11;
-                        rom.writeWord(toWrite);
+                        rom.writeHalfword(toWrite);
                     }
                 }
             }

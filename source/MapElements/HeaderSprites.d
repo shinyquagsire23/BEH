@@ -24,7 +24,7 @@
  *****************************************************************************/
 module MapElements.HeaderSprites;
 
-import GBAUtils.GBARom;
+import pokegba.rom;
 
 public class HeaderSprites 
 {
@@ -37,14 +37,14 @@ public class HeaderSprites
     public uint pTraps;
     public uint pSigns;
     private uint pData;
-    private GBARom rom;
+    private ROM rom;
     
-    public this(GBARom rom)
+    public this(ROM rom)
     {
         this(rom,rom.internalOffset);
     }	  
     
-    public this(GBARom rom, int offset)
+    public this(ROM rom, int offset)
     {
         pData = offset;
         this.rom = rom;

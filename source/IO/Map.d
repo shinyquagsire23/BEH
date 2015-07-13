@@ -25,9 +25,8 @@ module IO.Map;
 
 import std.stdio;
 import gdkpixbuf.Pixbuf;
-import GBAUtils.GBARom;
 import GBAUtils.ISaveable;
-import GBAUtils.ROMManager;
+import pokegba.rom;
 import GBAUtils.PixbufExtend;
 import GBAUtils.PictureFrame;
 import IO.MapData;
@@ -64,12 +63,12 @@ public class Map : ISaveable
     public OverworldSprites[] eventSprites;
     public bool isEdited;
     
-    public this(GBARom rom, uint bank, uint map)
+    public this(ROM rom, uint bank, uint map)
     {
         this(rom,BankLoader.maps[bank][map]);
     }
     
-    public this(GBARom rom, uint dataOffset)
+    public this(ROM rom, uint dataOffset)
     {
         this.dataOffset = dataOffset;
         mapHeader = new MapHeader(rom, dataOffset);

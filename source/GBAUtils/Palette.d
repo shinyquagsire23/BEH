@@ -29,7 +29,7 @@ import std.stdio;
 import std.conv;
 import gdk.RGBA;
 import GBAUtils.GBAImageType;
-import GBAUtils.GBARom;
+import pokegba.rom;
 
 public class Palette
 {
@@ -69,7 +69,7 @@ public class Palette
         }
     }
     
-    public this(GBAImageType type, GBARom rom, int offset)
+    public this(GBAImageType type, ROM rom, int offset)
     {
         this(type,rom.getData()[offset..offset+(type == GBAImageType.c16 ? 32 : 512)]);
     }
@@ -211,7 +211,7 @@ public class Palette
         return colors;
     }
     
-    public void save(GBARom rom)
+    public void save(ROM rom)
     {
         ubyte[] data = new ubyte[0x20];
         for(int i = 0; i < 16; i++)

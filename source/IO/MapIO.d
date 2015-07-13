@@ -27,7 +27,7 @@ module IO.MapIO;
 import std.stdio;
 
 import GBAUtils.DataStore;
-import GBAUtils.ROMManager;
+import pokegba.rom;
 
 import IO.Render.BlockRenderer;
 import IO.Map;
@@ -35,6 +35,7 @@ import IO.BorderMap;
 import IO.BankLoader;
 import IO.TilesetCache;
 import IO.Render.TilesetRenderer;
+import UI.MapEditorBox;
 import MapElements.WildData;
 import MapElements.WildDataCache;
 //import Plugins.PluginManager;
@@ -107,10 +108,10 @@ public class MapIO //This whole file is just one big TODO
         
         borderMap = new BorderMap(ROMManager.getActiveROM(), loadedMap);
         writefln("Border map loaded, loading global tileset...");
-        /*MainGUI.reloadMimeLabels(); //TODO UI stuff
-         MainGUI.mapEditorPanel.setGlobalTileset(TilesetCache.get(loadedMap.getMapData().globalTileSetPtr));
-         MainGUI.mapEditorPanel.setLocalTileset(TilesetCache.get(loadedMap.getMapData().localTileSetPtr));
-         MainGUI.eventEditorPanel.setGlobalTileset(TilesetCache.get(loadedMap.getMapData().globalTileSetPtr));
+        //MainGUI.reloadMimeLabels(); //TODO UI stuff
+        MapEditorBox.getInstance().setGlobalTileset(TilesetCache.get(loadedMap.getMapData().globalTileSetPtr));
+        MapEditorBox.getInstance().setLocalTileset(TilesetCache.get(loadedMap.getMapData().localTileSetPtr));
+        /*MainGUI.eventEditorPanel.setGlobalTileset(TilesetCache.get(loadedMap.getMapData().globalTileSetPtr)); //TODO
          MainGUI.eventEditorPanel.setLocalTileset(TilesetCache.get(loadedMap.getMapData().localTileSetPtr));*/
         
         TilesetRenderer.setGlobalTileset(TilesetCache.get(loadedMap.getMapData().globalTileSetPtr));
@@ -119,14 +120,14 @@ public class MapIO //This whole file is just one big TODO
         writefln("Local tileset loaded to tileset renderer");
         TilesetRenderer.DrawTileset();
         writefln("Tilesets rendered");
-        /*MainGUI.tileEditorPanel.repaint();
-         
-         MainGUI.mapEditorPanel.setMap(loadedMap);//TODO UI stuff
-         MainGUI.mapEditorPanel.DrawMap();
-         MainGUI.mapEditorPanel.DrawMovementPerms();
-         MainGUI.mapEditorPanel.repaint();
-         
-         MainGUI.eventEditorPanel.setMap(loadedMap);
+        /*MainGUI.tileEditorPanel.repaint();*/
+        
+        MapEditorBox.getInstance().setMap(loadedMap);//TODO UI stuff
+        MapEditorBox.getInstance().DrawMap();
+        MapEditorBox.getInstance().DrawMovementPerms();
+        //MainGUI.mapEditorPanel.repaint();
+        
+        /*MainGUI.eventEditorPanel.setMap(loadedMap);
          MainGUI.eventEditorPanel.Redraw = true;
          MainGUI.eventEditorPanel.DrawMap();
          MainGUI.eventEditorPanel.repaint();
@@ -143,9 +144,9 @@ public class MapIO //This whole file is just one big TODO
          
          }
          
-         MainGUI.loadWildPokemon();
+         MainGUI.loadWildPokemon();*/
          
-         MainGUI.mapEditorPanel.repaint();*/
+         //MainGUI.mapEditorPanel.repaint(); //TODO
         //Date eD = new Date();
         //uint time = eD.getTime() - d.getTime();
         //MainGUI.setStatus("Done! Finished in " + (double) (time / 1000) + " seconds!"); //TODO, time loaded?
@@ -166,7 +167,7 @@ public class MapIO //This whole file is just one big TODO
         ROMManager.currentROM.Seek(ROMManager.currentROM.getPointer(DataStore.SpeciesNames));
         for (int i = 0; i < DataStore.NumPokemon; i++)
         {
-            pokemonNames[i] = ROMManager.currentROM.readPokeText();
+            pokemonNames[i] = ROMManager.currentROM.readPoketext();
             writefln(pokemonNames[i]);
         }
         /*addStringArray(MainGUI.pkName1, pokemonNames); //TODO UI stuff

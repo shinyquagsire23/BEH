@@ -25,7 +25,7 @@
 module MapElements.SpritesNPCManager;
 
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.ISaveable;
 import MapElements.SpriteNPC;
 import IO.Map;
@@ -36,9 +36,9 @@ public class SpritesNPCManager : ISaveable
     private Map loadedMap;
     private uint internalOffset;
     private uint originalSize;
-    private GBARom rom;
+    private ROM rom;
     
-    public this(GBARom rom, Map m, int offset, int count)
+    public this(ROM rom, Map m, int offset, int count)
     {
         this.rom = rom;
         internalOffset = offset;
@@ -97,7 +97,7 @@ public class SpritesNPCManager : ISaveable
 
     public void save()
     {
-        rom.floodBytes(internalOffset, rom.freeSpaceByte, originalSize);
+        rom.floodBytes(internalOffset, rom.freespaceByte, originalSize);
 
         // TODO make this a setting, ie always repoint vs keep pointers
         int i = getSize();

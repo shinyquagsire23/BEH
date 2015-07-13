@@ -24,7 +24,7 @@
 module IO.MapTileData;
 
 import GBAUtils.DataStore;
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.ISaveable;
 import Structures.MapTile;
 import IO.MapData;
@@ -34,9 +34,9 @@ public class MapTileData : ISaveable
     private uint originalPointer;
     private uint originalSize;
     private MapData mData;
-    private GBARom rom;
+    private ROM rom;
     private MapTile[][] mapTiles;
-    public this(GBARom rom, MapData mData)
+    public this(ROM rom, MapData mData)
     {
         this.mData = mData;
         this.rom = rom;
@@ -102,7 +102,7 @@ public class MapTileData : ISaveable
             {
                 
                 int index =  ((y*mData.mapWidth) + x);
-                rom.writeWord(mData.mapTilesPtr + index*2, cast(ushort)(mapTiles[x][y].getID() + ((mapTiles[x][y].getMeta() & 0x3F) << 10)));
+                rom.writeHalfword(mData.mapTilesPtr + index*2, cast(ushort)(mapTiles[x][y].getID() + ((mapTiles[x][y].getMeta() & 0x3F) << 10)));
             }
         }
     }
@@ -112,7 +112,7 @@ public class MapTileData : ISaveable
         MapTile[][] newMapTiles = new MapTile[][](xSize, ySize);
         mData.mapWidth = xSize;
         mData.mapHeight = ySize;
-        rom.floodBytes(originalPointer, rom.freeSpaceByte, originalSize);
+        rom.floodBytes(originalPointer, rom.freespaceByte, originalSize);
         
         //TODO make this a setting, ie always repoint vs keep pointers
         if(originalSize < getSize())

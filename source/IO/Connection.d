@@ -23,24 +23,24 @@
  *****************************************************************************/
 module IO.Connection;
 
-import GBAUtils.GBARom;
+import pokegba.rom;
 import GBAUtils.ISaveable;
 import Structures.ConnectionType;
 
 public class Connection : ISaveable
 {
-    private GBARom rom;
+    private ROM rom;
     public uint lType, lOffset;
     public ubyte bBank, bMap;
     public ushort wFiller;
     
-    public this(GBARom rom)
+    public this(ROM rom)
     {
         this.rom = rom;
         load();
     }
     
-    public this(GBARom rom, ConnectionType c, byte bank, byte map)
+    public this(ROM rom, ConnectionType c, byte bank, byte map)
     {
         this.rom = rom;
         lType = c;
@@ -53,18 +53,18 @@ public class Connection : ISaveable
     public void load()
     {
         lType = rom.getPointer(true);
-        lOffset = rom.getSignedLong(true);
+        lOffset = rom.getSignedWord(true);
         bBank = rom.readByte();
         bMap = rom.readByte();
-        wFiller = rom.readWord();
+        wFiller = rom.readHalfword();
     }
     
     public void save()
     {
         rom.writePointer(lType);
-        rom.writeSignedPointer(lOffset);
+        rom.writePointer(lOffset);
         rom.writeByte(bBank);
         rom.writeByte(bMap);
-        rom.writeWord(wFiller);
+        rom.writeHalfword(wFiller);
     }
 }
