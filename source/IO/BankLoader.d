@@ -75,7 +75,7 @@ public class BankLoader
 
     public void run()
     {
-        rom.Seek(tblOffs);
+        rom.s(tblOffs);
         bankPointers = new uint[](DataStore.NumBanks);
         bankTrees = new TreeIter[](DataStore.NumBanks);
         for(int bankNum = 0; bankNum < DataStore.NumBanks; bankNum++)

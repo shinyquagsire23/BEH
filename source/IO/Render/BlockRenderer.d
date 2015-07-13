@@ -234,7 +234,7 @@ public class BlockRenderer
             blockNum -= DataStore.MainTSBlocks;
             pBehavior = getLocalTileset().tilesetHeader.pBehavior;
         }
-        global.getROM().Seek(pBehavior + (blockNum * (DataStore.EngineVersion == 1 ? 4 : 2)));
+        global.getROM().s(pBehavior + (blockNum * (DataStore.EngineVersion == 1 ? 4 : 2)));
         uint bytes = DataStore.EngineVersion == 1 ? global.getROM().getPointer(true) : global.getROM().getPointer(true) & 0xFFFF;
         return bytes;
     }

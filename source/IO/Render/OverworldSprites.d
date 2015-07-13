@@ -84,7 +84,7 @@ public class OverworldSprites
     
     public this(ROM rom, int offset)
     {
-        rom.Seek(offset);
+        rom.s(offset);
         Load(rom);
     }
     
@@ -200,7 +200,7 @@ public class OverworldSprites
         }
         
         int i=0;
-        rom.Seek( trueGraphicsPointer);
+        rom.s( trueGraphicsPointer);
         ubyte[] dBuff = rom.readBytes(sz*2);
         rawImage = new GBAImage(dBuff,myPal[iPal&0xF],128, 128);//pntSz);	
         

@@ -62,7 +62,7 @@ public class WildDataHeader
     {
         this.rom = rom;
         
-        rom.Seek(offset);
+        rom.s(offset);
         bBank = rom.readByte();
         bMap = rom.readByte();
         rom.internalOffset+=2; //Filler bytes
@@ -74,7 +74,7 @@ public class WildDataHeader
     
     public void save(uint headerloc)
     {
-        rom.Seek(headerloc);
+        rom.s(headerloc);
         rom.writeByte(bBank);
         rom.writeByte(bMap);
         rom.internalOffset+=2; //Filler bytes

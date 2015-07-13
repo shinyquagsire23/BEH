@@ -46,7 +46,7 @@ public class TriggerManager : ISaveable
 
     public this(ROM rom, Map m, int offset, int count)
     {
-        rom.Seek(offset);
+        rom.s(offset);
         LoadTriggers(rom, m, count);
     }
 
@@ -111,7 +111,7 @@ public class TriggerManager : ISaveable
         loadedMap.mapSprites.pTraps = internalOffset & 0x1FFFFFF;
         loadedMap.mapSprites.bNumTraps = cast(ubyte) mapTriggers.length;
 
-        rom.Seek(internalOffset);
+        rom.s(internalOffset);
         foreach(Trigger t; mapTriggers)
             t.save();
     }

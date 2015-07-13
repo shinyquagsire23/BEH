@@ -57,7 +57,7 @@ public class Trigger : ISaveable
 
     public this(ROM rom, uint offset)
     {
-        rom.Seek(offset);
+        rom.s(offset);
         LoadTriggers(rom);
     }
 

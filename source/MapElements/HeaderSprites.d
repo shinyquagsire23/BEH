@@ -48,7 +48,7 @@ public class HeaderSprites
     {
         pData = offset;
         this.rom = rom;
-        rom.Seek(offset & 0x1FFFFFF);
+        rom.s(offset & 0x1FFFFFF);
         bNumNPC=rom.readByte();
         bNumExits=rom.readByte();
         bNumTraps=rom.readByte();
@@ -61,7 +61,7 @@ public class HeaderSprites
 
     public void save()
     {
-        rom.Seek(pData & 0x1FFFFFF);
+        rom.s(pData & 0x1FFFFFF);
         rom.writeByte(bNumNPC);
         rom.writeByte(bNumExits);
         rom.writeByte(bNumTraps);

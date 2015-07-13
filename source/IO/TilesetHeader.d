@@ -46,7 +46,7 @@ public class TilesetHeader : ISaveable
     {
         this.rom = rom;
         bOffset=offset;
-        rom.Seek(bOffset);
+        rom.s(bOffset);
         bCompressed=rom.readByte();
         isPrimary=(rom.readByte() == 0);//Reflect this when saving
         b2=rom.readByte();
@@ -72,7 +72,7 @@ public class TilesetHeader : ISaveable
     
     public void save()
     {
-        rom.Seek(bOffset);
+        rom.s(bOffset);
         rom.writeByte(bCompressed);
         rom.writeByte((isPrimary ? 0x0 : 0x1));
         rom.writeByte(b2);

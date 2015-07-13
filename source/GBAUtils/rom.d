@@ -587,7 +587,7 @@ class ROM
             b = getData()[offset+i];
             i++;
         }
-        Seek(offset+i);
+        this.s(offset+i);
         return convertPoketextToASCII(getData()[offset..offset + i]);
     }
     
@@ -746,11 +746,11 @@ class ROM
     
     
     
-    /// Seek Offset in ROM
+    /// s Offset in ROM
     ///
     /// Sets the internal offset for the ROM object.
     
-    public void Seek(uint offset)
+    public void s(uint offset)
     {
         internalOffset = offset & 0x1FFFFFF;
     }
@@ -874,7 +874,7 @@ class ROM
                  if(numMatches == searching.length - 1)
                  {
                      offset = i - cast(uint)searching.length + 2;
-                     this.Seek(offset);
+                     this.s(offset);
                      this.writePointer(pNew);
                      io.writeln("%x", offset);
                      totalMatches++;

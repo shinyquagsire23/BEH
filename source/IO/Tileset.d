@@ -320,7 +320,7 @@ public class Tileset
         {
             for (int i = 0; i < (tilesetHeader.isPrimary ? DataStore.MainTSPalCount : 16); i++)
             {
-                rom.Seek((tilesetHeader.pPalettes) + (32 * i + (j * 0x200)));
+                rom.s((tilesetHeader.pPalettes) + (32 * i + (j * 0x200)));
                 palettes[j][i].save(rom);
             }
         }

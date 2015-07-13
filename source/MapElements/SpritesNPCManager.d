@@ -44,7 +44,7 @@ public class SpritesNPCManager : ISaveable
         internalOffset = offset;
         loadedMap = m;
         
-        rom.Seek(offset);
+        rom.s(offset);
         int i = 0;
         mapNPCs.length = 1;
         for (i = 0; i < count; i++)
@@ -112,7 +112,7 @@ public class SpritesNPCManager : ISaveable
         loadedMap.mapSprites.pNPC = internalOffset;
         loadedMap.mapSprites.bNumNPC = cast(ubyte)mapNPCs.length;
 
-        rom.Seek(internalOffset);
+        rom.s(internalOffset);
         foreach(SpriteNPC n; mapNPCs)
             n.save();
     }

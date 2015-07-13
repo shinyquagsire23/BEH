@@ -90,7 +90,7 @@ public class BorderTileData
     
     public void save()
     {
-        rom.Seek(dataLoc);
+        rom.s(dataLoc);
         for(uint x = 0; x < mData.borderWidth; x++)
         {
             for(uint y = 0; y < mData.borderHeight; y++)

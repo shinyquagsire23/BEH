@@ -46,7 +46,7 @@ public class MapData : ISaveable
     
     public void load()
     {
-        rom.Seek(mapHeader.pMap);
+        rom.s(mapHeader.pMap);
         mapWidth = rom.getPointer(true);
         mapHeight = rom.getPointer(true);
         borderTilePtr = rom.getPointer();
@@ -72,7 +72,7 @@ public class MapData : ISaveable
     
     public void save()
     {
-        rom.Seek(mapHeader.pMap);
+        rom.s(mapHeader.pMap);
         rom.writePointer(mapWidth);
         rom.writePointer(mapHeight);
         rom.writePointer(borderTilePtr);

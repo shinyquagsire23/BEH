@@ -50,7 +50,7 @@ public class MapHeader : ISaveable {
         bOffset=offset & 0x1FFFFFF;
         this.rom = rom;
         
-        rom.Seek(bOffset);
+        rom.s(bOffset);
         pMap = rom.getPointer();
         pSprites =rom.getPointer();
         pScript = rom.getPointer();
@@ -72,7 +72,7 @@ public class MapHeader : ISaveable {
     
     public void save()
     {
-        rom.Seek(bOffset);
+        rom.s(bOffset);
         rom.writePointer(pMap);
         rom.writePointer(pSprites);
         rom.writePointer(pScript);

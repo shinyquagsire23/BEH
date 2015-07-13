@@ -40,7 +40,7 @@ public class SpritesExitManager : ISaveable
 
     public this(ROM rom, Map m, uint offset, uint count)
     {
-        rom.Seek(offset);
+        rom.s(offset);
         mapExits.length = 1;
         int i = 0;
         for (i = 0; i < count; i++)
@@ -101,7 +101,7 @@ public class SpritesExitManager : ISaveable
         loadedMap.mapSprites.pExits = internalOffset & 0x1FFFFFF;
         loadedMap.mapSprites.bNumExits = cast(ubyte)mapExits.length;
 
-        rom.Seek(internalOffset);
+        rom.s(internalOffset);
         foreach(SpriteExit e; mapExits)
             e.save();
     }

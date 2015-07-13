@@ -49,7 +49,7 @@ public class SpriteSign : ISaveable
     {
         this.rom = rom;
         
-        rom.Seek(offset);
+        rom.s(offset);
         bX = rom.readByte();
         b2 = rom.readByte();
         bY = rom.readByte();

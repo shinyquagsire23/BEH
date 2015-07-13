@@ -59,7 +59,7 @@ public class SpriteNPC : ISaveable
     public this(ROM rom, uint offset)
     {
         this.rom = rom;
-        rom.Seek(offset);
+        rom.s(offset);
         b1 = rom.readByte();
         hSpriteSet = rom.readHalfword();
         b4 = rom.readByte();

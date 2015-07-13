@@ -72,9 +72,9 @@ public class WildPokemonData : ISaveable
             for(int j = 0; j < (bDNEnabled > 0 ? 4 : 1); j++)
             {
                 if(bDNEnabled == 0)
-                    rom.Seek( pPokemonData);
+                    rom.s( pPokemonData);
                 else
-                    rom.Seek(aDNPokemon[j] & 0x1FFFFFF);
+                    rom.s(aDNPokemon[j] & 0x1FFFFFF);
                 
                 for (int i = 0; i < numPokemon[type]; i++)
                 {
@@ -97,7 +97,7 @@ public class WildPokemonData : ISaveable
         bDNEnabled = 0;
         aWildPokemon = new WildPokemon[][](bDNEnabled > 0 ? 4 : 1, numPokemon[type]);
 
-        rom.Seek( pPokemonData);
+        rom.s( pPokemonData);
         for (int i = 0; i < numPokemon[type]; i++)
         {
             aWildPokemon[0][i] = new WildPokemon(rom, 1, 1, 0);
@@ -113,7 +113,7 @@ public class WildPokemonData : ISaveable
         pPokemonData = -1;
         aWildPokemon = new WildPokemon[][](bDNEnabled > 0 ? 4 : 1, numPokemon[type]);
 
-        rom.Seek( pPokemonData);
+        rom.s( pPokemonData);
         for(int j = 0; j < (bDNEnabled > 0 ? 4 : 1); j++)
         {	
             for (int i = 0; i < numPokemon[type]; i++)
@@ -202,7 +202,7 @@ public class WildPokemonData : ISaveable
         
         if(bDNEnabled == 1)
         {
-            rom.Seek(pPokemonData);
+            rom.s(pPokemonData);
             rom.writePointer(aDNPokemon[0]);
             rom.writePointer(aDNPokemon[1]);
             rom.writePointer(aDNPokemon[2]);
@@ -212,9 +212,9 @@ public class WildPokemonData : ISaveable
         for(int j = 0; j < (bDNEnabled > 0 ? 4 : 1); j++)
         {
             if(bDNEnabled == 0)
-                rom.Seek( pPokemonData);
+                rom.s( pPokemonData);
             else
-                rom.Seek( aDNPokemon[j]);
+                rom.s( aDNPokemon[j]);
             
             for (int i = 0; i < numPokemon[type]; i++)
             {

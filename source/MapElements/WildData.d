@@ -42,19 +42,19 @@ public class WildData
         this.rom = rom;
         wildDataHeader = h;
         
-        rom.Seek(h.pGrass);
+        rom.s(h.pGrass);
         if(h.pGrass != 0)
             aWildPokemon[0] = new WildPokemonData(rom, WildDataType.GRASS);
         
-        rom.Seek(h.pWater);
+        rom.s(h.pWater);
         if(h.pWater != 0)
             aWildPokemon[1] = new WildPokemonData(rom, WildDataType.WATER);
         
-        rom.Seek(h.pTrees);
+        rom.s(h.pTrees);
         if(h.pTrees != 0)
             aWildPokemon[2] = new WildPokemonData(rom, WildDataType.TREE);
         
-        rom.Seek(h.pFishing);
+        rom.s(h.pFishing);
         if(h.pFishing != 0)
             aWildPokemon[3] = new WildPokemonData(rom, WildDataType.FISHING);
     }
@@ -145,7 +145,7 @@ public class WildData
             if(wildDataHeader.pGrass == 0 || wildDataHeader.pGrass > 0x1FFFFFF)
                 wildDataHeader.pGrass = rom.findFreespace(DataStore.FreespaceStart, 8);
             rom.floodBytes(wildDataHeader.pGrass, 0, 8); //Prevent these bytes from being used by wild data
-            rom.Seek( wildDataHeader.pGrass);
+            rom.s( wildDataHeader.pGrass);
             aWildPokemon[0].save();
         }
         if(aWildPokemon[1].aWildPokemon != null)
@@ -153,7 +153,7 @@ public class WildData
             if(wildDataHeader.pWater == 0 || wildDataHeader.pWater > 0x1FFFFFF)
                 wildDataHeader.pWater = rom.findFreespace(DataStore.FreespaceStart, 8);
             rom.floodBytes(wildDataHeader.pWater, 0, 8); //Prevent these bytes from being used by wild data
-            rom.Seek( wildDataHeader.pWater);
+            rom.s( wildDataHeader.pWater);
             aWildPokemon[1].save();
         }
         if(aWildPokemon[2].aWildPokemon != null)
@@ -161,7 +161,7 @@ public class WildData
             if(wildDataHeader.pTrees == 0 || wildDataHeader.pTrees > 0x1FFFFFF)
                 wildDataHeader.pTrees = rom.findFreespace(DataStore.FreespaceStart, 8);
             rom.floodBytes(wildDataHeader.pTrees, 0, 8); //Prevent these bytes from being used by wild data
-            rom.Seek( wildDataHeader.pTrees);
+            rom.s( wildDataHeader.pTrees);
             aWildPokemon[2].save();
         }
         if(aWildPokemon[3].aWildPokemon != null)
@@ -169,7 +169,7 @@ public class WildData
             if(wildDataHeader.pFishing == 0 || wildDataHeader.pFishing > 0x1FFFFFF)
                 wildDataHeader.pFishing = rom.findFreespace(DataStore.FreespaceStart, 8);
             rom.floodBytes(wildDataHeader.pFishing, 0, 8); //Prevent these bytes from being used by wild data
-            rom.Seek( wildDataHeader.pFishing);
+            rom.s( wildDataHeader.pFishing);
             aWildPokemon[3].save();
         }
         wildDataHeader.save(headerloc);

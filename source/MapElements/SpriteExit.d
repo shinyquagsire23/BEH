@@ -46,7 +46,7 @@ public class SpriteExit : ISaveable
     public this(ROM rom, int offset)
     {
         this.rom = rom; 
-        rom.Seek(offset);
+        rom.s(offset);
 
         bX=rom.readByte();
         b2=rom.readByte();

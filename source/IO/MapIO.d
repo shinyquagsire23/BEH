@@ -164,7 +164,7 @@ public class MapIO //This whole file is just one big TODO
     public static void loadPokemonNames()
     {
         pokemonNames = new string[DataStore.NumPokemon];
-        ROMManager.currentROM.Seek(ROMManager.currentROM.getPointer(DataStore.SpeciesNames));
+        ROMManager.currentROM.s(ROMManager.currentROM.getPointer(DataStore.SpeciesNames));
         for (int i = 0; i < DataStore.NumPokemon; i++)
         {
             pokemonNames[i] = ROMManager.currentROM.readPoketext();

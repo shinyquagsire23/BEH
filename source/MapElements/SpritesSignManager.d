@@ -44,7 +44,7 @@ public class SpritesSignManager : ISaveable
         this.rom = rom;
         this.loadedMap = m;
         
-        rom.Seek(offset);
+        rom.s(offset);
         mapSigns.length = 1;
         int i = 0;
         for (i = 0; i < count; i++)
@@ -100,7 +100,7 @@ public class SpritesSignManager : ISaveable
         loadedMap.mapSprites.pSigns = internalOffset & 0x1FFFFFF;
         loadedMap.mapSprites.bNumSigns = cast(ubyte)mapSigns.length;
 
-        rom.Seek(internalOffset);
+        rom.s(internalOffset);
         foreach(SpriteSign s; mapSigns)
             s.save();
     }

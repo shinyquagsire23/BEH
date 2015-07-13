@@ -55,11 +55,11 @@ public class ConnectionData
             return;
         }
 
-        rom.Seek(mapHeader.pConnect);
+        rom.s(mapHeader.pConnect);
         pNumConnections = rom.getPointer(true);
         pData = rom.getPointer(true);
         
-        rom.Seek(pData);
+        rom.s(pData);
         for(int i = 0; i < pNumConnections; i++)
         {
             aConnections.length++;
@@ -80,11 +80,11 @@ public class ConnectionData
         if(pData < 0x08000000)
             pData += 0x08000000;
         
-        rom.Seek(mapHeader.pConnect);
+        rom.s(mapHeader.pConnect);
         rom.writePointer(pNumConnections);
         rom.writePointer(pData);
         
-        rom.Seek(pData);
+        rom.s(pData);
         for(int i = 0; i < pNumConnections; i++)
         {
             aConnections[i].save();

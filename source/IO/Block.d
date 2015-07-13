@@ -105,7 +105,7 @@ public class Block
         }
         
         pBlocks += (blockNum * 16);
-        rom.Seek(pBlocks);
+        rom.s(pBlocks);
         
         for (int i = 0; i < 2; i++)
         {
@@ -132,7 +132,7 @@ public class Block
                 }
             }
         }
-        rom.Seek(pBehavior + (blockNum * 4));
+        rom.s(pBehavior + (blockNum * 4));
         rom.writePointer(backgroundMetaData);
     }
     
