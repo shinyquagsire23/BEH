@@ -51,12 +51,10 @@ static:
         MapIO.blockRenderer.setLocalTileset(local);
     }
 
-    public void DrawTileset() 
+    public Pixbuf DrawTileset() 
     {
         imgBuffer = RerenderTiles(imgBuffer, 0, DataStore.MainTSBlocks+0x200,true);//(DataStore.EngineVersion == 1 ? 0x11D : 0x200), true);
-        //new org.zzl.minegaming.GBAUtils.PictureFrame(imgBuffer).show();
-        //Dimension d = new Dimension(16*renderWidth,(DataStore.MainTSSize / renderWidth)*(DataStore.LocalTSSize / renderWidth) *16);
-        //imgBuffer = new BufferedImage(d.width,d.height,BufferedImage.TYPE_INT_ARGB);
+		return imgBuffer;
     }
     
     public Pixbuf RerenderSecondary(Pixbuf i) 

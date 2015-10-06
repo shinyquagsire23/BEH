@@ -8,12 +8,12 @@
  *                                                                            *
  *                         This file is part of BEH.                          *
  *                                                                            *
- * <project name> is free software: you can redistribute it and/or modify it  *
+ *       BEH is free software: you can redistribute it and/or modify it       *
  * under the terms of the GNU General Public License as published by the Free *
  *  Software Foundation, either version 3 of the License, or (at your option) *
  *                             any later version.                             *
  *                                                                            *
- *    <project name> is distributed in the hope that it will be useful, but   *
+ *         BEH is distributed in the hope that it will be useful, but         *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY *
  *   or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public Licens  *
  *                             for more details.                              *
@@ -47,6 +47,7 @@ import gdk.Event;
 import gtkc.gdktypes;
 import gdkpixbuf.Pixbuf;
 import gtk.FileChooserDialog;
+import gtk.Container;
 
 import MapStore;
 import MapTreeView;
@@ -58,10 +59,13 @@ import IO.BankLoader;
 import IO.Map;
 import IO.MapIO;
 import UI.MapEditorBox;
+import UI.BlockPickerBox;
 
 static MainWindow win;
 static MapStore store;
 static MapEditorBox mapEditorBox;
+static BlockPickerBox blockPickerBox;
+static ScrolledWindow blockPickerWindow;
 
 void main(string[] args)
 {
@@ -73,8 +77,9 @@ void main(string[] args)
     Paned mainSplit = new Paned(Orientation.HORIZONTAL);
     ScrolledWindow mapSelectWindow = new ScrolledWindow();
 
-    Box mapEditor = new Box(Orientation.VERTICAL, 0);
+    Box mapEditor = new Box(Orientation.HORIZONTAL, 0);
     ScrolledWindow mapEditorWindow = new ScrolledWindow();
+	blockPickerWindow = new ScrolledWindow();
     
     MenuBar bar = new MenuBar();
     auto fileMenuItem = new MenuItem("File");
@@ -94,27 +99,44 @@ void main(string[] args)
     mapSelectWindow.add(mapTreeView);
     
     mapEditorBox = MapEditorBox.getInstance();
+	blockPickerBox = new BlockPickerBox(true);
     Pixbuf buf = new Pixbuf("resources/mime.jpg");
     Pixbuf buf2 = new Pixbuf("resources/smeargle.png").addAlpha(false, 0, 0, 0);
     
     buf.drawImage(buf2, 5, 5);
-    buf.fillRect(40,50,8,8,0,0,0);
+    buf.drawRect(40,50,8,8,0,0,0);
 
-    mapEditorBox.setFromPixbuf(buf);
+	blockPickerBox.mapEditorBox = mapEditorBox;
+	blockPickerBox.setFromPixbuf(buf2);
+	blockPickerBox.setHalign(GtkAlign.START);
+	blockPickerBox.setValign(GtkAlign.START);
+	blockPickerBox.setSizeRequest(blockPickerBox.editorWidth * 16, -1);
+	blockPickerWindow.setSizeRequest(blockPickerBox.editorWidth * 16, -1);
+	blockPickerWindow.add(blockPickerBox);
+	blockPickerWindow.addOnMotionNotify(toDelegate(&mouseDraggedBlockPicker));
+	blockPickerWindow.addOnButtonPress(toDelegate(&buttonPressBlockPicker));
+	blockPickerWindow.addOnButtonRelease(toDelegate(&buttonReleaseBlockPicker));
+
+	mapEditorBox.blockPickerBox = blockPickerBox;
+	mapEditorBox.setFromPixbuf(buf);
 	mapEditorBox.setHalign(GtkAlign.START);
 	mapEditorBox.setValign(GtkAlign.START);
     mapEditorWindow.add(mapEditorBox);
 	mapEditorWindow.addEvents(GdkEventMask.POINTER_MOTION_MASK | GdkEventMask.POINTER_MOTION_HINT_MASK | GdkEventMask.BUTTON_PRESS_MASK);
-	mapEditorWindow.addOnMotionNotify(toDelegate(&mouseDragged));
-    mapEditor.packStart(mapEditorWindow, true, true, 0);
+	mapEditorWindow.addOnMotionNotify(toDelegate(&mouseDraggedMapEditor));
+	mapEditorWindow.addOnButtonPress(toDelegate(&buttonPressMapEditor));
+	mapEditorWindow.addOnButtonRelease(toDelegate(&buttonReleaseMapEditor));
+
+	mapEditor.packStart(mapEditorWindow, true, true, 0);
+	mapEditor.packStart(blockPickerWindow, false, false, 0);
     
     mainSplit.setPosition(220);
-    mainSplit.pack1(mapSelectWindow, true, true);
+    mainSplit.pack1(mapSelectWindow, false, false);
     mainSplit.add2(mapEditor);
     
     
     barPanel.packStart(mainSplit, true, true, 0);
-    win.add(barPanel);
+	win.add(barPanel);
     win.showAll();
     Main.run();
 }
@@ -150,12 +172,62 @@ void chooseRom(MenuItem item)
     dlg.destroy();
 }
 
-public bool mouseDragged(GdkEventMotion* eventMotion, Widget w) 
+public bool mouseDraggedMapEditor(GdkEventMotion* eventMotion, Widget w) 
 {
 	int mx = cast(int)eventMotion.x;
 	int my = cast(int)eventMotion.y;
-	mx += (cast(ScrolledWindow)w).getHadjustment.getValue();
-	my += (cast(ScrolledWindow)w).getVadjustment.getValue();
+	mx += cast(int)(cast(ScrolledWindow)w).getHadjustment.getValue();
+	my += cast(int)(cast(ScrolledWindow)w).getVadjustment.getValue();
 
 	return mapEditorBox.mouseDragged(mx,my, eventMotion.state);
+}
+
+public bool buttonPressMapEditor(GdkEventButton* event, Widget w)
+{
+	int mx = cast(int)event.x;
+	int my = cast(int)event.y;
+	mx += cast(int)(cast(ScrolledWindow)w).getHadjustment.getValue();
+	my += cast(int)(cast(ScrolledWindow)w).getVadjustment.getValue();
+
+	return mapEditorBox.mousePressed(mx,my, event.button);
+}
+
+public bool buttonReleaseMapEditor(GdkEventButton* event, Widget w)
+{
+	int mx = cast(int)event.x;
+	int my = cast(int)event.y;
+	mx += cast(int)(cast(ScrolledWindow)w).getHadjustment.getValue();
+	my += cast(int)(cast(ScrolledWindow)w).getVadjustment.getValue();
+	
+	return mapEditorBox.mouseRelease(mx,my, event.button);
+}
+
+public bool mouseDraggedBlockPicker(GdkEventMotion* eventMotion, Widget w) 
+{
+	int mx = cast(int)eventMotion.x;
+	int my = cast(int)eventMotion.y;
+	mx += cast(int)(cast(ScrolledWindow)w).getHadjustment.getValue();
+	my += cast(int)(cast(ScrolledWindow)w).getVadjustment.getValue();
+	
+	return blockPickerBox.mouseDragged(mx,my, eventMotion.state);
+}
+
+public bool buttonPressBlockPicker(GdkEventButton* event, Widget w)
+{
+	int mx = cast(int)event.x;
+	int my = cast(int)event.y;
+	mx += cast(int)(cast(ScrolledWindow)w).getHadjustment.getValue();
+	my += cast(int)(cast(ScrolledWindow)w).getVadjustment.getValue();
+	
+	return blockPickerBox.mousePressed(mx,my, event.button);
+}
+
+public bool buttonReleaseBlockPicker(GdkEventButton* event, Widget w)
+{
+	int mx = cast(int)event.x;
+	int my = cast(int)event.y;
+	mx += cast(int)(cast(ScrolledWindow)w).getHadjustment.getValue();
+	my += cast(int)(cast(ScrolledWindow)w).getVadjustment.getValue();
+	
+	return blockPickerBox.mouseRelease(mx,my, event.button);
 }

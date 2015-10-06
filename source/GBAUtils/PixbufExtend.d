@@ -49,7 +49,7 @@ Pixbuf drawImageFast(Pixbuf mn, Pixbuf sb, uint xPos, uint yPos)
 }
 
 //TODO: This function is extremely slow.
-Pixbuf drawImage(Pixbuf main, Pixbuf sub, uint xPos, uint yPos)
+Pixbuf drawImage(Pixbuf main, Pixbuf sub, uint xPos, uint yPos, float multiplier = 1.0f)
 {       
     void blend(out ubyte r, out ubyte g, out ubyte b, out ubyte a, ubyte r1, ubyte g1, ubyte b1, ubyte a1, ubyte r2, ubyte g2, ubyte b2, ubyte a2)
     {
@@ -81,7 +81,7 @@ Pixbuf drawImage(Pixbuf main, Pixbuf sub, uint xPos, uint yPos)
             ubyte g;
             ubyte b;
             ubyte a;
-            blend(r,g,b,a, r_2,g_2,b_2,a_2, r_1,g_1,b_1,a_1);
+			blend(r,g,b,a, r_2,g_2,b_2,cast(ubyte)(a_2*multiplier), r_1,g_1,b_1,cast(ubyte)(a_1*multiplier));
 
             main.setPixel(x, y, r, g, b, a);
         }
@@ -99,6 +99,30 @@ Pixbuf fillRect(Pixbuf main, uint xPos, uint yPos, uint width, uint height, ubyt
         }
     }
     return main;
+}
+
+Pixbuf drawRect(Pixbuf main, uint xPos, uint yPos, uint width, uint height, ubyte r, ubyte g, ubyte b, ubyte a = 0xFF)
+{
+	for(int y = yPos; y < yPos+height; y++)
+	{
+		if(y == yPos || y == yPos+height-1)
+		{
+			for(int x = xPos; x < xPos+width; x++)
+			{
+					main.setPixel(x, y, r, g, b, a);
+			}
+		}
+	}
+
+	for(int y = yPos; y < yPos+height; y++)
+	{
+		for(int x = xPos; x < xPos+width; x++)
+		{
+			if(x == xPos || x == xPos+width-1)
+				main.setPixel(x, y, r, g, b, a);
+		}
+	}
+	return main;
 }
 
 Pixbuf setPixel(Pixbuf main, uint x, uint y, ubyte r, ubyte g, ubyte b, ubyte a = 0xFF)

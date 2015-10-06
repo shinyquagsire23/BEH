@@ -1,3 +1,26 @@
+/******************************************************************************
+ * BEH                                                                        *
+ * Source Code                                                                *
+ *                                                                            *
+ * D 2.067.0-0                                                                *
+ * MapEditorBox.d                                                             *
+ * "The main GUI of BEH, actually does all the interfacing between data."     *
+ *                                                                            *
+ *                         This file is part of BEH.                          *
+ *                                                                            *
+ *       BEH is free software: you can redistribute it and/or modify it       *
+ * under the terms of the GNU General Public License as published by the Free *
+ *  Software Foundation, either version 3 of the License, or (at your option) *
+ *                             any later version.                             *
+ *                                                                            *
+ *         BEH is distributed in the hope that it will be useful, but         *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY *
+ *   or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public Licens  *
+ *                             for more details.                              *
+ *                                                                            *
+ *  You should have received a copy of the GNU General Public License along   *
+ *      with BEH.  If not, see <http://www.gnu.org/licenses/>.                *
+ *****************************************************************************/
 module UI.MapEditorBox;
 
 import GBAUtils.DataStore;
@@ -10,6 +33,8 @@ import IO.Tileset;
 import IO.Render.TilesetRenderer;
 import Structures.EditMode;
 import Structures.MapTile;
+import Structures.SelectRect;
+import UI.BlockPickerBox;
 
 import std.stdio;
 import std.functional;
@@ -33,35 +58,30 @@ public class MapEditorBox : Image
 		}
 		return instance;
 	}
-	
-	public static class SelectRect : Rectangle
-	{
-		int startX;
-		int startY;
-		int realWidth;
-		int realHeight;
-		
-		public this(int i, int j, int k, int l) {
-			super(i,j,k,l);
-			startX = i;
-			startY = j;
-			realWidth = k;
-			realHeight = l;
-		}
-	}
 
 	private Tileset globalTiles;
 	private Tileset localTiles;
+	public BlockPickerBox blockPickerBox;
 	public Map map;
 	static Rectangle mouseTracker;
-	public static bool Redraw = true;
+	public static MapTile[][] selectBuffer;
+	public static SelectRect selectBox;
+
+	public static Pixbuf gcBuff;
+	static  Pixbuf imgBuffer = null;
+	static Pixbuf permImgBuffer = null;
+	static Pixbuf dispImgBuffer = null;
+	
+	public static bool needsRedraw = true;
 	public static bool renderPalette = false;
 	public static bool renderTileset = false;
-	public static MapTile[][] selectBuffer;
 	public static int bufferWidth = 1;
 	public static int bufferHeight = 1;
-	public static SelectRect selectBox;
-//	public RGBA selectRectColor = new RGBA(0,0,0,0);//MainGUI.uiSettings.cursorColor; //TODO
+	public static uint lastState = 0;
+
+	
+
+	//	public RGBA selectRectColor = new RGBA(0,0,0,0);//MainGUI.uiSettings.cursorColor; //TODO
 	private static EditMode currentMode = EditMode.TILES;
 	
 	public this() 
@@ -103,7 +123,7 @@ public class MapEditorBox : Image
 				MainGUI.lblTileVal.setText("Current Perm: 0x" + BitConverter.toHexString(MainGUI.tileEditorPanel.baseSelectedTile));
 			}
 			
-			//MapIO.repaintTileEditorPanel();
+			//MapIO.repaintBlockPickerBox();
 		}
 		
 		/*
@@ -174,23 +194,116 @@ public class MapEditorBox : Image
 		int x = (mouseTracker.x / 16);
 		int y = (mouseTracker.y / 16);
 		
-		//if(MapIO.DEBUG)
+		if(MapIO.DEBUG)
 			writefln("%u %u %x", x, y, state);
 		
 		if (state & GdkModifierType.BUTTON1_MASK)  
 		{
-			writefln("click");
-			drawTiles(x, y);
+			if(MapIO.DEBUG)
+				writefln("left click");
 			moveSelectRect(mx,my);
+			drawTiles(x, y);
 			map.isEdited = true;
-			//MapIO.repaintTileEditorPanel();
+			//MapIO.repaintBlockPickerBox();
 		}
-		else
+		else if (state & GdkModifierType.BUTTON3_MASK)
+		{
 			if(isInBounds(mx,my))
 				calculateSelectBox(mx,my,selectBox);
+		}
+		else
+			moveSelectRect(mx,my);
 		
 		//MainGUI.setMouseCoordinates(x, y); //TODO
-		//repaint(); //TODO
+
+		if(selectBox.moved)
+			renderDisplay();
+		lastState = state;
+		return true;
+	}
+
+	public bool mousePressed(int mx, int my, uint button)
+	{
+		mouseTracker.x = mx;
+		mouseTracker.y = my;
+		
+		if(map is null || !isInBounds(mouseTracker.x,mouseTracker.y))
+			return false;
+		
+		int x = (mouseTracker.x / 16);
+		int y = (mouseTracker.y / 16);
+		
+		if(MapIO.DEBUG)
+			writefln("%u %u %x", x, y, button);
+		
+		if (button == 1)  
+		{
+			if(MapIO.DEBUG)
+				writefln("left click");
+			moveSelectRect(mx,my);
+			drawTiles(x, y);
+			map.isEdited = true;
+			//MapIO.repaintBlockPickerBox();
+		}
+		else if (button == 3)  
+		{
+			if(MapIO.DEBUG)
+				writefln("right click");
+
+			selectBox = new SelectRect(x * 16,y * 16,16,16);
+			//selectRectColor = MainGUI.uiSettings.cursorSelectColor;
+			
+			if(currentMode == EditMode.TILES) {
+				//MainGUI.tileEditorPanel.baseSelectedTile = map.getMapTileData().getTile(x, y).getID();
+				//MainGUI.lblTileVal.setText("Current Tile: 0x" + BitConverter.toHexString(MainGUI.tileEditorPanel.baseSelectedTile));
+			}
+			else if(currentMode == EditMode.MOVEMENT) {
+				//PermissionTilePanel.baseSelectedTile = map.getMapTileData().getTile(x, y).getMeta();
+				//MainGUI.lblTileVal.setText("Current Perm: 0x" + BitConverter.toHexString(MainGUI.tileEditorPanel.baseSelectedTile));
+			}
+			//MapIO.repaintBlockPickerBox();
+		}
+		
+		//MainGUI.setMouseCoordinates(x, y); //TODO
+		renderDisplay();
+		return true;
+	}
+
+	public bool mouseRelease(int mx, int my, uint button)
+	{
+		mouseTracker.x = mx;
+		mouseTracker.y = my;
+		
+		if(map is null || !isInBounds(mouseTracker.x,mouseTracker.y))
+			return false;
+		
+		//int x = (mouseTracker.x / 16);
+		//int y = (mouseTracker.y / 16);
+		
+		if(MapIO.DEBUG)
+			writefln("%u %u %x", mx/16, my/16, button);
+		
+		//selectRectColor = MainGUI.uiSettings.cursorColor;
+		
+		if(button == 3) 
+		{
+			if(isInBounds(mx,my)) 
+			{
+				calculateSelectBox(mx,my,selectBox);
+				//Fill the tile buffer
+				selectBuffer = new MapTile[][](cast(ushort)(selectBox.width / 16), cast(ushort)(selectBox.height / 16));
+				bufferWidth = selectBox.width / 16;
+				bufferHeight = selectBox.height / 16;
+				for(int x = 0; x < bufferWidth; x++)
+					for(int y = 0; y < bufferHeight; y++)
+						selectBuffer[x][y] = map.getMapTileData().getTile(selectBox.x / 16 + x, selectBox.y / 16 + y).clone();
+
+				blockPickerBox.selectBlock(map.getMapTileData().getTile(selectBox.x / 16, selectBox.y / 16 ).getID());
+			}
+		}
+		
+		//MainGUI.setMouseCoordinates(x, y); //TODO
+		renderDisplay();
 		return true;
 	}
 	
@@ -217,11 +330,17 @@ public class MapEditorBox : Image
 			mouseTracker.y = y;
 			//MainGUI.setMouseCoordinates(mouseTracker.x / 16, mouseTracker.y / 16); //TODO
 		}
-		
-		selectBox.x = ((mouseTracker.x / 16) * 16);
-		selectBox.y = ((mouseTracker.y / 16) * 16);
-		selectBox.startX = ((mouseTracker.x / 16) * 16);
-		selectBox.startY = ((mouseTracker.y / 16) * 16);
+
+		uint movx, movy;
+		movx = ((mouseTracker.x / 16) * 16);
+		movy = ((mouseTracker.y / 16) * 16);
+
+		selectBox.moved = (selectBox.x != movx || selectBox.y != movy);
+
+		selectBox.x = movx;
+		selectBox.y = movy;
+		selectBox.startX = movx;
+		selectBox.startY = movx;
 		
 		/*		if(selectBox.width > 16)
 		 selectBox.x -= selectBox.width / 2;
@@ -268,8 +387,15 @@ public class MapEditorBox : Image
 		//Round the values to multiples of 16
 		int x = (mx / 16) * 16;
 		int y = (my / 16) * 16;
-		givenBox.x = ((givenBox.x / 16) * 16);
-		givenBox.y = ((givenBox.y / 16) * 16);
+
+		uint movx, movy;
+		movx = ((mouseTracker.x / 16) * 16);
+		movy = ((mouseTracker.y / 16) * 16);
+		
+		givenBox.moved = (selectBox.x != movx || selectBox.y != movy);
+
+		givenBox.x = movx;
+		givenBox.y = movy;
 		givenBox.startX = ((givenBox.startX / 16) * 16);
 		givenBox.startY = ((givenBox.startY / 16) * 16);
 		givenBox.width = ((givenBox.width / 16) * 16);
@@ -287,6 +413,7 @@ public class MapEditorBox : Image
 			givenBox.x = x;
 		else
 			givenBox.x = givenBox.startX;
+
 		if (givenBox.realHeight < 0)
 			givenBox.y = y;
 		else
@@ -306,32 +433,25 @@ public class MapEditorBox : Image
     {
 		globalTiles = global;
 		MapIO.blockRenderer.setGlobalTileset(global);
+		blockPickerBox.setGlobalTileset(global);
 	}
 	
 	public void setLocalTileset(Tileset local) 
     {
 		localTiles = local;
 		MapIO.blockRenderer.setLocalTileset(local);
+		blockPickerBox.setLocalTileset(local);
 	}
 	
 	public void setMap(Map m) 
     {
 		map = m;
-		//TODO
-		/*Dimension size = new Dimension();
-		size.setSize(cast(int) (m.getMapData().mapWidth + 1) * 16,
-			cast(int) (m.getMapData().mapHeight + 1) * 16);
-		setPreferredSize(size);
-		this.setSize(size);*/
+		this.needsRedraw = true;
 	}
 	
-	public static Pixbuf gcBuff;
-	static  Pixbuf imgBuffer = null;
-	static Pixbuf permImgBuffer = null;
-	
-	public void DrawMap() {
+	public void DrawMap() 
+	{
 		imgBuffer = Map.renderMap(map, true);
-        setFromPixbuf(imgBuffer);
 	}
 	
 	public void DrawMovementPerms() 
@@ -355,50 +475,57 @@ public class MapEditorBox : Image
 		drawTile(x,y,currentMode);
 	}
 	
-	void drawTile(int x, int y, EditMode m) {
-		if(m == EditMode.TILES) {
+	void drawTile(int x, int y, EditMode m) 
+	{
+		if(m == EditMode.TILES) 
+		{
 			//gcBuff = imgBuffer.getGraphics();
 			int TileID=(map.getMapTileData().getTile(x, y).getID());
 			int srcX=(TileID % TilesetRenderer.renderWidth) * 16;
 			int srcY = (TileID / TilesetRenderer.renderWidth) * 16; //TODO
 			imgBuffer.drawImage(TilesetRenderer.imgBuffer.newSubpixbuf(srcX, srcY, 16, 16), x * 16, y * 16);
 		}
-		else if(m == EditMode.MOVEMENT) {
+		else if(m == EditMode.MOVEMENT) 
+		{
 			int TileMeta=(map.getMapTileData().getTile(x, y).getMeta());
 			
 			//Clear the rectangle since transparency can draw ontop of itself
 			permImgBuffer.fillRect(x * 16, y * 16, 16, 16, 0, 0, 0, 0);
 			//permImgBuffer.drawImage(PermissionTilePanel.imgPermissions.newSubpixbuf(TileMeta*16, 0, 16, 16), x * 16, y * 16); //TODO
 		}
-		//gcBuff.finalize();
 		//repaint();* //TODO
         setFromPixbuf(imgBuffer);
 	}
 	
-	public static Pixbuf getMapImage() {
+	public static Pixbuf getMapImage() 
+	{
 		return imgBuffer;
 	}
-	
-	protected void paintComponent() { //TODO
-		//super.paintComponent(g);
-		if (globalTiles !is null) {
-			if(MapEditorBox.Redraw==true) 
+
+	//TODO: This is horribly slow, use OpenGL or similar.
+	public void renderDisplay() 
+	{ 
+		if (globalTiles !is null) 
+		{
+			if(MapEditorBox.needsRedraw) 
 			{
 				DrawMap();
 				DrawMovementPerms();
-				MapEditorBox.Redraw=false;
+				MapEditorBox.needsRedraw = false;
 			}
+
 			if(currentMode != EditMode.TILES) 
 			{
-				/*Graphics2D g2 = (Graphics2D)g; //TODO
-				g2.drawImage(imgBuffer, 0, 0, this);
-				
-				AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, DataStore.mehPermissionTranslucency);
+				dispImgBuffer = imgBuffer.copy();
+				//dispImgBuffer.drawImage(imgBuffer, 0, 0);
+
+				//TODO
+				/*AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, DataStore.mehPermissionTranslucency);
 				g2.setComposite(ac);
 				g2.drawImage(permImgBuffer, 0, 0, this);*/
 			}
-			//else
-				//g.drawImage(imgBuffer, 0, 0, this); //TODO
+			else
+				dispImgBuffer = imgBuffer.copy();
 			
 			if(renderPalette) 
 			{
@@ -407,13 +534,8 @@ public class MapEditorBox : Image
 				{
 					while(x < 16) 
 					{
-						/*try {
-							g.setColor(globalTiles.getPalette(MapIO.blockRenderer.currentTime)[i].getIndex(x));
-							g.fillRect(x*8, i*8, 8, 8);
-						}
-						catch (Exception e) {
-							e.printStackTrace();
-						}*/ //TODO
+						RGBA color = globalTiles.getPalette(MapIO.blockRenderer.currentTime)[i].getIndex(x);
+						dispImgBuffer.fillRect(x*8, i*8, 8, 8, cast(ubyte)(color.red() * 255), cast(ubyte)(color.green() * 255), cast(ubyte)(color.blue() * 255));
 						x++;
 					}
 					x = 0;
@@ -424,22 +546,18 @@ public class MapEditorBox : Image
 				{
 					while(x < 16) 
 					{
-						/*try {
-							g.setColor(localTiles.getPalette(MapIO.blockRenderer.currentTime)[i].getIndex(x));
-							g.fillRect(128+x*8, i*8, 8, 8);
-						}
-						catch(Exception e) {
-							e.printStackTrace();
-						}*/ //TODO
+						RGBA color = localTiles.getPalette(MapIO.blockRenderer.currentTime)[i].getIndex(x);
+						dispImgBuffer.fillRect(128+(x*8), i*8, 8, 8, cast(ubyte)(color.red() * 255), cast(ubyte)(color.green() * 255), cast(ubyte)(color.blue() * 255));
 						x++;
 					}
 					x = 0;
 				}
 			}
-			
+
+			//TODO
 			if(renderTileset)
 			{
-				//g.drawImage(MainGUI.tileEditorPanel.RerenderTiles(TileEditorPanel.imgBuffer, 255),0,0,this);
+				//g.drawImage(MainGUI.tileEditorPanel.RerenderTiles(BlockPickerBox.imgBuffer, 255),0,0,this);
 				for(int i = 0; i < 13; i++)
 				{
 					//g.drawImage(globalTiles.getTileSet(i),i*128,0,this);
@@ -453,22 +571,9 @@ public class MapEditorBox : Image
 				mouseTracker.x -= abs(mouseTracker.width);
 			if (mouseTracker.height < 0)
 				mouseTracker.y -= abs(mouseTracker.height);
-			try 
-			{
-				////g.drawRect(cast(int)(((mouseTracker.x / 16) % map.getMapData().mapWidth) * 16),(mouseTracker.y / 16) * 16,selectBox.width-1,selectBox.height-1);
-				//g.drawRect(selectBox.x,selectBox.y,selectBox.width-1,selectBox.height-1); //TODO
-			}
-			catch(Exception e) 
-			{
-				//e.printStackTrace();
-			}
-		}
-		try {
-			// g.drawImage(ImageIO.read(MapIO.class.getResourceAsStream("/resources/smeargle.png")),
-			// 100, 240, null);
-		}
-		catch (Exception e) {
-			//e.printStackTrace();
+
+			dispImgBuffer.drawRect(selectBox.x,selectBox.y,selectBox.width-1,selectBox.height-1, 255, 0, 0);
+			this.setFromPixbuf(dispImgBuffer);
 		}
 	}
 	

@@ -53,7 +53,7 @@ public class MapIO //This whole file is just one big TODO
     public static int currentMap = 0;
     public static bool doneLoading = false;
     public static WildData wildData;
-    public static bool DEBUG = false;
+    public static bool DEBUG = true;
     public static BlockRenderer blockRenderer;
     
     public static void loadMap(int bank, int map)
@@ -111,8 +111,6 @@ public class MapIO //This whole file is just one big TODO
         //MainGUI.reloadMimeLabels(); //TODO UI stuff
         MapEditorBox.getInstance().setGlobalTileset(TilesetCache.get(loadedMap.getMapData().globalTileSetPtr));
         MapEditorBox.getInstance().setLocalTileset(TilesetCache.get(loadedMap.getMapData().localTileSetPtr));
-        /*MainGUI.eventEditorPanel.setGlobalTileset(TilesetCache.get(loadedMap.getMapData().globalTileSetPtr)); //TODO
-         MainGUI.eventEditorPanel.setLocalTileset(TilesetCache.get(loadedMap.getMapData().localTileSetPtr));*/
         
         TilesetRenderer.setGlobalTileset(TilesetCache.get(loadedMap.getMapData().globalTileSetPtr));
         writefln("Global tileset loaded to tileset renderer");
@@ -123,8 +121,11 @@ public class MapIO //This whole file is just one big TODO
         /*MainGUI.tileEditorPanel.repaint();*/
         
         MapEditorBox.getInstance().setMap(loadedMap);//TODO UI stuff
-        MapEditorBox.getInstance().DrawMap();
-        MapEditorBox.getInstance().DrawMovementPerms();
+		MapEditorBox.getInstance().needsRedraw = true;
+		MapEditorBox.getInstance().renderDisplay();
+
+		MapEditorBox.getInstance().blockPickerBox.needsRedraw = true;
+		MapEditorBox.getInstance().blockPickerBox.renderDisplay();
         //MainGUI.mapEditorPanel.repaint();
         
         /*MainGUI.eventEditorPanel.setMap(loadedMap);
