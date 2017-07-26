@@ -62,7 +62,7 @@
 /// Portable module for reading and writing _INI files. _ini.d version 0.6
 module IO.ini;
 
-private import std.file, std.string, std.stream, std.range;;
+private import std.file, std.stdio, std.string, std.range;
 
 
 //debug = INI; //show file being parsed
@@ -728,7 +728,7 @@ public:
     
     /// Params:
     /// f = an opened-for-write stream; save() uses BufferedFile by default. Override save() to change stream.
-    protected final void saveToStream(Stream f)
+    protected final void saveToStream(File f)
     {
         _modified = false;
         
@@ -741,7 +741,7 @@ public:
         //auto File f = new File;
         
         //f.create(_file, FileMode.Out);
-        assert(f.writeable);
+        //assert(f.writeable);
         
         if(isecs[0]._name.length)
             goto write_name;
@@ -752,7 +752,7 @@ public:
         {
         write_name:
             // JP Modified added dup
-            f.printf("%c%.*s%c\r\n".dup, secStart, isecs[i]._name.dup, secEnd);
+            f.writef("%c%.*s%c\r\n".dup, secStart, isecs[i]._name.dup, secEnd);
         after_name:
             isec = isecs[i];
             for(j = 0; j != isec.lines.length; j++)
@@ -763,8 +763,8 @@ public:
                     if(ikey)
                         ikey.data = ikey._name ~ "=" ~ ikey._value;
                 }
-                f.writeString(isec.lines[j].data);
-                f.writeString("\r\n");
+                f.writef(isec.lines[j].data);
+                f.writef("\r\n");
             }
         }
     }
@@ -776,8 +776,8 @@ public:
             _file = saveTo;
             saveTo = null;
         }
-        BufferedFile f = new BufferedFile;
-        f.create(_file);
+        File f = File(_file, "wb");
+        //f.create(_file);
         try
         {
             saveToStream(f);

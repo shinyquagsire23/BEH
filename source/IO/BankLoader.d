@@ -115,7 +115,7 @@ public class BankLoader
                     }
                     else if(DataStore.EngineVersion==0)//RSE
                     {
-                        if(mapName in mapNames)
+                        if(mapName !in mapNames)
                         {
                             mapNamePokePtr = rom.getPointer(DataStore.MapLabels + ((mapName * 8) + 4));
                             convMapName = rom.readPoketext(mapNamePokePtr);

@@ -102,10 +102,6 @@ public class BlockPickerBox : Image
 		int x = min(editorWidth-1, max(0, (mouseTracker.x / 16)));
 		int y = min(imgBuffer.getHeight(), max(0, (mouseTracker.y / 16)));
 
-				
-		if(MapIO.DEBUG)
-			writefln("%u %u %x", x, y, state);
-
 		if(state)
 			MapEditorBox.calculateSelectBox(x*16, y*16, selectBox);
 				
@@ -122,11 +118,7 @@ public class BlockPickerBox : Image
 
 		int x = mx / 16;
 		int y = my / 16;
-				
-		if(MapIO.DEBUG)
-			writefln("%u %u %x", x, y, button);
 
-				
 		if(button) //Any button down
 		{
 			selectBox = new SelectRect(x * 16,y * 16,16,16);

@@ -194,9 +194,6 @@ public class MapEditorBox : Image
 		int x = (mouseTracker.x / 16);
 		int y = (mouseTracker.y / 16);
 		
-		if(MapIO.DEBUG)
-			writefln("%u %u %x", x, y, state);
-		
 		if (state & GdkModifierType.BUTTON1_MASK)  
 		{
 			if(MapIO.DEBUG)
@@ -232,9 +229,6 @@ public class MapEditorBox : Image
 		
 		int x = (mouseTracker.x / 16);
 		int y = (mouseTracker.y / 16);
-		
-		if(MapIO.DEBUG)
-			writefln("%u %u %x", x, y, button);
 		
 		if (button == 1)  
 		{
@@ -279,9 +273,6 @@ public class MapEditorBox : Image
 		
 		//int x = (mouseTracker.x / 16);
 		//int y = (mouseTracker.y / 16);
-		
-		if(MapIO.DEBUG)
-			writefln("%u %u %x", mx/16, my/16, button);
 		
 		//selectRectColor = MainGUI.uiSettings.cursorColor;
 		
